@@ -6,7 +6,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import controllers.DashboardController;
+import models.SessionInfo;
 import ninja.session.Session;
+import service.HTTPClientUtil;
+
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -107,7 +110,16 @@ public class MyUtill {
             ////System.out.println(cookies.toString());
 
             session.put("crucookies", CruCookies.toString());
-
+            
+            //login to greenhopper
+            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password);
+            if(cookiesMap != null && !cookiesMap.isEmpty()){
+                SessionInfo sessionInfo = new SessionInfo();
+                sessionInfo.setCookies(cookiesMap);
+                String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
+                session.put(Constant.API_SESSION_INFO, sessionInfoStr);
+            }
+            
             return true;
         }
 
@@ -268,7 +280,6 @@ public class MyUtill {
         return userArray;
     }
 
-
     public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
         JSONObject result = new JSONObject();
         result.put("id", GadgetId);
@@ -348,6 +359,13 @@ public class MyUtill {
             ////System.out.println(reviewData.toString());
             reviewDataArray.put(reviewData);
         }
+
+
+//        JSONObject reviewData = new JSONObject();
+//        reviewData.put("creator","");
+//        reviewData.put("column1","");
+//        reviewData.put("column2","");
+//        reviewData.put("column3","");
 
 
 //        JSONObject reviewData = new JSONObject();

@@ -39,5 +39,18 @@ public class OverdueReviewReportController {
         }
     }
 
+    @FilterWith(SecureFilter.class)
+    public Result  getReview(Session session,@Param("project") String project) {
+        try {
+            System.out.println(project);
+            return Results.text().render(getReviewfromServer(session,"",project));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Results.internalServerError();
+        }
+    }
+
+
+
 
 }
