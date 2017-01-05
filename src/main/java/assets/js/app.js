@@ -765,26 +765,24 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         }else {
             $scope.choseProjectPage = false;
             $scope.choseUserPage = true;
+            $resource('/getReview', {
+                project:$scope.projectId
+            }, {
+                query: {
+                    method: 'post',
+                    isArray: true
+                }
+            }).query().$promise.then(function (respone) {
+                console.log(respone);
+            }, function (error) {
+                console.log(error);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Error! Can not get Cru Project List')
+                        .hideDelay(5000)
+                );
+            });
         }
-
-
-        $resource('/getCruProjectList', {}, {
-            query: {
-                method: 'post',
-                isArray: true
-            }
-        }).query().$promise.then(function (respone) {
-            console.log(respone);
-            $scope.CruProjectList = respone;
-            $scope.Loading = false;
-        }, function (error) {
-            console.log(error);
-            $mdToast.show(
-                $mdToast.simple()
-                    .textContent('Error! Can not get Cru Project List')
-                    .hideDelay(5000)
-            );
-        });
 
     };
 

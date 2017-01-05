@@ -4,11 +4,13 @@ import filter.SecureFilter;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
+import ninja.params.Param;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
 
 import static util.MyUtill.getCruProjectfromServer;
 import static util.MyUtill.getCruUserfromServer;
+import static util.MyUtill.getReviewfromServer;
 
 /**
  * Created by nnmchau on 1/4/2017.
@@ -36,6 +38,19 @@ public class OverdueReviewReportController {
             return Results.internalServerError();
         }
     }
+
+    @FilterWith(SecureFilter.class)
+    public Result  getReview(Session session,@Param("project") String project) {
+        try {
+            System.out.println(project);
+            return Results.text().render(getReviewfromServer(session,"",project));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Results.internalServerError();
+        }
+    }
+
+
 
 
 }

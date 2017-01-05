@@ -266,7 +266,7 @@ public class MyUtill {
     }
 
 
-    public static JSONArray getReviewfromServer(Session session, String ia, String project) throws Exception {
+    public static JSONObject getReviewfromServer(Session session, String ia, String project) throws Exception {
         JSONArray reviewDataArray = new JSONArray();
         String rs = "";
         BufferedReader br = getHttpURLConnection(String.format(LINK_GET_ODREVIEW_REPORTS, ia, project), session);
@@ -277,15 +277,32 @@ public class MyUtill {
         br.close();
 
 
-        JSONArray dataArray = new JSONArray(XML.toJSONObject(rs));
+        JSONArray array = XML.toJSONObject(rs).getJSONArray("detailedReviewData");
 
-        for (int i = 0; i < dataArray.length(); i++) {
-            JSONObject data = dataArray.getJSONObject(i);
+
+        for (int i = 0; i < array.length(); i++) {
+            int lessThan5 = 0;
+            int moreThan5Less10 = 0;
+            int moreThan10 = 0;
+
+
+
+
+
+
+
 
         }
 
 
-        return reviewDataArray;
+//        JSONObject reviewData = new JSONObject();
+//        reviewData.put("creator","");
+//        reviewData.put("column1","");
+//        reviewData.put("column2","");
+//        reviewData.put("column3","");
+
+
+        return XML.toJSONObject(rs);
     }
 
 
