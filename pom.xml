@@ -17,6 +17,8 @@
     <properties>
         <ninja.version>5.8.0</ninja.version>
         <jetty.version>9.2.10.v20150310</jetty.version>
+        <jackson.version>2.8.5</jackson.version>
+         <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
     </properties>
     <build>
         <plugins>
@@ -29,7 +31,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <plugin>
+           <!--  <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
                 <version>1.4.1</version>
@@ -51,7 +53,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -179,12 +181,12 @@
             <artifactId>ninja-standalone</artifactId>
             <version>${ninja.version}</version>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.ninjaframework</groupId>
             <artifactId>ninja-test-utilities</artifactId>
             <version>${ninja.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -215,5 +217,31 @@
             <artifactId>json</artifactId>
             <version>20160810</version>
         </dependency>
+        <dependency>
+         <groupId>org.apache.httpcomponents</groupId>
+         <artifactId>httpclient</artifactId>
+         <version>4.5.2</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-core</artifactId>
+         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-annotations</artifactId>
+         <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.quartz-scheduler</groupId>
+         <artifactId>quartz</artifactId>
+         <version>${quartz-scheduler.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.quartz-scheduler</groupId>
+         <artifactId>quartz-jobs</artifactId>
+         <version>${quartz-scheduler.version}</version>
+      </dependency>
     </dependencies>
 </project>
