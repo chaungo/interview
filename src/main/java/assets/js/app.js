@@ -37,6 +37,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     $rootScope.hasInfo = false;
     $rootScope.dashboardGadgetInfo = {};
     $rootScope.sonarStList = [];
+    $rootScope.reviewList = [];
     $rootScope.gadgetId = "";
     $rootScope.gadgetType;
     $rootScope.currentDashboard = {};
@@ -53,6 +54,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
 
     $rootScope.getDashboardList = function () {
+        $rootScope.reviewList = [];
         $rootScope.sonarStList = [];
         $resource('/getDashboardList', {
             groups: JSON.stringify($rootScope.userInfo.groups),
@@ -124,6 +126,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         }
 
         $rootScope.sonarStList = [];
+        $rootScope.reviewList = [];
 
         $resource('/getDashboardInfo', {
             id: $rootScope.currentDashboard.id
@@ -140,6 +143,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     }).save().$promise.then(function (respone) {
                         console.log(respone);
                         $rootScope.sonarStList = respone.AMSSONARStatisticsGadget;
+                        $rootScope.reviewList = respone.AMSOverdueReviewsReportGadget;
                         $rootScope.hasInfo = false;
                         $rootScope.getting = false;
                     }, function (error) {
@@ -176,6 +180,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         if (!$rootScope.getting) {
             $rootScope.currentDashboard = DashboardItem;
             $rootScope.sonarStList = [];
+            $rootScope.reviewList = [];
             $rootScope.showGadget();
         } else {
             $mdToast.show(
@@ -286,7 +291,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     ///////////////////////SonarGadget/////////////////////////
 
 
-    $scope.deleteSonarGagdget = function (item) {
+    $scope.deleteGagdget = function (item) {
         $rootScope.getting = true;
         $resource('/deleteGadget', {
             GadgetId: item.id
@@ -756,37 +761,42 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
 
 
     $scope.choseProjectNext = function () {
-        if($scope.projectId==""){
+        if ($scope.projectId == "") {
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Please choose a project')
                     .hideDelay(5000)
             );
-        }else {
-            $scope.choseProjectPage = false;
-            $scope.choseUserPage = true;
-            $resource('/getReview', {
-                project:$scope.projectId
+        } else {
+            var data = {
+                DashboardId: $rootScope.currentDashboard.id,
+                GadgetType: $rootScope.gadgetType,
+                Data: {
+                    Project: $scope.projectId
+                }
+            };
+            $resource('/addNewGadget', {
+                data: data
             }, {
                 query: {
                     method: 'post',
-                    isArray: true
+                    isArray: false
                 }
-            }).query().$promise.then(function (respone) {
-                console.log(respone);
+            }).query().$promise.then(function (data) {
+                console.log(data);
+                $mdDialog.cancel();
+                $rootScope.showGadget();
             }, function (error) {
                 console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get Cru Project List')
+                        .textContent('Error! Can not get add new gadget')
                         .hideDelay(5000)
                 );
             });
         }
 
     };
-
-
 
 
 });

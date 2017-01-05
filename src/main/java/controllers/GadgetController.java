@@ -36,6 +36,7 @@ public class GadgetController {
     @FilterWith(SecureFilter.class)
     public Result showSonarStatisticGadget(@Param("id") String dashboardId, Session session) {
         JSONArray sonarStatisticsGadget = new JSONArray();
+        JSONArray overdueReviewGadget = new JSONArray();
         JSONObject result = new JSONObject();
         JSONArray DashboardGadgets;
         try {
@@ -46,9 +47,14 @@ public class GadgetController {
                 if (type.equals("AMS SONAR Statistics Gadget")) {
                     sonarStatisticsGadget.put(getSonarStatistic(session, gadget.getJSONObject("data"), gadget.get("id").toString()));
                 }
+
+                if (type.equals("AMS Overdue Reviews Report Gadget")) {
+                    overdueReviewGadget.put(getReview(session, gadget.getJSONObject("data"), gadget.get("id").toString()));
+                }
             }
 
             result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
+            result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
         } catch (Exception e) {
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
@@ -60,6 +66,7 @@ public class GadgetController {
 
     @FilterWith(SecureFilter.class)
     public Result addNewGadget(@Param("data") String data) {
+        System.out.println(data);
         try {
             JSONObject dataObject = new JSONObject(data);
             String id = dataObject.getString("DashboardId");

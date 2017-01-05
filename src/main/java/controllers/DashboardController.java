@@ -44,6 +44,7 @@ public class DashboardController {
             info.put("Gadget", DashboardGadgets.length());
 
             int sonarGadget = 0;
+            int reviewGadget = 0;
 
             for (int i = 0; i < DashboardGadgets.length(); i++) {
                 JSONObject gadget = DashboardGadgets.getJSONObject(i);
@@ -51,9 +52,13 @@ public class DashboardController {
                 if (type.equals("AMS SONAR Statistics Gadget")) {
                     sonarGadget++;
                 }
+                if (type.equals("AMS Overdue Reviews Report Gadget")) {
+                    reviewGadget++;
+                }
 
                 //todo
                 info.put("SonarGadget", sonarGadget);
+                info.put("ReviewGadget", reviewGadget);
             }
 
         } catch (Exception e) {

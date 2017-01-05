@@ -29,8 +29,6 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/getPeriodList").with(ApplicationController.class, "getPeriodList");
 
         router.POST().route("/getCruProjectList").with(OverdueReviewReportController.class, "getCruProjectList");
-        router.POST().route("/getCruUserList").with(OverdueReviewReportController.class, "getCruUserList");
-        router.GET().route("/getReview").with(OverdueReviewReportController.class, "getReview");
 
 
         router.GET().route("/release").with(ConfigurationController.class, "release");

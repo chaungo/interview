@@ -22,7 +22,10 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static util.Constant.*;
 
@@ -101,7 +104,7 @@ public class MyUtill {
                     .data("rememberme", "yes").method(Method.POST).timeout(CONNECTION_TIMEOUT).execute();
 
             Map<String, String> CruCookies = cruRespond.cookies();
-            System.out.println(cookies.toString());
+            ////System.out.println(cookies.toString());
 
             session.put("crucookies", CruCookies.toString());
 
@@ -266,10 +269,31 @@ public class MyUtill {
     }
 
 
-    public static JSONObject getReviewfromServer(Session session, String ia, String project) throws Exception {
+    public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
+        JSONObject result = new JSONObject();
+        result.put("id", GadgetId);
+        result.put("project", data.getString("Project"));
+        MongoClient mongoClient = new MongoClient();
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
+
+        if (isCacheExpired(document, 3)) {
+            JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
+            result.put("ReviewDataArray", ReviewDataArray);
+
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+        }else {
+            result = new JSONObject(document.getString("cache"));
+        }
+
+        return result;
+
+    }
+
+    public static JSONArray getReviewfromServer(Session session, String project) throws Exception {
         JSONArray reviewDataArray = new JSONArray();
         String rs = "";
-        BufferedReader br = getHttpURLConnection(String.format(LINK_GET_ODREVIEW_REPORTS, ia, project), session);
+        BufferedReader br = getHttpURLConnection(String.format(LINK_GET_ODREVIEW_REPORTS, project), session);
         String inputLine;
         while ((inputLine = br.readLine()) != null) {
             rs = rs + inputLine;
@@ -277,21 +301,52 @@ public class MyUtill {
         br.close();
 
 
-        JSONArray array = XML.toJSONObject(rs).getJSONArray("detailedReviewData");
+        JSONArray array = XML.toJSONObject(rs).getJSONObject("detailedReviews").getJSONArray("detailedReviewData");
 
+
+        ArrayList<String> nameList = new ArrayList<>();
 
         for (int i = 0; i < array.length(); i++) {
+            String name = array.getJSONObject(i).getJSONObject("creator").getString("displayName");
+            if (!nameList.contains(name)) {
+                nameList.add(name);
+            }
+        }
+
+        for (int i = 0; i < nameList.size(); i++) {
+            JSONObject reviewData = new JSONObject();
             int lessThan5 = 0;
             int moreThan5Less10 = 0;
             int moreThan10 = 0;
+            for (int j = 0; j < array.length(); j++) {
+                JSONObject detailedReviewData = array.getJSONObject(j);
+                String name = detailedReviewData.getJSONObject("creator").getString("displayName");
+                if (nameList.get(i).equals(name)) {
+                    String createDate = detailedReviewData.getString("createDate").substring(0, 10);
+                    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = formatter.parse(createDate);
+                    Date currentDate = new Date();
+                    Long dif = currentDate.getTime() - date.getTime();
+                    long days = TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
 
+                    if (days > 10) {
+                        moreThan10++;
+                    } else {
+                        if (days < 5) {
+                            lessThan5++;
+                        } else {
+                            moreThan5Less10++;
+                        }
+                    }
+                }
+            }
 
-
-
-
-
-
-
+            reviewData.put("creator", nameList.get(i));
+            reviewData.put("col1", lessThan5);
+            reviewData.put("col2", moreThan5Less10);
+            reviewData.put("col3", moreThan10);
+            ////System.out.println(reviewData.toString());
+            reviewDataArray.put(reviewData);
         }
 
 
@@ -302,7 +357,7 @@ public class MyUtill {
 //        reviewData.put("column3","");
 
 
-        return XML.toJSONObject(rs);
+        return reviewDataArray;
     }
 
 
@@ -410,7 +465,7 @@ public class MyUtill {
     }
 
     public static void deleteDashboardGadgetfromDB(String gadgetId) {
-        System.out.println(gadgetId);
+        ////System.out.println(gadgetId);
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
         FindIterable<org.bson.Document> gadgetIterable = gadgetCollection.find(new org.bson.Document("_id", new ObjectId(gadgetId)));
@@ -470,11 +525,6 @@ public class MyUtill {
         return gadgets;
     }
 
-
-    public static void getOverdueReviewsReport(String project, String iaName, Session session) {
-        String connectionResult = getJsoupConnectionRespond(String.format(Constant.LINK_GET_ODREVIEW_REPORTS, iaName, project), session).body().text();
-
-    }
 
 
     public static JSONArray getMetricsFromDB() throws Exception {
@@ -640,7 +690,7 @@ public class MyUtill {
                     DashboardController.logger.error("cannot get statistic", e);
                 }
             }
-            //System.out.println("RsIAArray " + RsIAArray);
+            //////System.out.println("RsIAArray " + RsIAArray);
             result.put("RsIAArray", RsIAArray);
 
             collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
@@ -701,7 +751,7 @@ public class MyUtill {
             }
 
 
-            //System.out.println("RsComponentArray " + RsComponentArray);
+            //////System.out.println("RsComponentArray " + RsComponentArray);
             IA.put("Components", RsComponentArray);
             rs.put(IA);
         }

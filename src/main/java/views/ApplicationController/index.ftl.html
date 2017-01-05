@@ -48,14 +48,14 @@
                 <div id="{{item.id}}" ng-repeat="item in sonarStList" layout-wrap>
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <b>AMS SONAR Statistics</b>
+                            <b>AMS SONAR Statistics {{item.release}}</b>
                             <div flex></div>
                             <b ng-if="currentDashboard.owner == name" style="color: yellow;margin-right: 10px"
                                ng-click="editSonarGagdget(item)">Edit</b>
                             <b ng-if="currentDashboard.owner == name" style="color: orange;margin-right: 10px"
-                               ng-click="deleteSonarGagdget(item)">Delete</b>
+                               ng-click="deleteGagdget(item)">Delete</b>
                             <b
-                               ng-click="clearCacheGagdget(item)">Clear cache</b>
+                                    ng-click="clearCacheGagdget(item)">Clear cache</b>
                         </div>
                         <table class="responstable">
                             <tr>
@@ -100,6 +100,34 @@
                                 </td>
                             </tr>
                             </tbody>
+                        </table>
+                    </md-card>
+                </div>
+
+                <div id="{{re.id}}" ng-repeat="re in reviewList" layout-wrap>
+                    <md-card class="gadget" md-whiteframe="8">
+                        <div class="gadgetHeader" layout="row" layout-align="start center">
+                            <b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
+                            <div flex></div>
+                            <b ng-if="currentDashboard.owner == name" style="color: orange;margin-right: 10px"
+                               ng-click="deleteGagdget(re)">Delete</b>
+                            <b ng-click="clearCacheGagdget(re)">Clear cache</b>
+                        </div>
+                        <table class="responstable" style="width: 100%">
+                            <tr>
+                                <th>Index</th>
+                                <th>IA</th>
+                                <th>X < 5</th>
+                                <th>5 < X < 10</th>
+                                <th>X > 10</th>
+                            </tr>
+                            <tr ng-repeat="y in re.ReviewDataArray">
+                                <td>{{$index + 1}}</td>
+                                <td style="text-align: left;">{{ y.creator }}</td>
+                                <td>{{ y.col1 }}</td>
+                                <td>{{ y.col2 }}</td>
+                                <td>{{ y.col3 }}</td>
+                            </tr>
                         </table>
                     </md-card>
                 </div>
