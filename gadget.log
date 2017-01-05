@@ -1,0 +1,22 @@
+2017-01-05 23:39:57,920 INFO [main] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:40:17,606 INFO [qtp1186254299-15] [DashboardController.java:131] DASHBOARDS [{"owner":"hcongle","name":"abc","privacy":{"share":["Everyone"],"status":"public"},"id":"586e67bb18e18285bc408671"}]
+2017-01-05 23:41:35,541 INFO [qtp1186254299-22] [DashboardController.java:131] DASHBOARDS [{"owner":"hcongle","name":"abc","privacy":{"share":["Everyone"],"status":"public"},"id":"586e67bb18e18285bc408671"}]
+2017-01-05 23:42:06,556 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:43:31,967 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:43:40,096 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:44:18,416 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:46:35,930 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:46:42,452 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:47:09,635 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:50:46,795 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:51:17,666 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:52:16,869 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:52:47,161 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:52:58,461 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:54:02,402 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:54:25,465 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:54:34,236 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:55:33,908 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:55:52,711 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:59:11,230 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
+2017-01-05 23:59:49,406 INFO [Scanner-0] [SchedulerManagement.java:49] started clear cache job
