@@ -1,0 +1,93 @@
+<#macro myLayout title="Layout example">
+    <!DOCTYPE html>
+    <script type="text/javascript" src="/assets/js/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-material.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-aria.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-route.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-messages.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/assets/js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/css/angular-material.css">
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+
+    <html lang="en">
+    <head>
+        <title>${title}</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width" id="viewport"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    </head>
+
+
+    <body ng-app="App" id="body">
+
+    <div style="background-color: #205081; color: white">
+        <div ng-controller="HeaderCtrl" layout="row" layout-wrap layout-align="start center">
+
+            <div>
+                <h2 style="margin-left: 10px; margin-right: 10px" layout-fill>{{pageName}}</h2>
+            </div>
+            <!--<div flex></div>-->
+
+            <#if (session.username)??>
+                <md-button ng-if="currentDashboard.owner == name" style="margin-right: 10px;margin-left: 0"
+                           class="md-icon-button"
+                           ng-click="showAddWidgetDialog($event)">
+                    <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
+                    <md-tooltip md-direction="bottom">
+                        Add new gadget
+                    </md-tooltip>
+                </md-button>
+
+                <div ng-if="dashboardGadgetInfo.Gadget==0">
+                    No gadget found
+                </div>
+                <div layout="row" ng-if="hasInfo">Loading {{dashboardGadgetInfo.Gadget}} gadget
+                    <div ng-if="dashboardGadgetInfo.Gadget>1">s</div>
+                </div>
+                <md-progress-circular ng-if="getting" style="margin-right: 10px;margin-left: 10px;"
+                                      md-mode="indeterminate"
+                                      class="md-warn" md-diameter="20"></md-progress-circular>
+                <div flex></div>
+                <div>Hi {{userfullname}}</div>
+
+
+                <md-button href="http://tiger.in.alcatel-lucent.com:8060/user/{{name}}"
+                           class="md-icon-button">
+                    <md-icon style="color: white;" class="material-icons">account_circle</md-icon>
+                </md-button>
+                <#if (session.role)??>
+                    <md-button ng-href="/" class="md-icon-button">
+                        <md-icon style="color: white;" class="material-icons">home</md-icon>
+                    </md-button>
+                    <md-button ng-href="/release" class="md-icon-button">
+                        <md-icon style="color: white;" class="material-icons">settings</md-icon>
+                        <md-tooltip md-direction="bottom">
+                            Go to release page
+                        </md-tooltip>
+                    </md-button>
+                </#if>
+                <md-button ng-href="/logout" class="md-icon-button">
+                    <md-icon style="color: white;" class="material-icons">directions_run</md-icon>
+                    <md-tooltip md-direction="bottom">
+                        Logout
+                    </md-tooltip>
+                </md-button>
+
+            </#if>
+        </div>
+    </div>
+
+
+    <#nested/>
+
+
+    </body>
+    </html>
+</#macro>

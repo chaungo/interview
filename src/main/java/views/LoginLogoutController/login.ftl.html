@@ -1,0 +1,104 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> <@layout.myLayout "Login">
+
+    <!--<div class="alert alert-info">-->
+    <!--<b>Tip</b> Use your CSL/CIP account to Login.-->
+    <!--</div>-->
+
+    <div ng-controller="LoginCtrl" layout="column">
+
+        <div flex layout="row" layout-align="center center">
+            <div flex="45">
+                <div layout-padding>
+                    <md-card md-whiteframe="10">
+                        <md-card-title layout="column" layout-align="start center">
+                            <h3>Welcome to Dashboard Management</h3>
+                            <div layout-padding
+                                 layout="column" layout-align="center center">
+                                <span style="color:white;background: red;border-radius: 5px;" ng-hide="!wronginfo"
+                                      layout-padding>The username or password is incorrect - please try again.</span>
+                                <span style="color:white;background: red;border-radius: 5px;"
+                                      ng-hide="!connectionfailed" layout-padding>Could not connect to Jira</span>
+                            </div>
+                        </md-card-title>
+                        <md-card-content layout="column" layout-align="center center">
+                            <form method="post" action="/login" name="loginForm" flex="80" layout="column"
+                                  layout-align="start stretch">
+                                <div class="md-block" layout="row" layout-align="start center">
+                                    <label layout-padding>Username</label>
+                                    <input ng-model="username" required name="username">
+                                </div>
+
+                                <div class="md-block" layout="row" layout-align="start center">
+                                    <label layout-padding>Password</label>
+                                    <input type="password" required name="password" ng-model="password">
+                                </div>
+                                <div layout-margin class="md-block" layout="row" layout-align="start center">
+                                    <input style="margin-top:0px" type="checkbox" id="rememberMe" name="rememberMe"
+                                           value="true">
+                                    <p>Remember my login on this computer</p>
+
+                                </div>
+                                <md-card-actions layout-fill layout="row" layout-xs="row"
+                                                 layout-align="space-between center">
+                                    <md-button class="md-raised md-primary" type="submit">Login</md-button>
+
+                                    <a accesskey="`" class="aui-button aui-button-link cancel"
+                                       href="http://tiger.in.alcatel-lucent.com:8091/secure/ForgotLoginDetails.jspa"
+                                       id="login-form-cancel" title="Press Alt+` to cancel">Can't access your
+                                        account?</a>
+
+                                </md-card-actions>
+                            </form>
+                        </md-card-content>
+                    </md-card>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--<div class="container">-->
+
+    <!--&lt;!&ndash; Example row of columns &ndash;&gt;-->
+    <!--<div class="row">-->
+    <!--<div class="col-lg-8">-->
+
+    <!--<form action="/login" method="post" class="form-horizontal" role="form">-->
+
+    <!--<div class="form-group">-->
+    <!--<label for="username" class="col-lg-4 control-label">Username</label>-->
+    <!--<div class="col-lg-8">-->
+    <!--<input type="text" id="username" class="form-control" value="${(flash.username)!""}"-->
+    <!--name="username" id="username">-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="form-group">-->
+    <!--<label for="password" class="col-lg-4 control-label">Password</label>-->
+    <!--<div class="col-lg-8">-->
+    <!--<input type="password" class="form-control" name="password" id="password"-->
+    <!--value="${(flash.password)!""}">-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<div class="form-group">-->
+    <!--<div class="col-lg-8 pull-right">-->
+    <!--<div class="pull-right">-->
+    <!--<input name="rememberMe" type="checkbox" value="true"-->
+    <!--<#if flash.rememberMe?? && flash.rememberMe == "true">checked</#if>-->
+    <!--&gt;-->
+    <!--<label for="rememberMe"> Remember me </label>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <!--<button type="submit" class="btn btn-success pull-right">Login</button>-->
+    <!--</form>-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+
+</@layout.myLayout>

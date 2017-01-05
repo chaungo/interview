@@ -1,0 +1,78 @@
+<md-dialog ng-controller="AddNewOverdueReviewReportGadgetCtrl" flex="50">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add new Overdue Reviews Report gadget</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <div layout-fill layout="row" layout-align="center center">
+
+        <md-card layout-fill>
+            <div ng-hide="!choseProjectPage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose project</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <md-input-container style="width: 100%">
+                        <label>Search</label>
+                        <input ng-model="searchText">
+                    </md-input-container>
+                    <md-radio-group ng-model="projectId">
+                        <md-content style="height: 300px">
+                            <md-list>
+                                <md-list-item ng-click="null" ng-repeat="project in CruProjectList | filter:searchText">
+                                    <md-radio-button layout-fill value="{{project.id}}">
+                                        {{project.name}}
+                                    </md-radio-button>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </md-radio-group>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="choseProjectNext()" class="md-raised md-primary">Next</md-button>
+                    </md-card-actions>
+                </md-card-content>
+            </div>
+
+
+            <div ng-hide="!choseUserPage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose Implementation Authority</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div style="margin: 20px">
+                        <md-checkbox aria-label="Select All"
+                                     ng-checked="isIAChecked()"
+                                     md-indeterminate="isIAIndeterminate()"
+                                     ng-click="toggleAllIA()">
+                            <span ng-if="isIAChecked()">Un-</span>Select All
+                        </md-checkbox>
+                        <md-content style="height: 450px"
+                        ">
+                        <div style="padding-left: 10px" ng-repeat="item in IAItemNames">
+                            <md-checkbox ng-checked="existsIA(item)" ng-click="toggleIA(item)">
+                                {{ item }}
+                            </md-checkbox>
+                        </div>
+                        </md-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button ng-click="choseIABack()" class="md-raised">Back</md-button>
+                            <md-button ng-click="choseIANext()" class="md-raised md-primary">Next</md-button>
+                        </md-card-actions>
+                    </div>
+                </md-card-content>
+            </div>
+
+            <md-progress-linear ng-hide="!Loading"></md-progress-linear>
+        </md-card>
+    </div>
+</md-dialog>

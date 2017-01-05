@@ -1,0 +1,116 @@
+/* fallback */
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(/assets/fonts/ggico.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+    background: #E0E0E0;
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+
+}
+
+.optionSubHeader {
+    color: black;
+    background: #E0E0E0;
+    width: 100%;
+    padding: 5px
+}
+
+::-webkit-scrollbar{
+    width: 0;
+}
+
+
+#gadgetContainer {
+    overflow: scroll;
+    height: 100%;
+    width: 100%;
+}
+
+.gadget {
+    border-radius: 3px;
+}
+
+md-icon {
+    color: white;
+}
+
+.gadgetHeader {
+    padding-left: 5px;
+    background: #607D8B;
+    color: white;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.gadgetHeader {
+    height: 25px;
+}
+
+.gadgetHeader > b {
+    padding-right: 5px;
+}
+
+.nav > li > a:hover {
+    background-color: #3b73af;
+}
+
+.nav > li > a {
+    color: white;
+}
+
+.dropdown > ul {
+    background-color: #205081;
+    color: white;
+}
+
+.dropdown > ul > li > a {
+    color: white;
+}
+
+md-content {
+    background: inherit;
+}
+
+.responstable tr:nth-child(odd) {
+    background: #EEEEEE;
+}
+
+.responstable th {
+    background: #607D8B;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 1px;
+    border-right: white groove 1px;
+
+}
+
+.responstable td {
+    text-align: center;
+    padding: 1px;
+}
+
+

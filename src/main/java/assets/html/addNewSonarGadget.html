@@ -1,0 +1,131 @@
+<md-dialog ng-controller="AddNewSonarGadgetCtrl" flex="50">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add new Sonar Statistic widget</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <div layout-fill layout="row" layout-align="center center">
+
+        <md-card layout-fill>
+            <div ng-hide="!choseReleasePage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose release</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <md-radio-group ng-model="releaseName">
+                        <md-content>
+                            <md-list>
+                                <md-list-item ng-click="null" ng-repeat="release in ReleaseList">
+                                    <md-radio-button layout-fill value="{{release.name}}">
+                                        {{release.name}}
+                                    </md-radio-button>
+                                </md-list-item>
+                            </md-list>
+                        </md-content>
+                    </md-radio-group>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="choseReleaseNext()" class="md-raised md-primary">Next</md-button>
+                    </md-card-actions>
+                </md-card-content>
+            </div>
+
+
+            <div ng-hide="!choseIAPage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose Implementation Authority</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div style="margin: 20px">
+                        <md-checkbox aria-label="Select All"
+                                     ng-checked="isIAChecked()"
+                                     md-indeterminate="isIAIndeterminate()"
+                                     ng-click="toggleAllIA()">
+                            <span ng-if="isIAChecked()">Un-</span>Select All
+                        </md-checkbox>
+                        <md-content style="height: 450px"
+                        ">
+                        <div style="padding-left: 10px" ng-repeat="item in IAItemNames">
+                            <md-checkbox ng-checked="existsIA(item)" ng-click="toggleIA(item)">
+                                {{ item }}
+                            </md-checkbox>
+                        </div>
+                        </md-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button ng-click="choseIABack()" class="md-raised">Back</md-button>
+                            <md-button ng-click="choseIANext()" class="md-raised md-primary">Next</md-button>
+                        </md-card-actions>
+                    </div>
+                </md-card-content>
+
+            </div>
+
+            <div ng-hide="!choseMetricPage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose Metrics</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+
+                    <div style="margin: 20px">
+                        <md-checkbox aria-label="Select All"
+                                     ng-checked="isMetricChecked()"
+                                     md-indeterminate="isMetricIndeterminate()"
+                                     ng-click="toggleAllMetric()">
+                            <span ng-if="isMetricChecked()">Un-</span>Select All
+                        </md-checkbox>
+                        <div style="padding-left: 10px" ng-repeat="item in itemsNameMetric">
+                            <md-checkbox ng-checked="existsMetric(item)" ng-click="toggleMetric(item)">
+                                {{ item }}
+                            </md-checkbox>
+                        </div>
+
+
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button ng-click="choseMetricBack()" class="md-raised">Back</md-button>
+                            <md-button ng-click="choseMetricNext()" class="md-raised md-primary">Next
+                            </md-button>
+                        </md-card-actions>
+                    </div>
+                </md-card-content>
+
+            </div>
+
+            <div ng-hide="!chosePeriodPage">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Choose Analysis Period for New Coverage</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Period</label>
+                        <md-select ng-model="period">
+                            <md-option ng-repeat="item in periodList" value="{{item.key}}">
+                                {{item.value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ng-click="chosePeriodNext()" class="md-raised md-primary">Next</md-button>
+                    </md-card-actions>
+                </md-card-content>
+
+
+            </div>
+            <md-progress-linear ng-hide="!IALoading"></md-progress-linear>
+        </md-card>
+    </div>
+</md-dialog>

@@ -1,0 +1,110 @@
+<#import "../layout/defaultLayout.ftl.html" as layout>
+    <@layout.myLayout "Homepage">
+    <div layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
+
+        <div style="height: 100%;width: 100%;" layout="row" layout-align="start start">
+            <div layout-fill style="background-color: white" flex="20">
+                <md-content>
+                    <div ng-init="dashboards" layout="column" layout-align="start stretch">
+                        <md-button ng-click="showAddNewDialog($event)" class="md-primary">
+                            Create new dashboard
+                        </md-button>
+                        <md-list layout-fill>
+                            <md-list-item layout="row" class="md-2-line" ng-repeat="item in dashboardNameList"
+                                          ng-click="dashboardListItemClicked(item)">
+                                <div layout="row">
+                                    <md-icon ng-if="item.privacy.status == 'public'" style="color: #8c8c8c;"
+                                             class="material-icons">public
+                                    </md-icon>
+                                    <md-icon ng-if="item.privacy.status == 'other'" style="color: #8c8c8c;"
+                                             class="material-icons">people_outline
+                                    </md-icon>
+                                    <md-icon ng-if="item.privacy.status == 'private'" style="color: #8c8c8c;"
+                                             class="material-icons">lock_outline
+                                    </md-icon>
+                                </div>
+
+                                <div style="margin-left: 10px;margin-right: 10px" flex class="md-list-item-text">
+                                    <h3 style="color: #205081">{{item.name}}</h3>
+                                    <p>{{item.owner}}</p>
+                                </div>
+
+                                <md-button ng-if="item.owner == name" ng-click="dashboardOptionClicked(item,$event)"
+                                           class="md-icon-button">
+                                    <md-icon style="color: grey;" class="material-icons">settings</md-icon>
+                                    <md-tooltip md-direction="bottom">
+                                        Option
+                                    </md-tooltip>
+                                </md-button>
+
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </md-content>
+            </div>
+
+            <div id="gadgetContainer" layout="column" layout-align="start center">
+
+                <div id="{{item.id}}" ng-repeat="item in sonarStList" layout-wrap>
+                    <md-card class="gadget" md-whiteframe="8">
+                        <div class="gadgetHeader" layout="row" layout-align="start center">
+                            <b>AMS SONAR Statistics</b>
+                            <div flex></div>
+                            <b ng-if="currentDashboard.owner == name" style="color: yellow;margin-right: 10px"
+                               ng-click="editSonarGagdget(item)">Edit</b>
+                            <b ng-if="currentDashboard.owner == name" style="color: orange;margin-right: 10px"
+                               ng-click="deleteSonarGagdget(item)">Delete</b>
+                            <b
+                               ng-click="clearCacheGagdget(item)">Clear cache</b>
+                        </div>
+                        <table class="responstable">
+                            <tr>
+                                <th>Index</th>
+                                <th>Component</th>
+                                <th ng-repeat="metric in item.metricList">{{metric.name}}</th>
+                            </tr>
+                            <tbody class="responstable" ng-repeat="x in item.RsIAArray">
+                            <tr>
+                                <td style="text-align: left" colspan="{{item.metricList.length+2}}">
+                                    <b>{{x.name}}</b>
+                                    <span ng-if="x.Components.length == 0"><b> | No Component</b></span></td>
+                            </tr>
+                            <tr ng-repeat="y in x.Components">
+                                <td>{{$index + 1}}</td>
+                                <td style="text-align: left;">{{ y.componentName }}</td>
+                                <td ng-if="y.metricVal.coverage"
+                                    ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">{{
+                                    y.metricVal.coverage
+                                    }}
+                                    <span ng-if="check(y.metricVal.coverage)">%</span>
+                                </td>
+                                <td ng-if="y.metricVal.critical_violations"
+                                    ng-style="y.metricVal.critical_violations > 0 && {'color':'red'}">{{
+                                    y.metricVal.critical_violations }}
+                                </td>
+                                <td ng-if="y.metricVal.new_coverage"
+                                    ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
+                                    {{y.metricVal.new_coverage}}
+                                    <span ng-if="check(y.metricVal.new_coverage)">%</span>
+                                </td>
+                                <td ng-if="y.metricVal.test_errors"
+                                    ng-style="y.metricVal.test_errors > 0 && {'color':'red'}">{{
+                                    y.metricVal.test_errors}}
+                                </td>
+                                <td ng-if="y.metricVal.test_failures"
+                                    ng-style="y.metricVal.test_failures > 0 && {'color':'red'}">{{
+                                    y.metricVal.test_failures}}
+                                </td>
+                                <td ng-if="y.metricVal.test_execution_time">{{ y.metricVal.test_execution_time}}
+                                    <span ng-if="check(y.metricVal.test_execution_time)"> s</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</@layout.myLayout>

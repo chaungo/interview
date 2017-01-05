@@ -1,0 +1,87 @@
+<md-dialog flex="50" ng-controller="dasboardOptionCtrl">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Dashboard Option</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+            <md-button ng-click="saveOption()" type="submit" class="md-raised">save</md-button>
+        </div>
+    </md-toolbar>
+    <form>
+        <md-dialog-content layout="column">
+            <div class="optionSubHeader">
+                <b>Dashboard name</b>
+            </div>
+
+            <md-input-container>
+                <input required ng-model="dashboardName">
+            </md-input-container>
+
+            <div class="optionSubHeader">
+                <b>Privacy</b>
+            </div>
+
+            <md-chips style="max-height: 150px;overflow: scroll;" ng-model="share"></md-chips>
+            <div layout="row" ng-init="showmore=false" layout-align="center center">
+                <md-button class="md-raised md-primary" ng-click="everyoneClicked()">
+                    Public
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="privateClicked()">
+                    Private
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="allGroupClicked()">
+                    All group
+                </md-button>
+                <md-button class="md-raised md-primary" ng-click="allProjectClicked()">
+                    All project
+                </md-button>
+                <md-button class="md-primary" ng-click="showmore=!showmore">
+                    More...
+                </md-button>
+            </div>
+            <div layout="row" ng-if="showmore">
+                <div flex style="margin: 5px;">
+                    <div class="optionSubHeader">
+                        <b>Group</b>
+                    </div>
+
+                    <md-content style="height: 300px;background-color: grey">
+                        <md-button class="md-raised" ng-click="groupItemClicked(i)" ng-repeat="i in groups">
+                            {{i}}
+                        </md-button>
+                    </md-content>
+                </div>
+                <div flex style="margin: 5px;">
+                    <div class="optionSubHeader">
+                        <b>Project</b>
+                    </div>
+                    <md-content style="height: 300px;background-color: grey"
+                    ">
+                    <md-list>
+                        <md-button class="md-raised" ng-click="projectItemClicked(a)"
+                                   ng-repeat="a in projects">
+                            {{a}}
+                        </md-button>
+                    </md-list>
+                    </md-content>
+                </div>
+            </div>
+
+            <div class="optionSubHeader">
+                <b>Delete dashboard</b>
+            </div>
+
+            <md-button class="md-primary" ng-click="confirm = !confirm" layout="row"
+                       layout-align="center center">
+                <div ng-if="confirm">No! I don't want to&nbsp</div>
+                <div>Delete this dashboard</div>
+            </md-button>
+            <md-button ng-if="confirm" class="md-raised md-warn" ng-click="deleteDashboard()">
+                Click here to delete this dashboard
+            </md-button>
+        </md-dialog-content>
+
+    </form>
+</md-dialog>

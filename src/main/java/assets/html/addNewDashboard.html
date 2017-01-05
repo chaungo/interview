@@ -1,0 +1,23 @@
+<md-dialog flex="40">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add new dashboard</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form action="/dashboard/new" method="post" style="margin: 10px">
+        <md-dialog-content>
+            <md-input-container style="width: 100%; margin: 0;padding: 0">
+                <label>Dashboard Name</label>
+                <input required ng-model="name" name="name">
+            </md-input-container>
+
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised md-primary" type="submit">Create</md-button>
+            </md-dialog-actions>
+        </md-dialog-content>
+    </form>
+</md-dialog>

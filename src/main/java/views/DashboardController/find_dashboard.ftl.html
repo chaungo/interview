@@ -1,0 +1,18 @@
+<#import "../layout/defaultLayout.ftl.html" as layout> <@layout.myLayout
+    "Dashboard | Find">
+
+    <h1>Find Dashboard</h1>
+
+    <form action="/dashboard/find" method="post" class="form-horizontal"
+          role="form">
+
+        <div class="md-padding" ng-cloak>
+            <md-input-container>
+                <label>Dashboard Name</label>
+                <input required name="name">
+            </md-input-container>
+        </div>
+        <button type="submit" class="btn btn-success">Find</button>
+    </form>
+
+</@layout.myLayout>
