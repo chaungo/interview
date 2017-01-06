@@ -35,6 +35,8 @@ import models.gadget.EpicVsTestExecution;
 import models.gadget.Gadget;
 import models.gadget.SONARGadget;
 import models.gadget.StoryVsTestExecution;
+import models.gadget.Gadget.Type;
+import models.gadget.OverdueReviewsGadget;
 import models.main.GadgetData;
 import models.main.JQLSearchResult;
 import models.main.Release;
@@ -201,37 +203,43 @@ public class GadgetUtility extends DatabaseUtility {
         while (dbCursor.hasNext()) {
             Document document = dbCursor.next();
             if (document != null) {
+                Type type = Gadget.Type.fromString((String) document.get(TYPE));
                 if (Gadget.Type.ASSIGNEE_TEST_EXECUTION
-                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                        .equals(type)) {
                     AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), AssigneeVsTestExecution.class);
                     assigneeGadget.setId(getObjectId(document));
                     gadgets.add(assigneeGadget);
                 } else if (Gadget.Type.EPIC_US_TEST_EXECUTION
-                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                        .equals(type)) {
                     EpicVsTestExecution epicGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), EpicVsTestExecution.class);
                     epicGadget.setId(getObjectId(document));
                     gadgets.add(epicGadget);
                 } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION
-                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                        .equals(type)) {
                     CycleVsTestExecution cyclGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), CycleVsTestExecution.class);
                     cyclGadget.setId(getObjectId(document));
                     gadgets.add(cyclGadget);
                 } else if (Gadget.Type.STORY_TEST_EXECUTION
-                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                        .equals(type)) {
                     StoryVsTestExecution storyGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), StoryVsTestExecution.class);
                     storyGadget.setId(getObjectId(document));
                     gadgets.add(storyGadget);
                 } else if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET
-                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                        .equals(type)) {
                     SONARGadget sonarGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), SONARGadget.class);
                     sonarGadget.setId(getObjectId(document));
                     gadgets.add(sonarGadget);
-                } else {
+                } else if(Type.AMS_OVERDUE_REVIEWS.equals(type)){
+                    OverdueReviewsGadget overGadget = JSONUtil.getInstance()
+                            .convertJSONtoObject(document.toJson(), OverdueReviewsGadget.class);
+                    overGadget.setId(getObjectId(document));
+                    gadgets.add(overGadget);
+                }else {
                     logger.fastDebug("type %s is not available", document.get(TYPE));
                 }
             }

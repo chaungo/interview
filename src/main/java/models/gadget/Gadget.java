@@ -23,7 +23,7 @@ public interface Gadget {
     public String getProjectName();
     
     public enum Type {
-        ASSIGNEE_TEST_EXECUTION, TEST_CYCLE_TEST_EXECUTION, EPIC_US_TEST_EXECUTION, STORY_TEST_EXECUTION, AMS_SONAR_STATISTICS_GADGET;
+        ASSIGNEE_TEST_EXECUTION, TEST_CYCLE_TEST_EXECUTION, EPIC_US_TEST_EXECUTION, STORY_TEST_EXECUTION, AMS_SONAR_STATISTICS_GADGET, AMS_OVERDUE_REVIEWS;
         @JsonCreator
         public static Type fromString(String str){
             for(Type type : values()){

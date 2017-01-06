@@ -5,6 +5,7 @@ import filter.SecureFilter;
 import models.gadget.Gadget;
 import models.gadget.SONARGadget;
 import models.gadget.Gadget.Type;
+import models.gadget.OverdueReviewsGadget;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -75,7 +76,7 @@ public class GadgetController {
         JSONArray overdueReviewGadget = new JSONArray();
         JSONObject result = new JSONObject();
          List<Gadget> dashboardGadgets;
-         List<Gadget> finalGadget = new ArrayList<>();
+         List<Gadget> greenHopperGadget = new ArrayList<>();
         try {
             dashboardGadgets = getDashboardGadgetbyDashboardId(dashboardId);
             if(dashboardGadgets!=null){
@@ -83,15 +84,17 @@ public class GadgetController {
                 Type type = gadget.getType();
                 if(Type.AMS_SONAR_STATISTICS_GADGET.equals(type)){
                     sonarStatisticsGadget.put(getSonarStatistic(session, new JSONObject(((SONARGadget)gadget).getData()),  ((SONARGadget)gadget).getId()));
+                }else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+                    overdueReviewGadget.put(getReview(session, new JSONObject(((OverdueReviewsGadget)gadget).getData()), ((OverdueReviewsGadget)gadget).getId()));
                 }else{
-                    finalGadget.add(gadget);
+                    greenHopperGadget.add(gadget);
                 }
                 
             }
             }
             result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
             result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
-            result.put("GreenHopperGadget", finalGadget);
+            result.put("GreenHopperGadget", greenHopperGadget);
         } catch (Exception e) {
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
