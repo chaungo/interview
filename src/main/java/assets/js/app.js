@@ -951,3 +951,21 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
 
 });
 
+app.controller('EpicController', function($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource){
+	$scope.init = function(item){
+		
+	}
+	
+	$scope.onProjectReleaseProductChanged = function(item){
+		
+	}
+	
+	$scope.onCheckAllEpic = function(item){
+		
+	}
+	
+	$scope.onUpdate = function(item){
+		
+	}
+});
+
