@@ -99,7 +99,15 @@ public class MyUtill {
 
         Map<String, String> cookies = respond.cookies();
         session.put("cookies", cookies.toString());
-
+        //login to greenhopper
+        Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password);
+        if(cookiesMap != null && !cookiesMap.isEmpty()){
+            SessionInfo sessionInfo = new SessionInfo();
+            sessionInfo.setCookies(cookiesMap);
+            String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
+            session.put(Constant.API_SESSION_INFO, sessionInfoStr);
+        }
+        
         if (respond.header("X-AUSERNAME").equals(username)) {
             session.put("username", username);
 
@@ -110,15 +118,6 @@ public class MyUtill {
             ////System.out.println(cookies.toString());
 
             session.put("crucookies", CruCookies.toString());
-            
-            //login to greenhopper
-            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password);
-            if(cookiesMap != null && !cookiesMap.isEmpty()){
-                SessionInfo sessionInfo = new SessionInfo();
-                sessionInfo.setCookies(cookiesMap);
-                String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
-                session.put(Constant.API_SESSION_INFO, sessionInfoStr);
-            }
             
             return true;
         }
