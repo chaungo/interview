@@ -16,16 +16,12 @@ public class EpicVsTestExecution extends GadgetAPI {
     private String projectName;
     private Set<String> epic;
     
-    public Set<String> getProducts() {
-        return products;
+    public Set<String> getEpic() {
+        return epic;
     }
 
     public void setProducts(Set<String> products) {
         this.products = products;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {
@@ -40,10 +36,6 @@ public class EpicVsTestExecution extends GadgetAPI {
         this.type = type;
     }
 
-    public String getUser() {
-        return user;
-    }
-
     public void setUser(String user) {
         this.user = user;
     }
@@ -56,26 +48,14 @@ public class EpicVsTestExecution extends GadgetAPI {
         this.projectName = projectName;
     }
 
-    public Release getRelease() {
-        return release;
-    }
-
     public void setRelease(Release release) {
         this.release = release;
-    }
-
-    public List<String> getMetrics() {
-        return metrics;
     }
 
     public void setMetrics(List<String> metrics) {
         this.metrics = metrics;
     }
     
-    public Set<String> getEpic() {
-        return epic;
-    }
-
     public void setEpic(Set<String> epic) {
         this.epic = epic;
     }
@@ -88,10 +68,6 @@ public class EpicVsTestExecution extends GadgetAPI {
         this.selectAll = selectAll;
     }
 
-    @Override
-    public String getDashboardId() {
-        return dashboardId;
-    }
     public void setDashboardId(String id) {
         dashboardId = id;
     }

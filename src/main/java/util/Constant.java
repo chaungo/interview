@@ -87,6 +87,7 @@ public class Constant {
     public static final String DATABASE_HOST = "DATABASE_HOST";
     public static final String DATABASE_PORT = "DATABASE_PORT";
     public static final String DASHBOAR_ID = "dashboardId";
+    public static final String DASHBOAR_GADGET_COLECCTION = "DashboardGadget";
     //internal conf
     public static final String CONCURRENT_THREAD = "internal.conf.concurrent_thread";
     public static final String CLEAN_CACHE_TIME = "internal.conf.clearcache.time";

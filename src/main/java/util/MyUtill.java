@@ -7,8 +7,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import controllers.DashboardController;
 import models.SessionInfo;
+import models.gadget.Gadget;
+import models.gadget.Gadget.Type;
 import ninja.session.Session;
 import service.HTTPClientUtil;
+import util.gadget.GadgetUtility;
 
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -500,7 +503,7 @@ public class MyUtill {
     }
 
 
-    public static JSONArray getDashboardGadgetbyDashboardId(String dashboardId) throws Exception {
+   /* public static JSONArray getDashboardGadgetbyDashboardId(String dashboardId) throws Exception {
         JSONArray dashboardGadgets = new JSONArray();
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
@@ -515,9 +518,12 @@ public class MyUtill {
 
         mongoClient.close();
         return dashboardGadgets;
+    }*/
+
+    public static List<Gadget> getDashboardGadgetbyDashboardId(String dashboardId) throws Exception {
+        List<Gadget> gadgets = GadgetUtility.getInstance().findByDashboardId(dashboardId);
+        return gadgets;
     }
-
-
     public static JSONArray getGadgetListfromDB() throws Exception {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase("Interview").getCollection("Gadget");

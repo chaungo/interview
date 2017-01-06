@@ -33,6 +33,7 @@ import models.gadget.AssigneeVsTestExecution;
 import models.gadget.CycleVsTestExecution;
 import models.gadget.EpicVsTestExecution;
 import models.gadget.Gadget;
+import models.gadget.SONARGadget;
 import models.gadget.StoryVsTestExecution;
 import models.main.GadgetData;
 import models.main.JQLSearchResult;
@@ -53,7 +54,7 @@ public class GadgetUtility extends DatabaseUtility {
 
     private GadgetUtility() {
         super();
-        collection = db.getCollection(Gadget.class.getSimpleName());
+        collection = db.getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
     }
 
     public static GadgetUtility getInstance() {
@@ -87,9 +88,9 @@ public class GadgetUtility extends DatabaseUtility {
         // gadget.setSelectAllStory(true);
         // gadget.setStories(story);
         gadget.setUser("tducle");
-        gadget.setId("5865c9978dbec7462029d419");
+//        gadget.setId("5865c9978dbec7462029d419");
         gadget.setRelease(Release.R1_2_0);
-        // GadgetUtility.getInstance().insertOrUpdate(gadget);
+         GadgetUtility.getInstance().insertOrUpdate(gadget);
     }
 
     public String insertOrUpdate(Gadget gadget) throws APIException {
@@ -135,8 +136,8 @@ public class GadgetUtility extends DatabaseUtility {
         FindIterable<Document> document = collection.find(query);
         Document dbObj = document.first();
 
-        if (dbObj != null && Gadget.Type.valueOf(((String) dbObj.get("type"))) != null) {
-            Gadget.Type type = Gadget.Type.valueOf(((String) dbObj.get("type")));
+        if (dbObj != null && Gadget.Type.fromString(((String) dbObj.get("type"))) != null) {
+            Gadget.Type type = Gadget.Type.fromString(((String) dbObj.get("type")));
             try {
                 if (type == Gadget.Type.EPIC_US_TEST_EXECUTION) {
                     EpicVsTestExecution epicGadget = mapper.readValue(dbObj.toJson(),
@@ -201,29 +202,35 @@ public class GadgetUtility extends DatabaseUtility {
             Document document = dbCursor.next();
             if (document != null) {
                 if (Gadget.Type.ASSIGNEE_TEST_EXECUTION
-                        .equals(Gadget.Type.valueOf((String) document.get(TYPE)))) {
+                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
                     AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), AssigneeVsTestExecution.class);
                     assigneeGadget.setId(getObjectId(document));
                     gadgets.add(assigneeGadget);
                 } else if (Gadget.Type.EPIC_US_TEST_EXECUTION
-                        .equals(Gadget.Type.valueOf((String) document.get(TYPE)))) {
+                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
                     EpicVsTestExecution epicGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), EpicVsTestExecution.class);
                     epicGadget.setId(getObjectId(document));
                     gadgets.add(epicGadget);
                 } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION
-                        .equals(Gadget.Type.valueOf((String) document.get(TYPE)))) {
+                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
                     CycleVsTestExecution cyclGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), CycleVsTestExecution.class);
                     cyclGadget.setId(getObjectId(document));
                     gadgets.add(cyclGadget);
                 } else if (Gadget.Type.STORY_TEST_EXECUTION
-                        .equals(Gadget.Type.valueOf((String) document.get(TYPE)))) {
+                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
                     StoryVsTestExecution storyGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), StoryVsTestExecution.class);
                     storyGadget.setId(getObjectId(document));
                     gadgets.add(storyGadget);
+                } else if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET
+                        .equals(Gadget.Type.fromString((String) document.get(TYPE)))) {
+                    SONARGadget sonarGadget = JSONUtil.getInstance()
+                            .convertJSONtoObject(document.toJson(), SONARGadget.class);
+                    sonarGadget.setId(getObjectId(document));
+                    gadgets.add(sonarGadget);
                 } else {
                     logger.fastDebug("type %s is not available", document.get(TYPE));
                 }

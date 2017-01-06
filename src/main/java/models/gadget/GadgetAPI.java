@@ -14,4 +14,26 @@ public abstract class GadgetAPI implements Gadget {
     protected Release release;
     protected Set<String> products;
     protected List<String> metrics;
+    @Override
+    public String getId() {
+        return id;
+    }
+    
+    @Override
+    public String getUser() {
+        return user;
+    }
+    @Override
+    public String getDashboardId() {
+        return dashboardId;
+    }
+    @Override
+    public Set<String> getProducts() {
+        return products;
+    }
+    @Override
+    public Release getRelease() {
+        return release;
+    }
+    
 }

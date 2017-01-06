@@ -19,11 +19,6 @@ public class CycleVsTestExecution extends GadgetAPI {
     private boolean selectAllCycle;
 
     @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
     public Type getType() {
         return type;
     }
@@ -31,10 +26,6 @@ public class CycleVsTestExecution extends GadgetAPI {
     @Override
     public String getUser() {
         return user;
-    }
-
-    public Set<String> getProducts() {
-        return products;
     }
 
     public void setProducts(Set<String> products) {
@@ -69,10 +60,6 @@ public class CycleVsTestExecution extends GadgetAPI {
         this.projectName = projectName;
     }
 
-    public Set<String> getMetrics() {
-        return metrics;
-    }
-
     public void setMetrics(Set<String> metrics) {
         this.metrics = metrics;
     }
@@ -85,18 +72,10 @@ public class CycleVsTestExecution extends GadgetAPI {
         this.cycles = cycles;
     }
 
-    public Release getRelease() {
-        return release;
-    }
-
     public void setRelease(Release release) {
         this.release = release;
     }
 
-    @Override
-    public String getDashboardId() {
-        return dashboardId;
-    }
     public void setDashboardId(String id) {
         dashboardId = id;
     }

@@ -2,6 +2,9 @@ package controllers;
 
 import com.google.inject.Singleton;
 import filter.SecureFilter;
+import models.gadget.Gadget;
+import models.gadget.SONARGadget;
+import models.gadget.Gadget.Type;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -12,6 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static util.MyUtill.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nnmchau on 12/27/2016.
@@ -33,7 +39,7 @@ public class GadgetController {
     }
 
 
-    @FilterWith(SecureFilter.class)
+   /* @FilterWith(SecureFilter.class)
     public Result showSonarStatisticGadget(@Param("id") String dashboardId, Session session) {
         JSONArray sonarStatisticsGadget = new JSONArray();
         JSONArray overdueReviewGadget = new JSONArray();
@@ -61,8 +67,38 @@ public class GadgetController {
         }
 
         return Results.text().render(result);
-    }
+    }*/
+    
+    @FilterWith(SecureFilter.class)
+    public Result showSonarStatisticGadget(@Param("id") String dashboardId, Session session) {
+        JSONArray sonarStatisticsGadget = new JSONArray();
+        JSONArray overdueReviewGadget = new JSONArray();
+        JSONObject result = new JSONObject();
+         List<Gadget> dashboardGadgets;
+         List<Gadget> finalGadget = new ArrayList<>();
+        try {
+            dashboardGadgets = getDashboardGadgetbyDashboardId(dashboardId);
+            if(dashboardGadgets!=null){
+            for(Gadget gadget : dashboardGadgets){
+                Type type = gadget.getType();
+                if(Type.AMS_SONAR_STATISTICS_GADGET.equals(type)){
+                    sonarStatisticsGadget.put(getSonarStatistic(session, new JSONObject(((SONARGadget)gadget).getData()),  ((SONARGadget)gadget).getId()));
+                }else{
+                    finalGadget.add(gadget);
+                }
+                
+            }
+            }
+            result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
+            result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
+            result.put("GreenHopperGadget", finalGadget);
+        } catch (Exception e) {
+            logger.error("show_dashboard ", e);
+            return Results.internalServerError();
+        }
 
+        return Results.text().render(result);
+    }
 
     @FilterWith(SecureFilter.class)
     public Result addNewGadget(@Param("data") String data) {

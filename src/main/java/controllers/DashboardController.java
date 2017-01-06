@@ -6,6 +6,9 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import filter.SecureFilter;
+import models.gadget.Gadget;
+import models.gadget.SONARGadget;
+import models.gadget.Gadget.Type;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -26,11 +29,12 @@ import java.util.List;
 import java.util.Map;
 
 import static util.MyUtill.getDashboardGadgetbyDashboardId;
+import static util.MyUtill.getSonarStatistic;
 
 @Singleton
 public class DashboardController {
 
-    @FilterWith(SecureFilter.class)
+   /* @FilterWith(SecureFilter.class)
     public Result getDashboardInfo(@Param("id") String id) {
 
         if (id == null) {
@@ -67,8 +71,42 @@ public class DashboardController {
         }
 
         return Results.text().render(info);
-    }
+    }*/
 
+    @FilterWith(SecureFilter.class)
+    public Result getDashboardInfo(@Param("id") String id) {
+
+        if (id == null) {
+            return Results.noContent();
+        }
+
+        JSONObject info = new JSONObject();
+         List<Gadget> dashboardGadgets;
+        try {
+            dashboardGadgets = getDashboardGadgetbyDashboardId(id);
+            info.put("Gadget", dashboardGadgets.size());
+
+            int sonarGadget = 0;
+            int reviewGadget = 0;
+
+            for(Gadget gadget : dashboardGadgets){
+                Type type = gadget.getType();
+                if(Type.AMS_SONAR_STATISTICS_GADGET.equals(type)){
+                    sonarGadget++;
+                }
+            }
+            //todo
+            info.put("SonarGadget", sonarGadget);
+            info.put("ReviewGadget", reviewGadget);
+
+        } catch (Exception e) {
+            logger.error("getDashboardInfo ", e);
+            return Results.internalServerError();
+        }
+
+        return Results.text().render(info);
+    }
+    
     public final static Logger logger = Logger.getLogger(DashboardController.class);
 
     @FilterWith(SecureFilter.class)
