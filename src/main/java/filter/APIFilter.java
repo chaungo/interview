@@ -18,12 +18,12 @@ public class APIFilter implements Filter {
     @Override
     public Result filter(FilterChain filterChain, Context context) {
         String sessionCookies = context.getSession().get(Constant.API_SESSION_INFO);
-        if(sessionCookies != null && !sessionCookies.isEmpty()){
-            try{
+        if (sessionCookies != null && !sessionCookies.isEmpty()) {
+            try {
                 SessionInfo sessionInfo = JSONUtil.getInstance().convertJSONtoObject(sessionCookies, SessionInfo.class);
                 context.setAttribute(Constant.API_SESSION_INFO_INTERNAL, sessionInfo);
                 return filterChain.next(context);
-            } catch (APIException e){
+            } catch (APIException e) {
                 logger.fastDebug("No cookies are available", e, new Object());
             }
         }

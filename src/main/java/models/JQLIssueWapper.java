@@ -6,7 +6,7 @@ public class JQLIssueWapper {
     private JQLIssueVO issue;
     private Set<JQLIssueVO> child;
 
-    
+
     public JQLIssueWapper() {
     }
 

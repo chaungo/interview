@@ -1,7 +1,6 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import models.JQLIssuetypeVO.Type;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,7 +10,7 @@ public class APIIssueVO {
     private String summary;
     private PriorityVO priority;
     private Type type;
-    
+
     public APIIssueVO() {
     }
 
@@ -30,16 +29,16 @@ public class APIIssueVO {
         return priority;
     }
 
+    public void setPriority(PriorityVO priority) {
+        this.priority = priority;
+    }
+
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public void setPriority(PriorityVO priority) {
-        this.priority = priority;
     }
 
     public String getKey() {

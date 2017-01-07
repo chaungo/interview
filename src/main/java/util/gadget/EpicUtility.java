@@ -1,29 +1,10 @@
 package util.gadget;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import handle.executors.ExecutorManagement;
 import handle.executors.FindIssueCallable;
 import handle.executors.TestExecutionCallable;
 import manament.log.LoggerWapper;
-import models.APIIssueVO;
-import models.ExecutionIssueResultWapper;
-import models.ExecutionIssueVO;
-import models.JQLIssueLinkVO;
-import models.JQLIssueVO;
-import models.JQLIssuetypeVO;
+import models.*;
 import models.JQLIssuetypeVO.Type;
 import models.exception.APIException;
 import models.gadget.EpicVsTestExecution;
@@ -34,6 +15,14 @@ import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EpicUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(EpicUtility.class);
@@ -48,13 +37,13 @@ public class EpicUtility {
         return INSTANCE;
     }
 
-    public List<GadgetData> getDataEPic(EpicVsTestExecution epicGadget,  Map<String, String> cookies) throws APIException {
+    public List<GadgetData> getDataEPic(EpicVsTestExecution epicGadget, Map<String, String> cookies) throws APIException {
         List<GadgetData> result = new ArrayList<>();
         List<APIIssueVO> epicLinks = null;
 
-        if(epicGadget.isSelectAll()){
+        if (epicGadget.isSelectAll()) {
             epicLinks = getEpicLinks(epicGadget.getProjectName(), epicGadget.getRelease().toString(), epicGadget.getProducts(), cookies);
-        } else{
+        } else {
             Set<String> epics = epicGadget.getEpic();
             List<FindIssueCallable> tasks = new ArrayList<>();
             epics.forEach(e -> tasks.add(new FindIssueCallable(e, cookies)));
@@ -69,10 +58,10 @@ public class EpicUtility {
                 }
             }).collect(Collectors.toList());
         }
-        if(epicLinks == null){
+        if (epicLinks == null) {
             return result;
         }
-        for (APIIssueVO epic : epicLinks){
+        for (APIIssueVO epic : epicLinks) {
             ExecutionIssueResultWapper executionIssues = findAllExecutionIssueInEpic(epic.getKey(), cookies);
             GadgetData gadgetData = GadgetUtility.getInstance().convertToGadgetData(executionIssues.getExecutionsVO());
             gadgetData.setKey(epic);
@@ -84,17 +73,17 @@ public class EpicUtility {
         return result;
     }
 
-    public ExecutionIssueResultWapper findAllExecutionIssueInEpic(String epic,  Map<String, String> cookies) throws APIException {
+    public ExecutionIssueResultWapper findAllExecutionIssueInEpic(String epic, Map<String, String> cookies) throws APIException {
         ExecutionIssueResultWapper resultWapper = new ExecutionIssueResultWapper();
         List<JQLIssueVO> issues = new ArrayList<>();
-        
+
 //        issues.addAll(findAllIssuesInEpicLink(epic, cookies));
         List<JQLIssueVO> issuesInEpic = findAllIssuesInEpicLink(epic, cookies);
         List<JQLIssueVO> storyInEpic = issuesInEpic.stream().filter(i -> Type.STORY.toString().equalsIgnoreCase(i.getFields().getIssuetype().getName())).collect(Collectors.toList());
-        
+
         issues.addAll(storyInEpic);
         issues.addAll(findAllTestedIssueForEpic(epic, cookies));
-        if(issues == null || issues.isEmpty()){
+        if (issues == null || issues.isEmpty()) {
             return resultWapper;
         }
         logger.fasttrace("Total issue in epic %s:%d", epic, issues.size());
@@ -105,17 +94,17 @@ public class EpicUtility {
             public void accept(JQLIssueVO issue) {
                 Type type = JQLIssuetypeVO.Type.fromString(issue.getFields().getIssuetype().getName());
                 // ignore other
-                if(type == Type.TEST || type == Type.STORY){
+                if (type == Type.TEST || type == Type.STORY) {
                     tasks.add(new TestExecutionCallable(issue, type, cookies));
                 }
             }
         });
         logger.fasttrace("Total Test and Story in epic %s:%d", epic, tasks.size());
         List<ExecutionIssueResultWapper> resultTask = ExecutorManagement.getInstance().invokeAndGet(tasks);
-        for (ExecutionIssueResultWapper wapper : resultTask){
-            if(wapper != null){
+        for (ExecutionIssueResultWapper wapper : resultTask) {
+            if (wapper != null) {
                 resultWapper.getExecutionsVO().addAll(wapper.getExecutionsVO());
-                if(wapper.getIssue() != null && Type.STORY.equals(wapper.getIssue().getType())){
+                if (wapper.getIssue() != null && Type.STORY.equals(wapper.getIssue().getType())) {
                     resultWapper.increasePland(wapper.getPlanned().getTotal());
                     resultWapper.getPlanned().getIssues().addAll(wapper.getPlanned().getIssues());
                 }
@@ -124,7 +113,7 @@ public class EpicUtility {
         return resultWapper;
     }
 
-    public List<ExecutionIssueVO> findTestExecutionInIsuee(String issueKey,  Map<String, String> cookies) throws APIException {
+    public List<ExecutionIssueVO> findTestExecutionInIsuee(String issueKey, Map<String, String> cookies) throws APIException {
         List<ExecutionIssueVO> testExecution = new ArrayList<>();
         String query = "issue=\"%s\"";
         Map<String, String> parameters = new HashMap<String, String>();
@@ -133,9 +122,9 @@ public class EpicUtility {
         parameters.put(Constant.PARAMERTER_OFFSET, "0");
         String result = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PATH), parameters, cookies);
         ExecutionsVO executions = JSONUtil.getInstance().convertJSONtoObject(result, ExecutionsVO.class);
-        if(executions != null){
-            if(executions.getExecutions() != null){
-                if(executions.getExecutions().size() > 1){
+        if (executions != null) {
+            if (executions.getExecutions() != null) {
+                if (executions.getExecutions().size() > 1) {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MMM/yy");
                     /*
                      * Fetch only the most recent execution
@@ -149,40 +138,40 @@ public class EpicUtility {
                             LocalDate o2Time = null;
                             int i = 0;
                             boolean cannotParse = false;
-                            try{
+                            try {
                                 o1Time = LocalDate.parse(o1.getExecutedOn(), formatter);
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 logger.fastDebug("cannot parse date %s:%s", o1.getExecutedOn(), o1.getIssueKey());
                                 cannotParse = true;
                                 i = 1;
                             }
-                            try{
+                            try {
                                 o2Time = LocalDate.parse(o2.getExecutedOn(), formatter);
-                            } catch (Exception e){
+                            } catch (Exception e) {
                                 logger.fastDebug("cannot parse date %s:%s", o2.getExecutedOn(), o2.getIssueKey());
                                 cannotParse = true;
                                 i -= 1;
                             }
-                            if(cannotParse){
+                            if (cannotParse) {
                                 return i;
                             }
                             return o2Time.compareTo(o1Time);
                         }
                     }).findFirst();
-                    if(execution.isPresent() && execution.get() != null){
+                    if (execution.isPresent() && execution.get() != null) {
                         testExecution.add(execution.get());
                     }
-                } else{
+                } else {
                     testExecution.addAll(executions.getExecutions());
                 }
             }
-        } else{
+        } else {
             logger.fastDebug("data result is not map to ExecutionsVO :%s", result);
         }
         return testExecution;
     }
 
-    public List<JQLIssueVO> findAllIssuesInEpicLink(String epic,  Map<String, String> cookies) throws APIException {
+    public List<JQLIssueVO> findAllIssuesInEpicLink(String epic, Map<String, String> cookies) throws APIException {
         String query = "\"Epic Link\"=%s";
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put(Constant.PARAMERTER_JQL_QUERY, String.format(query, epic));
@@ -190,14 +179,14 @@ public class EpicUtility {
                 PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS, Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS_DEFAULT));
         parameters.put(Constant.PARAMERTER_OFFSET, "0");
         String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters, cookies);
-        if(data == null){
+        if (data == null) {
             return null;
         }
         JQLSearchResult searchResult = JSONUtil.getInstance().convertJSONtoObject(data, JQLSearchResult.class);
         return searchResult.getIssues();
     }
 
-    public List<JQLIssueVO> findAllTestedIssueForEpic(String epic,  Map<String, String> cookies) throws APIException {
+    public List<JQLIssueVO> findAllTestedIssueForEpic(String epic, Map<String, String> cookies) throws APIException {
         JQLIssueVO epicIssue = GadgetUtility.getInstance().findIssue(epic, cookies);
         List<JQLIssueLinkVO> issueLinks = epicIssue.getFields().getIssuelinks();
         List<JQLIssueLinkVO> testedByIssue = issueLinks.stream().filter(i -> IS_TESED_BY.equals(i.getType().getInward())).collect(Collectors.toList());
@@ -205,16 +194,16 @@ public class EpicUtility {
         List<FindIssueCallable> tasks = new ArrayList<FindIssueCallable>();
         testedByIssue.forEach(s -> tasks.add(new FindIssueCallable(s.getInwardIssue().getKey(), cookies)));
         List<JQLIssueVO> testIssues = new ArrayList<>();
-        
+
         List<JQLIssueVO> resultTask = ExecutorManagement.getInstance().invokeAndGet(tasks);
         testIssues.addAll(resultTask);
         return testIssues;
     }
 
-    public List<APIIssueVO> getEpicLinks(String project, String release, Set<String> products,  Map<String, String> cookies) throws APIException {
+    public List<APIIssueVO> getEpicLinks(String project, String release, Set<String> products, Map<String, String> cookies) throws APIException {
         List<APIIssueVO> result = null;
         logger.fasttrace("getEpicLinks(%s,%s)", project, release);
-        if(project == null){
+        if (project == null) {
             throw new APIException("project param cannot be null");
         }
         StringBuilder query = new StringBuilder();
@@ -222,18 +211,18 @@ public class EpicUtility {
         query.append(String.format(projectParam, project));
         query.append(Constant.AND);
         query.append("type = epic");
-        if(release != null){
+        if (release != null) {
             String fixVersionParam = "fixVersion=%s";
             query.append(Constant.AND);
             query.append(String.format(fixVersionParam, release));
         }
-        if(products != null && !products.isEmpty()){
+        if (products != null && !products.isEmpty()) {
             query.append(Constant.AND);
             query.append(Constant.OPEN_BRACKET);
             boolean first = true;
-            for (String product : products){
-                if(product != null && !product.isEmpty()){
-                    if(!first){
+            for (String product : products) {
+                if (product != null && !product.isEmpty()) {
+                    if (!first) {
                         query.append(Constant.OR);
                     }
                     query.append(String.format("cf[12718] = \"%s\"", product));
@@ -247,9 +236,9 @@ public class EpicUtility {
         parameters.put(Constant.PARAMERTER_MAXRESULTS,
                 PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS, Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS_DEFAULT));
         parameters.put(Constant.PARAMERTER_OFFSET, "0");
-        String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters,  cookies);
+        String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters, cookies);
         JQLSearchResult searchResult = JSONUtil.getInstance().convertJSONtoObject(data, JQLSearchResult.class);
-        if(searchResult != null && searchResult.getIssues() != null){
+        if (searchResult != null && searchResult.getIssues() != null) {
             result = searchResult.getIssues().stream().filter(i -> i != null && i.getFields() != null).map(new Function<JQLIssueVO, APIIssueVO>() {
                 @Override
                 public APIIssueVO apply(JQLIssueVO jQLIssue) {
@@ -258,7 +247,7 @@ public class EpicUtility {
                     return apiIssue;
                 }
             }).collect(Collectors.toList());
-        } else{
+        } else {
             throw new APIException(data);
         }
         GadgetUtility.getInstance().sortIssue(result);

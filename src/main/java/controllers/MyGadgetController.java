@@ -1,10 +1,7 @@
 package controllers;
 
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import filter.APIFilter;
 import handle.GadgetHandler;
 import manament.log.LoggerWapper;
@@ -17,6 +14,8 @@ import ninja.params.Param;
 import util.Constant;
 import util.JSONUtil;
 
+import java.util.List;
+
 @Singleton
 @FilterWith(APIFilter.class)
 public class MyGadgetController {
@@ -28,26 +27,27 @@ public class MyGadgetController {
     }
 
     public Result insertOrUpdateGadget(@Param("type") String type, @Param("data") String data, Context context) {
-        try{
+        try {
             return handler.insertOrUpdateGadget(type, data, context);
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e);
         }
     }
-    
-    public Result deleteGadget(@Param("id") String id, Context context){
-        try{
+
+    public Result deleteGadget(@Param("id") String id, Context context) {
+        try {
             logger.fasttrace("deleteGadget(%s) , by user:%s", id, context.getSession().get(Constant.USERNAME));
             return handler.deleteGadget(id);
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e);
         }
     }
+
     public Result getGadgetsInDashboardId(@Param("dashboardId") String id) {
         logger.fasttrace("getGadgetsInDashboardId(%s)", id);
-        try{
+        try {
             return handler.getGadgets(id);
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e);
         }
 
@@ -55,28 +55,29 @@ public class MyGadgetController {
 
     public Result getDataGadget(@Param("id") String id, Context context) {
         logger.fasttrace("getDataGadget(%s)", id);
-        try{
+        try {
             return handler.getDataGadget(id, ResultsUtil.getSessionInfo(context));
-        } catch (APIException e){
-            return ResultsUtil.convertException(e);
-        }
-    }
-    public Result getStoryInEpic(@Param("epics") String epic, Context context){
-        logger.fasttrace("getStoryInEpic(%s)", epic);
-        try{
-            List<String> epics = JSONUtil.getInstance().convertJSONtoListObject(epic, String.class);
-            return handler.getStoryInEpic(epics, ResultsUtil.getSessionInfo(context));
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e);
         }
     }
 
-    
-    public Result getProjectList(Context context){
+    public Result getStoryInEpic(@Param("epics") String epic, Context context) {
+        logger.fasttrace("getStoryInEpic(%s)", epic);
+        try {
+            List<String> epics = JSONUtil.getInstance().convertJSONtoListObject(epic, String.class);
+            return handler.getStoryInEpic(epics, ResultsUtil.getSessionInfo(context));
+        } catch (APIException e) {
+            return ResultsUtil.convertException(e);
+        }
+    }
+
+
+    public Result getProjectList(Context context) {
         logger.fasttrace("getProjectList()");
-        try{
+        try {
             return handler.getProjectList(ResultsUtil.getSessionInfo(context));
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e);
         }
     }

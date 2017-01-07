@@ -1,27 +1,11 @@
 package util.gadget;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
-
 import manament.log.LoggerWapper;
 import models.APIIssueVO;
 import models.ExecutionIssueVO;
@@ -29,22 +13,23 @@ import models.JQLIssueVO;
 import models.ProjectVO;
 import models.exception.APIErrorCode;
 import models.exception.APIException;
-import models.gadget.AssigneeVsTestExecution;
-import models.gadget.CycleVsTestExecution;
-import models.gadget.EpicVsTestExecution;
-import models.gadget.Gadget;
-import models.gadget.SONARGadget;
-import models.gadget.StoryVsTestExecution;
+import models.gadget.*;
 import models.gadget.Gadget.Type;
-import models.gadget.OverdueReviewsGadget;
 import models.main.GadgetData;
 import models.main.JQLSearchResult;
 import models.main.Release;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import service.DatabaseUtility;
 import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GadgetUtility extends DatabaseUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetUtility.class);
@@ -92,12 +77,12 @@ public class GadgetUtility extends DatabaseUtility {
         gadget.setUser("tducle");
 //        gadget.setId("5865c9978dbec7462029d419");
         gadget.setRelease(Release.R1_2_0);
-         GadgetUtility.getInstance().insertOrUpdate(gadget);
+        GadgetUtility.getInstance().insertOrUpdate(gadget);
     }
 
     public String insertOrUpdate(Gadget gadget) throws APIException {
-        if(gadget == null){
-            throw new APIException("cannot insert gadget:"+ gadget);
+        if (gadget == null) {
+            throw new APIException("cannot insert gadget:" + gadget);
         }
         String id = gadget.getId();
         Gadget existingGadget = null;
@@ -230,16 +215,16 @@ public class GadgetUtility extends DatabaseUtility {
                     gadgets.add(storyGadget);
                 } else if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET
                         .equals(type)) {
-                    SONARGadget sonarGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), SONARGadget.class);
-                    sonarGadget.setId(getObjectId(document));
-                    gadgets.add(sonarGadget);
-                } else if(Type.AMS_OVERDUE_REVIEWS.equals(type)){
+                    SonarStatisticsGadget sonarStatisticsGadget = JSONUtil.getInstance()
+                            .convertJSONtoObject(document.toJson(), SonarStatisticsGadget.class);
+                    sonarStatisticsGadget.setId(getObjectId(document));
+                    gadgets.add(sonarStatisticsGadget);
+                } else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
                     OverdueReviewsGadget overGadget = JSONUtil.getInstance()
                             .convertJSONtoObject(document.toJson(), OverdueReviewsGadget.class);
                     overGadget.setId(getObjectId(document));
                     gadgets.add(overGadget);
-                }else {
+                } else {
                     logger.fastDebug("type %s is not available", document.get(TYPE));
                 }
             }
@@ -254,28 +239,28 @@ public class GadgetUtility extends DatabaseUtility {
                 @Override
                 public void accept(ExecutionIssueVO issue) {
                     switch (issue.getStatus().getName()) {
-                    case "PASS":
-                        gadgetData.increasePassed(1);
-                        gadgetData.getPassed().getIssues().add(issue.getIssueKey());
-                        break;
-                    case "FAIL":
-                        gadgetData.increaseFailed(1);
-                        gadgetData.getFailed().getIssues().add(issue.getIssueKey());
-                        break;
-                    case "UNEXECUTED":
-                        gadgetData.increaseUnexecuted(1);
-                        gadgetData.getUnexecuted().getIssues().add(issue.getIssueKey());
-                        break;
-                    case "WIP":
-                        gadgetData.increaseWip(1);
-                        gadgetData.getWip().getIssues().add(issue.getIssueKey());
-                        break;
-                    case "BLOCKED":
-                        gadgetData.increaseBlocked(1);
-                        gadgetData.getBlocked().getIssues().add(issue.getIssueKey());
-                        break;
-                    default:
-                        break;
+                        case "PASS":
+                            gadgetData.increasePassed(1);
+                            gadgetData.getPassed().getIssues().add(issue.getIssueKey());
+                            break;
+                        case "FAIL":
+                            gadgetData.increaseFailed(1);
+                            gadgetData.getFailed().getIssues().add(issue.getIssueKey());
+                            break;
+                        case "UNEXECUTED":
+                            gadgetData.increaseUnexecuted(1);
+                            gadgetData.getUnexecuted().getIssues().add(issue.getIssueKey());
+                            break;
+                        case "WIP":
+                            gadgetData.increaseWip(1);
+                            gadgetData.getWip().getIssues().add(issue.getIssueKey());
+                            break;
+                        case "BLOCKED":
+                            gadgetData.increaseBlocked(1);
+                            gadgetData.getBlocked().getIssues().add(issue.getIssueKey());
+                            break;
+                        default:
+                            break;
                     }
                 }
             });
@@ -298,7 +283,7 @@ public class GadgetUtility extends DatabaseUtility {
         }
     }
 
-    public JQLIssueVO findIssue(String issueKey,  Map<String, String> cookies) throws APIException {
+    public JQLIssueVO findIssue(String issueKey, Map<String, String> cookies) throws APIException {
         JQLSearchResult searchResult = null;
         String query = "issue=%s";
         Map<String, String> parameters = new HashMap<String, String>();
@@ -370,8 +355,8 @@ public class GadgetUtility extends DatabaseUtility {
         DeleteResult res = collection.deleteOne(query);
         return res.getDeletedCount();
     }
-    
-    public void clearCache(){
+
+    public void clearCache() {
         projectsCache.clear();
     }
 }

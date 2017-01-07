@@ -2,13 +2,7 @@ package conf;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-
-import handle.AssigneeHandler;
-import handle.AssigneeHandlerImpl;
-import handle.EpicHandler;
-import handle.EpicHandlerImpl;
-import handle.GadgetHandler;
-import handle.GadgetHandlerImpl;
+import handle.*;
 
 @Singleton
 public class Module extends AbstractModule {

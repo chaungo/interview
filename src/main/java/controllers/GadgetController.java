@@ -3,9 +3,9 @@ package controllers;
 import com.google.inject.Singleton;
 import filter.SecureFilter;
 import models.gadget.Gadget;
-import models.gadget.SONARGadget;
 import models.gadget.Gadget.Type;
 import models.gadget.OverdueReviewsGadget;
+import models.gadget.SonarStatisticsGadget;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -15,10 +15,10 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static util.MyUtill.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static util.MyUtill.*;
 
 /**
  * Created by nnmchau on 12/27/2016.
@@ -69,28 +69,28 @@ public class GadgetController {
 
         return Results.text().render(result);
     }*/
-    
+
     @FilterWith(SecureFilter.class)
     public Result showSonarStatisticGadget(@Param("id") String dashboardId, Session session) {
         JSONArray sonarStatisticsGadget = new JSONArray();
         JSONArray overdueReviewGadget = new JSONArray();
         JSONObject result = new JSONObject();
-         List<Gadget> dashboardGadgets;
-         List<Gadget> greenHopperGadget = new ArrayList<>();
+        List<Gadget> dashboardGadgets;
+        List<Gadget> greenHopperGadget = new ArrayList<>();
         try {
             dashboardGadgets = getDashboardGadgetbyDashboardId(dashboardId);
-            if(dashboardGadgets!=null){
-            for(Gadget gadget : dashboardGadgets){
-                Type type = gadget.getType();
-                if(Type.AMS_SONAR_STATISTICS_GADGET.equals(type)){
-                    sonarStatisticsGadget.put(getSonarStatistic(session, new JSONObject(((SONARGadget)gadget).getData()),  ((SONARGadget)gadget).getId()));
-                }else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
-                    overdueReviewGadget.put(getReview(session, new JSONObject(((OverdueReviewsGadget)gadget).getData()), ((OverdueReviewsGadget)gadget).getId()));
-                }else{
-                    greenHopperGadget.add(gadget);
+            if (dashboardGadgets != null) {
+                for (Gadget gadget : dashboardGadgets) {
+                    Type type = gadget.getType();
+                    if (Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
+                        sonarStatisticsGadget.put(getSonarStatistic(session, new JSONObject(((SonarStatisticsGadget) gadget).getData()), ((SonarStatisticsGadget) gadget).getId()));
+                    } else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+                        overdueReviewGadget.put(getReview(session, new JSONObject(((OverdueReviewsGadget) gadget).getData()), ((OverdueReviewsGadget) gadget).getId()));
+                    } else {
+                        greenHopperGadget.add(gadget);
+                    }
+
                 }
-                
-            }
             }
             result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
             result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);

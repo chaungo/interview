@@ -1,8 +1,8 @@
 package conf;
 
-import javax.inject.Singleton;
-
 import handle.scheduler.SchedulerManagement;
+
+import javax.inject.Singleton;
 
 @Singleton
 public class StartupActions {

@@ -1,12 +1,11 @@
 package models.gadget;
 
-import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import models.main.Release;
+
+import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,14 +30,26 @@ public class StoryVsTestExecution extends GadgetAPI {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public Type getType() {
         return type;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public String getUser() {
         return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public Set<String> getProducts() {
@@ -47,18 +58,6 @@ public class StoryVsTestExecution extends GadgetAPI {
 
     public void setProducts(Set<String> products) {
         this.products = products;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
     }
 
     public String getProjectName() {
@@ -108,11 +107,12 @@ public class StoryVsTestExecution extends GadgetAPI {
     public void setSelectAllStory(boolean selectAll) {
         this.selectAllStory = selectAll;
     }
-    
+
     @Override
     public String getDashboardId() {
         return dashboardId;
     }
+
     public void setDashboardId(String id) {
         dashboardId = id;
     }

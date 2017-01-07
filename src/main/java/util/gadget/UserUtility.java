@@ -1,16 +1,14 @@
 package util.gadget;
 
-import org.bson.Document;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.UpdateResult;
-
 import manament.log.LoggerWapper;
 import models.UserVO;
 import models.exception.APIException;
+import org.bson.Document;
 import service.DatabaseUtility;
 import util.JSONUtil;
 
@@ -33,8 +31,8 @@ public class UserUtility extends DatabaseUtility {
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("username", username);
         FindIterable<Document> documents = collection.find(whereQuery);
-        Document document = documents.first(); 
-        if (document!=null) {
+        Document document = documents.first();
+        if (document != null) {
             userVO = JSONUtil.getInstance().convertJSONtoObject(document.toJson(), UserVO.class);
             userVO.setId(getObjectId(document));
         } else {
@@ -46,9 +44,10 @@ public class UserUtility extends DatabaseUtility {
         }
         return userVO;
     }
+
     public UpdateResult insert(UserVO user) throws APIException {
         try {
-            Document dbObject =  Document.parse(mapper.writeValueAsString(user));
+            Document dbObject = Document.parse(mapper.writeValueAsString(user));
             dbObject.remove("id");
 
             BasicDBObject searchQuery = new BasicDBObject();

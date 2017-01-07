@@ -15,14 +15,14 @@ public class ResultsUtil {
         result.render("data", e.getMessage());
         return result;
     }
-    
-    public static Result convertToResult(ResultCode type, Object data){
+
+    public static Result convertToResult(ResultCode type, Object data) {
         return Results.json().render("type", type).render("data", data);
     }
-    
-    public static SessionInfo getSessionInfo(Context context) throws APIException{
+
+    public static SessionInfo getSessionInfo(Context context) throws APIException {
         SessionInfo sessionInfo = context.getAttribute(Constant.API_SESSION_INFO_INTERNAL, SessionInfo.class);
-        if(sessionInfo ==null || sessionInfo.getCookies() ==null || sessionInfo.getCookies().isEmpty()){
+        if (sessionInfo == null || sessionInfo.getCookies() == null || sessionInfo.getCookies().isEmpty()) {
             throw new APIException(PropertiesUtil.getString(Constant.SESSION_ERROR_MESSAGE));
         }
         return sessionInfo;

@@ -5,15 +5,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SONARGadget extends GadgetAPI {
+public class SonarStatisticsGadget extends GadgetAPI {
     private Type type = Type.AMS_SONAR_STATISTICS_GADGET;
     private String data;
     private String cache;
     private int date;
-    
+
     @Override
     public Type getType() {
         return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Override
@@ -45,11 +49,7 @@ public class SONARGadget extends GadgetAPI {
         this.date = date;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-    
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 }

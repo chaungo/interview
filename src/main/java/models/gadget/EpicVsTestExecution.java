@@ -1,12 +1,11 @@
 package models.gadget;
 
-import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import models.main.Release;
+
+import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,9 +14,13 @@ public class EpicVsTestExecution extends GadgetAPI {
     private Gadget.Type type = Gadget.Type.EPIC_US_TEST_EXECUTION;
     private String projectName;
     private Set<String> epic;
-    
+
     public Set<String> getEpic() {
         return epic;
+    }
+
+    public void setEpic(Set<String> epic) {
+        this.epic = epic;
     }
 
     public void setProducts(Set<String> products) {
@@ -54,10 +57,6 @@ public class EpicVsTestExecution extends GadgetAPI {
 
     public void setMetrics(List<String> metrics) {
         this.metrics = metrics;
-    }
-    
-    public void setEpic(Set<String> epic) {
-        this.epic = epic;
     }
 
     public boolean isSelectAll() {

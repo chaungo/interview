@@ -1,10 +1,9 @@
 package models.main;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import models.JQLIssueVO;
+
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JQLSearchResult {

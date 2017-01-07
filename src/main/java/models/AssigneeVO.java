@@ -1,8 +1,8 @@
 package models;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 public class AssigneeVO {
     @JsonProperty("assignee")
@@ -44,12 +44,12 @@ public class AssigneeVO {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == null)
+        if (obj == null)
             return false;
-        if(this == obj)
+        if (this == obj)
             return true;
-        if(obj instanceof AssigneeVO){
-            if(userName != null && userName.equals(((AssigneeVO) obj).getUserName())){
+        if (obj instanceof AssigneeVO) {
+            if (userName != null && userName.equals(((AssigneeVO) obj).getUserName())) {
                 return true;
             }
         }

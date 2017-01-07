@@ -1,12 +1,11 @@
 package models.gadget;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import models.main.Release;
+
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,9 +22,17 @@ public class CycleVsTestExecution extends GadgetAPI {
         return type;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     @Override
     public String getUser() {
         return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public void setProducts(Set<String> products) {
@@ -36,20 +43,12 @@ public class CycleVsTestExecution extends GadgetAPI {
         return selectAllCycle;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setSelectAllCycle(boolean selectAll) {
+        this.selectAllCycle = selectAll;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setSelectAllCycle(boolean selectAll) {
-        this.selectAllCycle = selectAll;
     }
 
     public String getProjectName() {

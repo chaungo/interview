@@ -4,7 +4,7 @@ public class OverdueReviewsGadget extends GadgetAPI {
     private Type type = Type.AMS_OVERDUE_REVIEWS;
     private String data;
     private String cache;
-    
+
     public String getCache() {
         return cache;
     }
@@ -21,10 +21,6 @@ public class OverdueReviewsGadget extends GadgetAPI {
         this.data = data;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     @Override
     public String getProjectName() {
         return "";
@@ -35,8 +31,12 @@ public class OverdueReviewsGadget extends GadgetAPI {
         return type;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
-    
+
 }

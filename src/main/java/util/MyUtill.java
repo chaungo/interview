@@ -8,11 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import controllers.DashboardController;
 import models.SessionInfo;
 import models.gadget.Gadget;
-import models.gadget.Gadget.Type;
 import ninja.session.Session;
-import service.HTTPClientUtil;
-import util.gadget.GadgetUtility;
-
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +17,8 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import service.HTTPClientUtil;
+import util.gadget.GadgetUtility;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -104,13 +102,13 @@ public class MyUtill {
         session.put("cookies", cookies.toString());
         //login to greenhopper
         Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password);
-        if(cookiesMap != null && !cookiesMap.isEmpty()){
+        if (cookiesMap != null && !cookiesMap.isEmpty()) {
             SessionInfo sessionInfo = new SessionInfo();
             sessionInfo.setCookies(cookiesMap);
             String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
             session.put(Constant.API_SESSION_INFO, sessionInfoStr);
         }
-        
+
         if (respond.header("X-AUSERNAME").equals(username)) {
             session.put("username", username);
 
@@ -121,7 +119,7 @@ public class MyUtill {
             ////System.out.println(cookies.toString());
 
             session.put("crucookies", CruCookies.toString());
-            
+
             return true;
         }
 
@@ -295,7 +293,7 @@ public class MyUtill {
             result.put("ReviewDataArray", ReviewDataArray);
 
             collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
-        }else {
+        } else {
             result = new JSONObject(document.getString("cache"));
         }
 
@@ -524,6 +522,7 @@ public class MyUtill {
         List<Gadget> gadgets = GadgetUtility.getInstance().findByDashboardId(dashboardId);
         return gadgets;
     }
+
     public static JSONArray getGadgetListfromDB() throws Exception {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase("Interview").getCollection("Gadget");
@@ -547,7 +546,6 @@ public class MyUtill {
 
         return gadgets;
     }
-
 
 
     public static JSONArray getMetricsFromDB() throws Exception {
@@ -689,7 +687,6 @@ public class MyUtill {
 
             try {
                 IAComponent = getIAComponentsRespond(session, releaseUrl, data.getString("IANames"));
-                //result.put("IAComponent", IAComponent);
             } catch (Exception e) {
                 DashboardController.logger.error("Can not get IAComponent from " + releaseUrl, e);
             }
@@ -713,7 +710,7 @@ public class MyUtill {
                     DashboardController.logger.error("cannot get statistic", e);
                 }
             }
-            //////System.out.println("RsIAArray " + RsIAArray);
+
             result.put("RsIAArray", RsIAArray);
 
             collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
@@ -774,7 +771,6 @@ public class MyUtill {
             }
 
 
-            //////System.out.println("RsComponentArray " + RsComponentArray);
             IA.put("Components", RsComponentArray);
             rs.put(IA);
         }

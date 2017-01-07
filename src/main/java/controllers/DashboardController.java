@@ -7,13 +7,11 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import filter.SecureFilter;
 import models.gadget.Gadget;
-import models.gadget.SONARGadget;
 import models.gadget.Gadget.Type;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
-import ninja.params.PathParam;
 import ninja.params.SessionParam;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
@@ -21,15 +19,10 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import util.Constant;
-import util.LinkUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static util.MyUtill.getDashboardGadgetbyDashboardId;
-import static util.MyUtill.getSonarStatistic;
 
 @Singleton
 public class DashboardController {
@@ -73,6 +66,8 @@ public class DashboardController {
         return Results.text().render(info);
     }*/
 
+    public final static Logger logger = Logger.getLogger(DashboardController.class);
+
     @FilterWith(SecureFilter.class)
     public Result getDashboardInfo(@Param("id") String id) {
 
@@ -81,7 +76,7 @@ public class DashboardController {
         }
 
         JSONObject info = new JSONObject();
-         List<Gadget> dashboardGadgets;
+        List<Gadget> dashboardGadgets;
         try {
             dashboardGadgets = getDashboardGadgetbyDashboardId(id);
             info.put("Gadget", dashboardGadgets.size());
@@ -89,9 +84,9 @@ public class DashboardController {
             int sonarGadget = 0;
             int reviewGadget = 0;
 
-            for(Gadget gadget : dashboardGadgets){
+            for (Gadget gadget : dashboardGadgets) {
                 Type type = gadget.getType();
-                if(Type.AMS_SONAR_STATISTICS_GADGET.equals(type)){
+                if (Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
                     sonarGadget++;
                 }
             }
@@ -106,8 +101,6 @@ public class DashboardController {
 
         return Results.text().render(info);
     }
-    
-    public final static Logger logger = Logger.getLogger(DashboardController.class);
 
     @FilterWith(SecureFilter.class)
     public Result getDashboardList(@Param("groups") String groups, @Param("projects") String projects, Session session) {

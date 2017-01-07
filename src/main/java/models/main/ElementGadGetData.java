@@ -6,10 +6,11 @@ import java.util.Set;
 public class ElementGadGetData {
     private int total;
     private Set<String> issues = new HashSet<String>();
-    
-    public void increase(int number){
-        total+=number;
+
+    public void increase(int number) {
+        total += number;
     }
+
     public int getTotal() {
         return total;
     }

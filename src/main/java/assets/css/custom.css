@@ -39,10 +39,9 @@ body {
     padding: 5px
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
     width: 0;
 }
-
 
 #gadgetContainer {
     overflow: scroll;

@@ -4,8 +4,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class LoggerWapper extends Logger {
-    private static LoggerFactoryWapper factory = new LoggerFactoryWapper();
     private static final String FQCN = LoggerWapper.class.getName();
+    private static LoggerFactoryWapper factory = new LoggerFactoryWapper();
 
     protected LoggerWapper(String name) {
         super(name);
@@ -19,7 +19,7 @@ public class LoggerWapper extends Logger {
     public static LoggerWapper getLogger(String name) {
         return (LoggerWapper) getLogger(name, factory);
     }
-    
+
     public void fastInfo(String message, Object... args) {
         if (isInfoEnabled()) {
             log(FQCN, Level.INFO, String.format(message, args), null);
@@ -37,7 +37,7 @@ public class LoggerWapper extends Logger {
             log(FQCN, Level.INFO, message, null);
         }
     }
-    
+
 
     public void fastDebug(String message, Object... args) {
         if (isDebugEnabled()) {

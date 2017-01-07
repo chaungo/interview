@@ -27,15 +27,15 @@
     </appender>
 
     <appender name="FILE"
-        class="ch.qos.logback.core.rolling.RollingFileAppender">
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>gadget.log</file>
         <rollingPolicy
-            class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <FileNamePattern>gadget.%d{yyyy-MM-dd}.%i.log.gz
             </FileNamePattern>
             <MaxHistory>30</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
@@ -44,25 +44,25 @@
             </pattern>
         </encoder>
     </appender>
-    
+
     <root level="info">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLING"/>
     </root>
-    
+
     <logger name="controllers" level="TRACE">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
     <logger name="filter" level="TRACE">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
     <logger name="service" level="TRACE">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
     <logger name="util" level="TRACE">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
     <logger name="handle" level="TRACE">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </logger>
 </configuration>

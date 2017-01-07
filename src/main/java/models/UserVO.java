@@ -4,21 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserVO {
-	
+
     private String id;
     private String username;
     private String friendlyName;
 
-    
+
     public UserVO() {
-	}
+    }
 
-	public UserVO(String username, String friendlyName) {
-		this.username = username;
-		this.friendlyName = friendlyName;
-	}
+    public UserVO(String username, String friendlyName) {
+        this.username = username;
+        this.friendlyName = friendlyName;
+    }
 
-	public String getId() {
+    public String getId() {
         return id;
     }
 
