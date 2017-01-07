@@ -89,6 +89,9 @@ public class DashboardController {
                 if (Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
                     sonarGadget++;
                 }
+                if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+                    reviewGadget++;
+                }
             }
             //todo
             info.put("SonarGadget", sonarGadget);
