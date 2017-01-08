@@ -5,12 +5,15 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import models.gadget.Gadget;
+import models.gadget.GadgetAPI;
+
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.gadget.GadgetUtility;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,26 +61,19 @@ public class GadgetService {
     }
 
     public static JSONArray getGadgetListfromDB() throws Exception {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase("Interview").getCollection("Gadget");
-        FindIterable<org.bson.Document> gadgetIterable = gadgetCollection.find();
         JSONArray gadgets = new JSONArray();
-        gadgetIterable.forEach(new Block<Document>() {
-            @Override
-            public void apply(final org.bson.Document document) {
-                JSONObject gadget = new JSONObject();
-                gadget.put("id", document.get("_id"));
-                gadget.put("name", document.get("Name"));
-                gadget.put("des", document.get("Description"));
-                gadget.put("author", document.get("Author"));
-                gadget.put("img", document.get("PictureUrl"));
-                gadget.put("addnewUIurl", document.get("addnewUIurl"));
-                gadgets.put(gadget);
-            }
-        });
-
-        mongoClient.close();
-
+        Iterator<GadgetAPI> iterator = GadgetAPI.getIterator();
+        while(iterator.hasNext()){
+            GadgetAPI gadgetObj = iterator.next();
+            JSONObject gadget = new JSONObject();
+            gadget.put("name", gadgetObj.getName());
+            gadget.put("des", gadgetObj.getDescription());
+            gadget.put("author", gadgetObj.getAuthor());
+            gadget.put("img", gadgetObj.getPictureUrl());
+            gadget.put("addnewUIurl", gadgetObj.getAddnewUIurl());
+            gadget.put("type", gadgetObj.getType().toString());
+            gadgets.put(gadget);
+        }
         return gadgets;
     }
 }
