@@ -1,298 +1,769 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
     <@layout.myLayout "Homepage">
-    <div layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
+<div layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
 
-        <div style="height: 100%;width: 100%;" layout="row" layout-align="start start">
-            <div layout-fill style="background-color: white" flex="20">
-                <md-content>
-                    <div ng-init="dashboards" layout="column" layout-align="start stretch">
-                        <md-button ng-click="showAddNewDialog($event)" class="md-primary">
-                            Create new dashboard
-                        </md-button>
-                        <md-list layout-fill>
-                            <md-list-item layout="row" class="md-2-line" ng-repeat="item in dashboardNameList"
-                                          ng-click="dashboardListItemClicked(item)">
-                                <div layout="row">
-                                    <md-icon ng-if="item.privacy.status == 'public'" style="color: #8c8c8c;"
-                                             class="material-icons">public
-                                    </md-icon>
-                                    <md-icon ng-if="item.privacy.status == 'other'" style="color: #8c8c8c;"
-                                             class="material-icons">people_outline
-                                    </md-icon>
-                                    <md-icon ng-if="item.privacy.status == 'private'" style="color: #8c8c8c;"
-                                             class="material-icons">lock_outline
-                                    </md-icon>
-                                </div>
+	<div style="height: 100%; width: 100%;" layout="row"
+		layout-align="start start">
+		<div layout-fill style="background-color: white" flex="20">
+			<md-content>
+			<div ng-init="dashboards" layout="column"
+				layout-align="start stretch">
+				<md-button ng-click="showAddNewDialog($event)" class="md-primary">
+				Create new dashboard </md-button>
+				<md-list layout-fill> <md-list-item layout="row"
+					class="md-2-line" ng-repeat="item in dashboardNameList"
+					ng-click="dashboardListItemClicked(item)">
+				<div layout="row">
+					<md-icon ng-if="item.privacy.status == 'public'"
+						style="color: #8c8c8c;" class="material-icons">public </md-icon>
+					<md-icon ng-if="item.privacy.status == 'other'"
+						style="color: #8c8c8c;" class="material-icons">people_outline
+					</md-icon>
+					<md-icon ng-if="item.privacy.status == 'private'"
+						style="color: #8c8c8c;" class="material-icons">lock_outline
+					</md-icon>
+				</div>
 
-                                <div style="margin-left: 10px;margin-right: 10px" flex class="md-list-item-text">
-                                    <h3 style="color: #205081">{{item.name}}</h3>
-                                    <p>{{item.owner}}</p>
-                                </div>
+				<div style="margin-left: 10px; margin-right: 10px" flex
+					class="md-list-item-text">
+					<h3 style="color: #205081">{{item.name}}</h3>
+					<p>{{item.owner}}</p>
+				</div>
 
-                                <md-button ng-if="item.owner == name" ng-click="dashboardOptionClicked(item,$event)"
-                                           class="md-icon-button">
-                                    <md-icon style="color: grey;" class="material-icons">settings</md-icon>
-                                    <md-tooltip md-direction="bottom">
-                                        Option
-                                    </md-tooltip>
-                                </md-button>
+				<md-button ng-if="item.owner == name"
+					ng-click="dashboardOptionClicked(item,$event)"
+					class="md-icon-button"> <md-icon style="color: grey;"
+					class="material-icons">settings</md-icon> <md-tooltip
+					md-direction="bottom"> Option </md-tooltip> </md-button> </md-list-item> </md-list>
+			</div>
+			</md-content>
+		</div>
 
-                            </md-list-item>
-                        </md-list>
-                    </div>
-                </md-content>
-            </div>
+		<div id="gadgetContainer" layout="column" layout-align="start center">
 
-            <div id="gadgetContainer" layout="column" layout-align="start center">
+			<div id="{{item.id}}" ng-repeat="item in sonarStList" layout-wrap>
+				<md-card class="gadget" md-whiteframe="8">
+				<div class="gadgetHeader" layout="row" layout-align="start center">
+					<b>AMS SONAR Statistics {{item.release}}</b>
+					<div flex></div>
+					<b ng-if="currentDashboard.owner == name"
+						style="color: yellow; margin-right: 10px"
+						ng-click="editSonarGagdget(item)">Edit</b> <b
+						ng-if="currentDashboard.owner == name"
+						style="color: orange; margin-right: 10px"
+						ng-click="deleteGagdget(item)">Delete</b> <b
+						ng-click="clearCacheGagdget(item)">Clear cache</b>
+				</div>
+				<table class="responstable">
+					<tr>
+						<th>Index</th>
+						<th>Component</th>
+						<th ng-repeat="metric in item.metricList">{{metric.name}}</th>
+					</tr>
+					<tbody class="responstable" ng-repeat="x in item.RsIAArray">
+						<tr>
+							<td style="text-align: left"
+								colspan="{{item.metricList.length+2}}"><b>{{x.name}}</b> <span
+								ng-if="x.Components.length == 0"><b> | No Component</b></span></td>
+						</tr>
+						<tr ng-repeat="y in x.Components">
+							<td>{{$index + 1}}</td>
+							<td style="text-align: left;">{{ y.componentName }}</td>
+							<td ng-if="y.metricVal.coverage"
+								ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">{{
+								y.metricVal.coverage }} <span
+								ng-if="check(y.metricVal.coverage)">%</span>
+							</td>
+							<td ng-if="y.metricVal.critical_violations"
+								ng-style="y.metricVal.critical_violations > 0 && {'color':'red'}">{{
+								y.metricVal.critical_violations }}</td>
+							<td ng-if="y.metricVal.new_coverage"
+								ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
+								{{y.metricVal.new_coverage}} <span
+								ng-if="check(y.metricVal.new_coverage)">%</span>
+							</td>
+							<td ng-if="y.metricVal.test_errors"
+								ng-style="y.metricVal.test_errors > 0 && {'color':'red'}">{{
+								y.metricVal.test_errors}}</td>
+							<td ng-if="y.metricVal.test_failures"
+								ng-style="y.metricVal.test_failures > 0 && {'color':'red'}">{{
+								y.metricVal.test_failures}}</td>
+							<td ng-if="y.metricVal.test_execution_time">{{
+								y.metricVal.test_execution_time}} <span
+								ng-if="check(y.metricVal.test_execution_time)"> s</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</md-card>
+			</div>
 
-                <div id="{{item.id}}" ng-repeat="item in sonarStList" layout-wrap>
-                    <md-card class="gadget" md-whiteframe="8">
-                        <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <b>AMS SONAR Statistics {{item.release}}</b>
-                            <div flex></div>
-                            <b ng-if="currentDashboard.owner == name"
-                               style="color: yellow; margin-right: 10px"
-                               ng-click="editSonarGagdget(item)">Edit</b> <b
-                                ng-if="currentDashboard.owner == name"
-                                style="color: orange; margin-right: 10px"
-                                ng-click="deleteGagdget(item)">Delete</b> <b
-                                ng-click="clearCacheGagdget(item)">Clear cache</b>
-                        </div>
-                        <table class="responstable">
-                            <tr>
-                                <th>Index</th>
-                                <th>Component</th>
-                                <th ng-repeat="metric in item.metricList">{{metric.name}}</th>
-                            </tr>
-                            <tbody class="responstable" ng-repeat="x in item.RsIAArray">
-                            <tr>
-                                <td style="text-align: left"
-                                    colspan="{{item.metricList.length+2}}"><b>{{x.name}}</b> <span
-                                        ng-if="x.Components.length == 0"><b> | No Component</b></span></td>
-                            </tr>
-                            <tr ng-repeat="y in x.Components">
-                                <td>{{$index + 1}}</td>
-                                <td style="text-align: left;">{{ y.componentName }}</td>
-                                <td ng-if="y.metricVal.coverage"
-                                    ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">{{
-                                    y.metricVal.coverage }} <span
-                                            ng-if="check(y.metricVal.coverage)">%</span>
-                                </td>
-                                <td ng-if="y.metricVal.critical_violations"
-                                    ng-style="y.metricVal.critical_violations > 0 && {'color':'red'}">{{
-                                    y.metricVal.critical_violations }}
-                                </td>
-                                <td ng-if="y.metricVal.new_coverage"
-                                    ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
-                                    {{y.metricVal.new_coverage}} <span
-                                        ng-if="check(y.metricVal.new_coverage)">%</span>
-                                </td>
-                                <td ng-if="y.metricVal.test_errors"
-                                    ng-style="y.metricVal.test_errors > 0 && {'color':'red'}">{{
-                                    y.metricVal.test_errors}}
-                                </td>
-                                <td ng-if="y.metricVal.test_failures"
-                                    ng-style="y.metricVal.test_failures > 0 && {'color':'red'}">{{
-                                    y.metricVal.test_failures}}
-                                </td>
-                                <td ng-if="y.metricVal.test_execution_time">{{
-                                    y.metricVal.test_execution_time}} <span
-                                            ng-if="check(y.metricVal.test_execution_time)"> s</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </md-card>
-                </div>
+			<div id="{{re.id}}" ng-repeat="re in reviewList" layout-wrap>
+				<md-card class="gadget" md-whiteframe="8">
+				<div class="gadgetHeader" layout="row" layout-align="start center">
+					<b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
+					<div flex></div>
+					<b ng-if="currentDashboard.owner == name"
+						style="color: orange; margin-right: 10px"
+						ng-click="deleteGagdget(re)">Delete</b> <b
+						ng-click="clearCacheGagdget(re)">Clear cache</b>
+				</div>
+				<table class="responstable" style="width: 100%">
+					<tr>
+						<th>Index</th>
+						<th>IA</th>
+						<th>X < 5</th>
+						<th>5 < X < 10</th>
+						<th>X > 10</th>
+					</tr>
+					<tr ng-repeat="y in re.ReviewDataArray">
+						<td>{{$index + 1}}</td>
+						<td style="text-align: left;">{{ y.creator }}</td>
+						<td>{{ y.col1 }}</td>
+						<td>{{ y.col2 }}</td>
+						<td>{{ y.col3 }}</td>
+					</tr>
+				</table>
+				</md-card>
+			</div>
 
-                <div id="{{re.id}}" ng-repeat="re in reviewList" layout-wrap>
-                    <md-card class="gadget" md-whiteframe="8">
-                        <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
-                            <div flex></div>
-                            <b ng-if="currentDashboard.owner == name"
-                               style="color: orange; margin-right: 10px"
-                               ng-click="deleteGagdget(re)">Delete</b> <b
-                                ng-click="clearCacheGagdget(re)">Clear cache</b>
-                        </div>
-                        <table class="responstable" style="width: 100%">
-                            <tr>
-                                <th>Index</th>
-                                <th>IA</th>
-                                <th>X < 5</th>
-                                <th>5 < X < 10</th>
-                                <th>X > 10</th>
-                            </tr>
-                            <tr ng-repeat="y in re.ReviewDataArray">
-                                <td>{{$index + 1}}</td>
-                                <td style="text-align: left;">{{ y.creator }}</td>
-                                <td>{{ y.col1 }}</td>
-                                <td>{{ y.col2 }}</td>
-                                <td>{{ y.col3 }}</td>
-                            </tr>
-                        </table>
-                    </md-card>
-                </div>
+			<div id="{{re.id}}" ng-repeat="gadget in greenHopperGadgets"
+				layout-wrap>
+				<h3>{{gadget.id}}</h3>
+			</div>
 
-                <div id="{{re.id}}" ng-repeat="gadget in greenHopperGadgets"
-                     layout-wrap>
-                    <h3>{{gadget.id}}</h3>
-                </div>
+			<div id="{{item.id}}" data-ng-repeat="item in greenHopperGadgets"
+				class="col-md-12" style="min-height: 20px; display: none">
+
+				<!-- Epic gadget html -->
+				<div data-ng-init="init(item)"
+					data-ng-if="item.type === 'EPIC_US_TEST_EXECUTION'"
+					data-ng-controller="EpicController">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<h4>Epic Test Execution Report</h4>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="text-align-right">
+								<a id="epic-config-toggle"
+									data-ng-click="showConfig = !showConfig">Show Configuration</a>
+							</div>
+							<div id="epic-config" data-ng-show="showConfig">
+								<form class="form-horizontal" role="form">
+									<div class="md-padding" data-ng-cloack>
+										<table class="table table-bordered">
+											<tbody>
+												<!-- Project Row -->
+												<tr>
+													<td class="col-md-6"><label>Project</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="epicProject"
+														data-ng-change="onProjectReleaseProductChanged(item)">
+															<option selected disabled>-Select Project-</option>
+													</select></td>
+												</tr>
+												<!-- Release Row -->
+												<tr>
+													<td class="col-md-6"><label>Release</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="epicRelease"
+														data-ng-change="onProjectReleaseProductChanged(item)">
+															<option value="" selected disabled>-Select
+																Version-</option>
+															<option value="1.2.0">R1.2.0</option>
+															<option value="1.2.01">R1.2.01</option>
+															<option value="1.3.0">R1.3.0</option>
+													</select></td>
+												</tr>
+												<!-- Product Row -->
+												<tr>
+													<td class="col-md-6"><label>Product</label></td>
+													<td class="col-md-12 row">
+														<div class="col-md-9">
+															<select
+																data-ng-change="onProjectReleaseProductChanged(item)"
+																id="epicProduct" class="form-control">
+																<option value="" selected disabled>-Select
+																	Product-</option>
+															</select>
+														</div>
+														<div class="col-md-3">
+															<a href="" data-toggle="tooltip"
+																title="Only Jira Administrator can add new product. Function disabled for normal user."
+																class="btn-to-product btn btn-default">Add Product</a>
+														</div>
+													</td>
+												</tr>
+												<!-- Epic Link Row -->
+												<tr>
+													<td class="col-md-6"><label>Epic Link</label></td>
+													<td class="col-md-6">
+														<div id="epic-link-container" style='display: none;'>
+															<div id="epic-link-loader" align="center"
+																style="display: none">
+																<div class="loader"></div>
+															</div>
+															<select multiple class="form-control"
+																id="epicMultiSelect">
+															</select>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label> <input
+																data-ng-change="onCheckAllEpic(item)" type="checkbox"
+																id="epicCheckAll" checked>Select All
+															</label>
+														</div>
+													</td>
+
+												</tr>
+												<!-- Metrics row -->
+												<tr>
+													<td class="col-md-6"><label>Metrics</label></td>
+													<td class="col-md-6"><select multiple
+														class="form-control" id="epicMetricMultiSelect">
+															<option value="SUMMARY">SUMMARY</option>
+															<option value=PRIORITY>PRIORITY</option>
+															<option value="UNEXECUTED">UNEXECUTED</option>
+															<option value="FAILED">FAILED</option>
+															<option value="WIP">WIP</option>
+															<option value="BLOCKED">BLOCKED</option>
+															<option value="PASSED">PASSED</option>
+															<option value="PLANNED">PLANNED</option>
+															<option value="UNPLANNED">UNPLANNED</option>
+													</select></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<button data-ng-click="onUpdate(item)" type="button"
+										id="epic-add-gadget" class="btn btn-success">Update</button>
+								</form>
+							</div>
+							<br>
+							<div id="epic-table-container" class="col-md-12" align="center"
+								style="display: none">
+								<table id="epic-table" class="display">
+									<thead>
+										<tr>
+											<th>Epic Link</th>
+											<th>SUMMARY</th>
+											<th>PRIORITY</th>
+											<th>UNEXECUTED</th>
+											<th>FAILED</th>
+											<th>WIP</th>
+											<th>BLOCKED</th>
+											<th>PASSED</th>
+											<th>PLANNED</th>
+											<th>UNPLANNED</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>Epic Link</th>
+											<th>SUMMARY</th>
+											<th>PRIORITY</th>
+											<th>UNEXECUTED</th>
+											<th>FAILED</th>
+											<th>WIP</th>
+											<th>BLOCKED</th>
+											<th>PASSED</th>
+											<th>PLANNED</th>
+											<th>UNPLANNED</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<div id="epic-table-loader" class="col-md-12"
+								style="display: none" align="center">
+								<div class="loader"></div>
+								<h2>Data is loading...</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- User story gadget html -->
+				<div data-ng-init="init(item)"
+					data-ng-if="item.type === 'STORY_TEST_EXECUTION'"
+					data-ng-controller="StoryController">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<h4>User Story Test Execution Report</h4>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="text-align-right">
+								<a id="us-config-toggle"
+									data-ng-click="showConfig = !showConfig">Show Configuration</a>
+							</div>
+							<div id="us-config" data-ng-show="showConfig">
+								<form class="form-horizontal" role="form">
+									<div class="md-padding" data-ng-cloack>
+										<table class="table table-bordered">
+											<tbody>
+												<!-- US Project Row -->
+												<tr>
+													<td class="col-md-6"><label>Project</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="usProject"
+														data-ng-change="onProjectReleaseProductChanged()">
+															<option selected disabled>-Select Project-</option>
+													</select></td>
+												</tr>
+												<!-- US Release Row -->
+												<tr>
+													<td class="col-md-6"><label>Release</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="usRelease"
+														data-ng-change="onProjectReleaseProductChanged()">
+															<option value="" selected disabled>-Select
+																Version-</option>
+															<option value="1.2.0">R1.2.0</option>
+															<option value="1.2.01">R1.2.01</option>
+															<option value="1.3.0">R1.3.0</option>
+													</select></td>
+												</tr>
+												<!-- Product Row -->
+												<tr>
+													<td class="col-md-6"><label>Product</label></td>
+													<td class="col-md-12 row">
+														<div class="col-md-9">
+															<select id="usProduct" class="form-control"
+																data-ng-change="onProjectReleaseProductChanged(item)">
+																<option value="" selected disabled>-Select
+																	Product-</option>
+															</select>
+														</div>
+														<div class="col-md-3">
+															<a href="" data-toggle="tooltip"
+																title="Only Jira Administrator can add new product. Function disabled for normal user."
+																class="btn-to-product btn btn-default">Add Product</a>
+														</div>
+													</td>
+												</tr>
+												<!-- US EPIC LINK Row -->
+												<tr>
+													<td class="col-md-6"><label>Epic Link</label></td>
+													<td class="col-md-6">
+														<div id="us-epic-container" style="display: none;">
+															<div id="us-epic-loader" align="center"
+																style="display: none;">
+																<div class="loader"></div>
+															</div>
+															<div id="us-epic-available-div">
+																<label>Available</label> <select class="form-control"
+																	multiple id="usEpicAvailable">
+																</select>
+																<div align="center" style="padding-top: 20px;">
+																	<button id="us-add-epic-btn" style="width: 35px;"
+																		class="btn btn-primary btn-sm"
+																		data-ng-click="onClickAddEpic(item)">
+																		<i style="font-size: 20px" class="fa fa-angle-down"></i>
+																	</button>
+
+																	<button id="us-remove-epic-btn" style="width: 35px;"
+																		class="btn btn-primary btn-sm"
+																		data-ng-click="onClickRemoveEpic(item)">
+																		<i style="font-size: 20px" class="fa fa-angle-up"></i>
+																	</button>
+
+																	<button id="us-add-all-epic-btn" style="width: 35px;"
+																		class="btn btn-primary btn-sm"
+																		data-ng-click="onClickAddAllEpic(item)">
+																		<i style="font-size: 20px"
+																			class="fa fa-angle-double-down"></i>
+																	</button>
+
+																	<button id="us-remove-all-epic-btn"
+																		style="width: 35px;" class="btn btn-primary btn-sm"
+																		data-ng-click="onClickRemoveAllEpic(item)">
+																		<i style="font-size: 20px"
+																			class="fa fa-angle-double-up"></i>
+																	</button>
+
+																</div>
+																<label>To be fetched</label> <select
+																	class="form-control" multiple id="usEpic">
+																</select>
+															</div>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label><input type="checkbox" id="usCheckAllEpic"
+																checked data-ng-change="onCheckAllEpic(item)">Select
+																All</label>
+
+														</div>
+													</td>
+												</tr>
+
+												<!-- Us story row -->
+												<tr>
+													<td class="col-md-6"><label>User Story</label></td>
+													<td class="col-md-6">
+														<div id="us-container" style="display: none;">
+															<select multiple class="form-control" id="usMultiSelect">
+															</select>
+
+															<div id="us-us-loader" align="center"
+																style="display: none">
+																<div class="loader"></div>
+															</div>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label><input type="checkbox"
+																id="usCheckAllStory" checked
+																data-ng-change="onCheckAllStory(item)">Select
+																All</label>
+														</div>
+													</td>
+
+												</tr>
+												<!-- US Metrics row -->
+												<tr>
+													<td class="col-md-6"><label>Metrics</label></td>
+													<td class="col-md-6"><select multiple
+														class="form-control" id="usMetricMultiSelect">
+															<option value="SUMMARY">SUMMARY</option>
+															<option value=PRIORITY>PRIORITY</option>
+															<option value="UNEXECUTED">UNEXECUTED</option>
+															<option value="FAILED">FAILED</option>
+															<option value="WIP">WIP</option>
+															<option value="BLOCKED">BLOCKED</option>
+															<option value="PASSED">PASSED</option>
+															<option value="PLANNED">PLANNED</option>
+															<option value="UNPLANNED">UNPLANNED</option>
+													</select></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<button type="button" id="us-update-btn"
+										class="btn btn-success" data-ng-click="onUpdate(item)">Update</button>
+								</form>
+							</div>
+							<br>
+							<div id="us-table-container" class="col-md-12" align="center"
+								style="display: none"></div>
+							<div id="us-table-loader" class="col-md-12" style="display: none"
+								align="center">
+								<div class="loader"></div>
+								<h2>Data is loading...</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Cycle gadget html -->
+				<div data-ng-init="init(item)"
+					data-ng-if="item.type === 'TEST_CYCLE_TEST_EXECUTION'"
+					data-ng-controller="CycleController">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<h4>Cycle Test Execution Report</h4>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="text-align-right">
+								<a id="cycle-config-toggle"
+									data-ng-click="showConfig = !showConfig">Show Configuration</a>
+							</div>
+							<div id="cycle-config" data-ng-show="showConfig">
+								<form class="form-horizontal" role="form">
+									<div class="md-padding" data-ng-cloack>
+										<table class="table table-bordered">
+											<tbody>
+												<!-- Cycle Project Row -->
+												<tr>
+													<td class="col-md-6"><label>Project</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="cycleProject">
+															<option selected disabled>-Select Project-</option>
+													</select></td>
+												</tr>
+												<!-- Cycle Release Row -->
+												<tr>
+													<td class="col-md-6"><label>Release</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="cycleRelease">
+															<option value="" selected disabled>-Select
+																Release-</option>
+															<option value="1.2.0">R1.2.0</option>
+															<option value="1.2.01">R1.2.01</option>
+															<option value="1.3.0">R1.3.0</option>
+													</select></td>
+												</tr>
+
+												<!-- Cycle Product Row -->
+												<tr>
+													<td class="col-md-6"><label>Product</label></td>
+													<td class="col-md-12 row">
+														<div class="col-md-9">
+															<select id="cycleProduct" class="form-control">
+																<option value="" selected disabled>-Select
+																	Product-</option>
+															</select>
+														</div>
+														<div class="col-md-3">
+															<a href="" data-toggle="tooltip"
+																title="Only Jira Administrator can add new product. Function disabled for normal user."
+																class="btn-to-product btn btn-default">Add Product</a>
+														</div>
+													</td>
+												</tr>
+
+												<!-- Cycle Multiple Select -->
+												<tr>
+													<td class="col-md-6"><label>Cycle</label></td>
+													<td class="col-md-6">
+														<div id="cycle-container" style="display: none;">
+															<div id="cycle-loader" align="center"
+																style="display: none;">
+																<div class="loader"></div>
+															</div>
+															<select multiple class="form-control"
+																id="cycleMultiSelect">
+															</select>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label><input type="checkbox" id="cycleCheckAll"
+																checked data-ng-change="onCheckAllEpic(item)">Select
+																All</label>
+														</div>
+													</td>
+												</tr>
+												<!-- Cycle Metrics row -->
+												<tr>
+													<td class="col-md-6"><label>Metrics</label></td>
+													<td class="col-md-6"><select multiple
+														class="form-control" id="cycleMetricMultiSelect">
+															<option value="UNEXECUTED">UNEXECUTED</option>
+															<option value="FAILED">FAILED</option>
+															<option value="WIP">WIP</option>
+															<option value="BLOCKED">BLOCKED</option>
+															<option value="PASSED">PASSED</option>
+													</select></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<button id="cycle-update-btn" class="btn btn-success"
+										data-ng-click="onUpdate(item)">Update</button>
+								</form>
+							</div>
+							<div id="cycle-table-container" align="center" class="col-md-12"
+								style="display: none">
+								<table id="cycle-table" class="display">
+									<thead>
+										<tr>
+											<th>Cycle</th>
+											<th>UNEXECUTED</th>
+											<th>FAILED</th>
+											<th>WIP</th>
+											<th>BLOCKED</th>
+											<th>PASSED</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>Cycle</th>
+											<th>UNEXECUTED</th>
+											<th>FAILED</th>
+											<th>WIP</th>
+											<th>BLOCKED</th>
+											<th>PASSED</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<div id="cycle-table-loader" class="col-md-12"
+								style="display: none" align="center">
+								<div class="loader"></div>
+								<h2>Data is loading...</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Assignee story gadget html -->
+				<div data-ng-init="init(item)"
+					data-ng-if="item.type === 'ASSIGNEE_TEST_EXECUTION'"
+					data-ng-controller="AssigneeController">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<div class="panel-title">
+								<h4>Assignee Test Execution Report</h4>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="text-align-right">
+								<a id="assignee-config-toggle"
+									data-ng-click="showConfig = !showConfig">Show Configuration</a>
+							</div>
+							<div id="assignee-config" data-ng-show="showConfig">
+								<form class="form-horizontal" role="form">
+									<div class="md-padding" data-ng-cloack>
+										<table class="table table-bordered">
+											<tbody>
+												<!-- Assignee Project Row -->
+												<tr>
+													<td class="col-md-6"><label>Project</label></td>
+													<td class="col-md-6"><select class="form-control"
+														id="assigneeProject">
+															<option selected disabled>-Select Project-</option>
+													</select></td>
+												</tr>
+												<!-- Assignee Release Row -->
+												<tr>
+													<td class="col-md-6"><label>Release</label></td>
+
+													<td class="col-md-6"><select class="form-control"
+														id="assigneeRelease">
+															<option value="" selected disabled>-Select
+																Version-</option>
+															<option value="1.2.0">R1.2.0</option>
+															<option value="1.2.01">R1.2.01</option>
+															<option value="1.3.0">R1.3.0</option>
+													</select></td>
+												</tr>
+												<!-- Assignee Product -->
+												<tr>
+													<td class="col-md-6"><label>Product</label></td>
+
+													<td class="col-md-12 row">
+														<div class="col-md-9">
+															<select id="assigneeProduct" class="form-control">
+																<option value="" selected disabled>-Select
+																	Product-</option>
+															</select>
+														</div>
+														<div class="col-md-3">
+															<a href="" data-toggle="tooltip"
+																title="Only Jira Administrator can add new product. Function disabled for normal user."
+																class="btn-to-product btn btn-default">Add Product</a>
+														</div>
+													</td>
+												</tr>
+												<!-- Assignee Cycle Row -->
+												<tr>
+													<td class="col-md-6"><label>Test Cycle</label></td>
+													<td class="col-md-6">
+														<div id="assignee-cycle-container" style="display: none;">
+															<div id="assignee-cycle-loader" align="center"
+																class="col-md-12" style="display: none" align="center">
+																<div class="loader"></div>
+															</div>
+															<div id="assignee-cycle-available-div">
+																<label>Available</label> <select class="form-control"
+																	multiple id="assigneeCycleAvailable">
+																</select>
+																<div align="center" style="padding-top: 20px;">
+																	<button id="assignee-add-cycle-btn"
+																		style="width: 35px;" class="btn btn-primary btn-sm" data-ng-click="onClickAddCycle(item)">
+																		<i style="font-size: 20px" class="fa fa-angle-down"></i>
+																	</button>
+
+																	<button id="assignee-remove-cycle-btn"
+																		style="width: 35px;" class="btn btn-primary btn-sm" data-ng-click="onClickRemoveCycle(item)">
+																		<i style="font-size: 20px" class="fa fa-angle-up"></i>
+																	</button>
+
+																	<button id="assignee-add-all-cycle-btn"
+																		style="width: 35px;" class="btn btn-primary btn-sm" data-ng-click="onClickAddAllCycle(item)">
+																		<i style="font-size: 20px"
+																			class="fa fa-angle-double-down"></i>
+																	</button>
+
+																	<button id="assignee-remove-all-cycle-btn"
+																		style="width: 35px;" class="btn btn-primary btn-sm" data-ng-click="onClickRemoveAllCycle(item)">
+																		<i style="font-size: 20px"
+																			class="fa fa-angle-double-up"></i>
+																	</button>
+
+																</div>
+																<div>
+																	<label>To be fetched</label> <select
+																		class="form-control" multiple id="assigneeCycle">
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label><input type="checkbox"
+																id="assigneeCheckAllCycle" checked data-ng-change="onCheckAllCycle(item)">Select All</label>
+														</div>
+												</tr>
+
+												<!-- Assignee row -->
+												<tr>
+													<td class="col-md-6"><label>Assignee</label></td>
+													<td class="col-md-6">
+														<div id="assignee-container" style="display: none;">
+															<div id="assignee-loader" class="col-md-12"
+																style="display: none" align="center">
+																<div class="loader"></div>
+															</div>
+															<select multiple class="form-control"
+																id="assigneeMultiSelect">
+															</select>
+														</div>
+														<div class="col-md-12" align="center"
+															style="padding-top: 10px;">
+															<label><input type="checkbox"
+																id="assigneeCheckAll" checked disabled data-ng-change="onCheckAllAssignee(item)">Select
+																All</label>
+														</div>
+													</td>
+												</tr>
+												<!-- Assignee Metrics row -->
+												<tr>
+													<td class="col-md-6"><label>Metrics</label></td>
+													<td class="col-md-6"><select multiple
+														class="form-control" id="assigneeMetricMultiSelect">
+															<option value="UNEXECUTED">UNEXECUTED</option>
+															<option value="FAILED">FAILED</option>
+															<option value="WIP">WIP</option>
+															<option value="BLOCKED">BLOCKED</option>
+															<option value="PASSED">PASSED</option>
+													</select></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<button id="assignee-update-btn" class="btn btn-success" data-ng-click="onUpdate(item)">Update</button>
+								</form>
+							</div>
+							<br>
+							<!-- Assignee Table -->
+							<div id="assignee-table-container" class="col-md-12"
+								align="center" style="display: none"></div>
+							<div id="assignee-table-loader" class="col-md-12"
+								style="display: none" align="center">
+								<div class="loader"></div>
+								<h2>Data is loading...</h2>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
 
 
-                <!-- Epic gadget html -->
 
-                <div id="{{item.id}}" data-ng-init="init({{item.id}})"
-                     data-ng-repeat="item in Epics" class="col-md-12"
-                     style="min-height: 20px; display:none" data-ng-controller="EpicController">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <h4>Epic Test Execution Report</h4>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="text-align-right">
-                                <a id="epic-config-toggle">Show Configuration</a>
-                            </div>
-                            <div id="epic-config">
-                                <form class="form-horizontal" role="form">
-                                    <div class="md-padding" data-ng-cloack>
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                            <!-- Project Row -->
-                                            <tr>
-                                                <td class="col-md-6"><label>Project</label></td>
-                                                <td class="col-md-6"><select class="form-control"
-                                                                             id="epicProject"
-                                                                             data-ng-change="onProjectReleaseProductChanged()">
-                                                    <option selected disabled>-Select Project-</option>
-                                                </select></td>
-                                            </tr>
-                                            <!-- Release Row -->
-                                            <tr>
-                                                <td class="col-md-6"><label>Release</label></td>
-                                                <td class="col-md-6"><select class="form-control"
-                                                                             id="epicRelease"
-                                                                             data-ng-change="onProjectReleaseProductChanged()">
-                                                    <option value="" selected disabled>-Select
-                                                        Version-
-                                                    </option>
-                                                    <option value="1.2.0">R1.2.0</option>
-                                                    <option value="1.2.01">R1.2.01</option>
-                                                    <option value="1.3.0">R1.3.0</option>
-                                                </select></td>
-                                            </tr>
-                                            <!-- Product Row -->
-                                            <tr>
-                                                <td class="col-md-6"><label>Product</label></td>
-                                                <td class="col-md-12 row">
-                                                    <div class="col-md-9">
-                                                        <select data-ng-change="onProjectReleaseProductChanged()"
-                                                                id="epicProduct" class="form-control">
-                                                            <option value="" selected disabled>-Select
-                                                                Product-
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <a href="" data-toggle="tooltip"
-                                                           title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                                           class="btn-to-product btn btn-default">Add Product</a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Epic Link Row -->
-                                            <tr>
-                                                <td class="col-md-6"><label>Epic Link</label></td>
-                                                <td class="col-md-6">
-                                                    <div id="epic-link-container" style='display: none;'>
-                                                        <div id="epic-link-loader" align="center"
-                                                             style="display: none">
-                                                            <div class="loader"></div>
-                                                        </div>
-                                                        <select multiple class="form-control" id="epicMultiSelect">
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-12" align="center"
-                                                         style="padding-top: 10px;">
-                                                        <label><input data-ng-change="onCheckAllEpic()"
-                                                                      type="checkbox" id="epicCheckAll" checked>Select
-                                                            All</label>
-                                                    </div>
-                                                </td>
 
-                                            </tr>
-                                            <!-- Metrics row -->
-                                            <tr>
-                                                <td class="col-md-6"><label>Metrics</label></td>
-                                                <td class="col-md-6"><select multiple
-                                                                             class="form-control"
-                                                                             id="epicMetricMultiSelect">
-                                                    <option value="SUMMARY">SUMMARY</option>
-                                                    <option value=PRIORITY>PRIORITY</option>
-                                                    <option value="UNEXECUTED">UNEXECUTED</option>
-                                                    <option value="FAILED">FAILED</option>
-                                                    <option value="WIP">WIP</option>
-                                                    <option value="BLOCKED">BLOCKED</option>
-                                                    <option value="PASSED">PASSED</option>
-                                                    <option value="PLANNED">PLANNED</option>
-                                                    <option value="UNPLANNED">UNPLANNED</option>
-                                                </select></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <button data-ng-click="onUpdate()" type="button"
-                                            id="epic-add-gadget" class="btn btn-success">Update
-                                    </button>
-                                </form>
-                            </div>
-                            <br>
-                            <div id="epic-table-container" class="col-md-12" align="center"
-                                 style="display: none">
-                                <table id="epic-table" class="display">
-                                    <thead>
-                                    <tr>
-                                        <th>Epic Link</th>
-                                        <th>SUMMARY</th>
-                                        <th>PRIORITY</th>
-                                        <th>UNEXECUTED</th>
-                                        <th>FAILED</th>
-                                        <th>WIP</th>
-                                        <th>BLOCKED</th>
-                                        <th>PASSED</th>
-                                        <th>PLANNED</th>
-                                        <th>UNPLANNED</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Epic Link</th>
-                                        <th>SUMMARY</th>
-                                        <th>PRIORITY</th>
-                                        <th>UNEXECUTED</th>
-                                        <th>FAILED</th>
-                                        <th>WIP</th>
-                                        <th>BLOCKED</th>
-                                        <th>PASSED</th>
-                                        <th>PLANNED</th>
-                                        <th>UNPLANNED</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div id="epic-table-loader" class="col-md-12"
-                                 style="display: none" align="center">
-                                <div class="loader"></div>
-                                <h2>Data is loading...</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+
+
+		</div>
+	</div>
+</div>
+
 
 </@layout.myLayout>

@@ -1,0 +1,201 @@
+.text-align-right {
+	text-align: right;
+	float: right;
+}
+
+md-input-container {
+	width: 100%;
+}
+
+a {
+	cursor: pointer;
+}
+
+.hint {
+	/* Position the hint */
+	position: absolute;
+	left: 2px;
+	right: auto;
+	bottom: 7px;
+	/* Copy styles from ng-messages */
+	font-size: 12px;
+	line-height: 14px;
+	transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+	/* Set our own color */
+	color: grey;
+}
+
+.hint.ng-hide, .hint.ng-enter, .hint.ng-leave.ng-leave-active {
+	bottom: 26px;
+	opacity: 0;
+}
+
+.hint.ng-leave, .hint.ng-enter.ng-enter-active {
+	bottom: 7px;
+	opacity: 1;
+}
+
+.selectdemoSelectHeader {
+	/* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */
+	
+}
+
+.selectdemoSelectHeader .demo-header-searchbox {
+	border: none;
+	outline: none;
+	height: 100%;
+	width: 100%;
+	padding: 0;
+}
+
+.selectdemoSelectHeader .demo-select-header {
+	box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0
+		0 0 0 rgba(0, 0, 0, 0.12);
+	padding-left: 10.667px;
+	height: 48px;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: auto;
+}
+
+.selectdemoSelectHeader md-content._md {
+	max-height: 240px;
+}
+
+.radioButtondemoBasicUsage body {
+	padding: 20px;
+}
+
+.radioButtondemoBasicUsage hr {
+	margin-left: -20px;
+	opacity: 0.3;
+}
+
+.radioButtondemoBasicUsage md-radio-group {
+	width: 150px;
+}
+
+.radioButtondemoBasicUsage p:last-child {
+	padding-bottom: 50px;
+}
+
+.radioButtondemoBasicUsage [ng-controller] {
+	padding: 0 20px;
+}
+
+.radioButtondemoBasicUsage .radioValue {
+	margin-left: 5px;
+	color: #0f9d58;
+	font-weight: bold;
+	padding: 5px;
+}
+
+.radioButtondemoBasicUsage md-icon {
+	margin: 0 20px 20px;
+	width: 128px;
+	height: 128px;
+}
+
+.radioButtondemoBasicUsage .ipsum {
+	color: saddlebrown;
+	font-size: 0.9em;
+}
+
+li {
+	display: inline;
+}
+
+#layout-dialog ul {
+	margin: 0;
+	padding: 0;
+}
+
+#layout-dialog ul li {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#layout-dialog ul li a,#layout-dialog ul li a:link,#layout-dialog ul li a:visited {
+	border: 1px solid #bbb;
+	display: block;
+	float: left;
+	margin: 0 1em 1em 0;
+	outline: none;
+	padding: .35em;
+	width: auto;
+}
+
+#layout-dialog ul li a:hover,#layout-dialog ul li a:active,#layout-dialog ul li a:focus {
+	border-color: #666;
+}
+
+#layout-dialog ul li a strong {
+	background: #fff url('sprite-layouts.png') no-repeat 0 0;
+	cursor: pointer;
+	display: block;
+	float: left;
+	height: 37px;
+	text-indent: -9999px;
+	width: 68px;
+}
+
+ul li a#layout-a strong {
+	background-position: 0 0;
+}
+
+ul li a#layout-aa strong {
+	background-position: 0 -41px;
+}
+
+ul li a#layout-ba strong {
+	background-position: 0 -82px;
+}
+
+ul li a#layout-ab strong {
+	background-position: 0 -123px;
+}
+
+ul li a#layout-aaa strong {
+	background-position: 0 -163px;
+}
+
+.layout-a ul li #layout-a strong,#layout-dialog #layout-a:hover strong,#layout-dialog #layout-a:active strong,#layout-dialog #layout-a:focus strong {
+	background-position: -72px -1px;
+}
+
+.layout-aa ul li #layout-aa strong,#layout-dialog #layout-aa:hover strong,#layout-dialog #layout-aa:active strong,#layout-dialog #layout-aa:focus strong {
+	background-position: -72px -41px;
+}
+
+.layout-ba #layout-ba strong,#layout-dialog #layout-ba:hover strong,#layout-dialog #layout-ba:active strong,#layout-dialog #layout-ba:focus strong {
+	background-position: -72px -82px;
+}
+
+.layout-ab #layout-ab strong,#layout-dialog #layout-ab:hover strong,#layout-dialog #layout-ab:active strong,#layout-dialog #layout-ab:focus strong {
+	background-position: -72px -122px;
+}
+
+.layout-aaa #layout-aaa strong,#layout-dialog #layout-aaa:hover strong,#layout-dialog #layout-aaa:active strong,#layout-dialog #layout-aaa:focus strong {
+	background-position: -72px -163px;
+}
+
+.layout-a ul li a#layout-a,.layout-aa ul li a#layout-aa,.layout-ba ul li a#layout-ba,.layout-ab ul li a#layout-ab,.layout-aaa ul li a#layout-aaa {
+	background-color: #eee;
+	border-color: #666;
+}
+
+.violatedMetricValue {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.centerDiv {
+	text-align: center;
+}
+
+.my-dropdown-menu {
+	background-color: #222;
+}
