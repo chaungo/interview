@@ -9,8 +9,6 @@ public class Constant {
     public static final int CONNECTION_TIMEOUT_FOR_GET_STATISTIC = 10 * 60 * 1000;
     public static final Long EXPIRE_TIME_30DAYS = 30 * 24 * 60 * 60 * 1000L;
     //public static final int MAX_AGE = 30 * 24 * 60 * 60 * 1000;
-    public static final String PROXY_IP = "192.168.72.212";
-    public static final int PROXY_PORT = 9797;
     //public static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     //public static final String DB_URL = "jdbc:mysql://localhost/newdashboard?useSSL=false";
 

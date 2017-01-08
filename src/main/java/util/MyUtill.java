@@ -1,37 +1,59 @@
 package util;
 
+import static util.Constant.CONNECTION_TIMEOUT;
+import static util.Constant.DisplayName;
+import static util.Constant.Groups;
+import static util.Constant.GroupsItems;
+import static util.Constant.LINK_GET_CRU_PROJECTS;
+import static util.Constant.LINK_GET_CRU_USERS;
+import static util.Constant.LINK_GET_JIRA_PERIODS;
+import static util.Constant.LINK_GET_JIRA_PROJECTS;
+import static util.Constant.LINK_GET_ODREVIEW_REPORTS;
+import static util.Constant.LINK_GET_SONAR_STATISTIC;
+import static util.Constant.LOGININFO_INVALID;
+import static util.Constant.LOGIN_LINK;
+import static util.Constant.MetricKey;
+import static util.Constant.PASSWORD_LOGIN_KEY;
+import static util.Constant.REMEMBER_LOGIN_KEY;
+import static util.Constant.USERNAME_LOGIN_KEY;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
+import org.jsoup.Connection;
+import org.jsoup.Connection.Method;
+import org.jsoup.Connection.Response;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+
 import controllers.DashboardController;
 import models.SessionInfo;
-import models.gadget.Gadget;
 import ninja.session.Session;
-import org.bson.types.ObjectId;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.XML;
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import service.HTTPClientUtil;
-import util.gadget.GadgetUtility;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import static util.Constant.*;
 
 
 public class MyUtill {
@@ -62,25 +84,34 @@ public class MyUtill {
     }
 
 
-    private static Document getJsoupConnectionRespond(String link, Session session) {
-
+/*    private static Document getJsoupConnectionRespond(String link, Session session) {
         Document respond = null;
+        Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         try {
-            respond = Jsoup.connect(link).proxy(PROXY_IP, PROXY_PORT).cookies(getCookies(session))
-                    .timeout(CONNECTION_TIMEOUT_FOR_GET_STATISTIC).ignoreHttpErrors(true).get();
-
+            Connection req = Jsoup.connect(link).cookies(getCookies(session))
+                    .timeout(CONNECTION_TIMEOUT_FOR_GET_STATISTIC).ignoreHttpErrors(true);
+            ;
+            if (proxy != null) {
+                req.proxy(proxy);
+            }
+            respond = req.get();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return respond;
 
-    }
+    }*/
 
     private static BufferedReader getHttpURLConnection(String url, Session session) throws Exception {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_IP, PROXY_PORT));
+        Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         URL url2 = new URL(url);
-        HttpURLConnection myURLConnection = (HttpURLConnection) url2.openConnection(proxy);
+        HttpURLConnection myURLConnection;
+        if (proxy != null) {
+            myURLConnection = (HttpURLConnection) url2.openConnection(proxy);
+        } else {
+            myURLConnection = (HttpURLConnection) url2.openConnection();
+        }
 
         if (url.contains("http://tiger.in.alcatel-lucent.com:8060")) {
             myURLConnection.setRequestProperty("Cookie", getCruCookies(session).toString());
@@ -134,11 +165,15 @@ public class MyUtill {
 
     public static JSONObject getUserInformation(Session session) throws Exception {
         JSONObject userInfoRS = new JSONObject();
-
-        Document response = Jsoup.connect(String.format(Constant.LINK_GET_JIRA_USER_INFO, session.get("username")))
-                .proxy(PROXY_IP, PROXY_PORT).cookies(getCookies(session)).timeout(CONNECTION_TIMEOUT).ignoreContentType(true)
-                .ignoreHttpErrors(true).get();
-
+        Proxy proxy = HTTPClientUtil.getInstance().getProxy();
+        Connection req = Jsoup
+                .connect(String.format(Constant.LINK_GET_JIRA_USER_INFO, session.get("username")))
+                .cookies(getCookies(session)).timeout(CONNECTION_TIMEOUT).ignoreContentType(true)
+                .ignoreHttpErrors(true);
+        if (proxy != null) {
+            req.proxy(proxy);
+        }
+        Document response = req.get();
         JSONObject userInfo = new JSONObject(response.body().text());
         userInfoRS.put("alias", userInfo.getString(DisplayName));
 
@@ -155,7 +190,6 @@ public class MyUtill {
 
             groupNames.put(group.getString("name"));
         }
-
 
         userInfoRS.put("groups", groupNames.toString());
         return userInfoRS;
@@ -461,11 +495,11 @@ public class MyUtill {
     }
 
 
-    public static void setProxy() {
+/*    public static void setProxy() {
         System.setProperty("http.proxyHost", PROXY_IP);
         System.setProperty("http.proxyPort", PROXY_PORT + "");
     }
-
+*/
 
 
 

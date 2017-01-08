@@ -7,9 +7,15 @@ import models.main.Release;
 
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true, value={"author","name","pictureUrl","addnewUIurl","description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CycleVsTestExecution extends GadgetAPI {
+    public static final String author = "";
+    public static final String name = "Cycle Test Execution Report";
+    public static final String pictureUrl = "";
+    public static final String addnewUIurl = "assets/html/xxx.html";
+    public static final String description = "Cycle Test Execution Report";
+    
     private Type type = Type.TEST_CYCLE_TEST_EXECUTION;
     @JsonProperty(required = true)
     private String projectName;
@@ -17,6 +23,29 @@ public class CycleVsTestExecution extends GadgetAPI {
     private Set<String> cycles;
     private boolean selectAllCycle;
 
+    @Override
+    public String getAuthor() {
+        return author;
+    }
+    @Override
+    public String getName() {
+        return name;
+    }
+    
+    @Override
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    @Override
+    public String getAddnewUIurl() {
+        return addnewUIurl;
+    }
+    @Override
+    public String getDescription() {
+        return description;
+    }
+    
     @Override
     public Type getType() {
         return type;

@@ -248,7 +248,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $mdDialog.cancel();
 
             console.log(item.name);
-            $rootScope.gadgetType = item.name;
+            $rootScope.gadgetType = item.type;
 
             $mdDialog.show({
                 templateUrl: item.addnewUIurl,
