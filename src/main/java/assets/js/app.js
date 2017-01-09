@@ -959,22 +959,45 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
 });
 
 app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+	$scope.dataTable = null;
+	$scope.showView = true;
+	$scope.toggleView = function(){
+		$scope.showView = !$scope.showView;
+	}
     $scope.init = function (item) {
-
+    	drawEpicTable($scope.dataTable, item);
     }
 
     $scope.onProjectReleaseProductChanged = function (item) {
-
+    	
+    }
+    
+    $scope.editGreenhopperGadget = function(item){
+    	
+    }
+    
+    $scope.deleteGreenhopperGadget = function(item){
+    	
+    }
+    
+    $scope.onProjectReleaseProductChanged = function () {
+        console.log($("#epicProject").val());
+        console.log($("#epicProduct").val());
+        console.log($("#epicRelease").val());
     }
     
 });
 
-app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.getGreenHopperProjectList = [];
     $scope.getGreenHopperProduct = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    }
+    
     $scope.init = function () {
         console.log('init assignee controller');
         var callBack = function (result){
@@ -990,25 +1013,71 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
         }
         
         getGreenHopperProjectList(callBack);
-        getGreenHopperProduct(callBackProduct)
+        getGreenHopperProduct(callBackProduct);
         
     }
+});
+        
+app.controller('StoryController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+	$scope.dataTable = {"ajax": null, "loading": false};
+	$scope.showView = true;
+    $scope.init = function (item) {
+    	drawUsTable($scope.dataTable,item);
+    }
+    $scope.toggleView = function(){
+		$scope.showView = !$scope.showView;
+	}
     
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
-    $scope.onProjectReleaseProductChanged = function () {
-        console.log($("#epicProject").val());
-        console.log($("#epicProduct").val());
-        console.log($("#epicRelease").val());
+    
+    
+    $scope.editGreenhopperGadget = function(item){
+    	
+    }
+    
+	$scope.deleteGreenhopperGadget = function(item){
+
+	}
+});
+
+app.controller('CycleController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+	$scope.dataTable = null;
+	$scope.showView = true;
+	$scope.init = function (item) {
+		drawCycleTable($scope.dataTable, item);
+    }
+	$scope.toggleView = function(){
+		$scope.showView = !$scope.showView;
+	}
+	
+	$scope.editGreenhopperGadget = function(item){
+    	
     }
 
-    $scope.onCheckAllEpic = function (item) {
+	$scope.deleteGreenhopperGadget = function(item)
+	{
 
+	}
+});
+
+app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+	$scope.dataTable = {"ajax": null, "loading": false};
+	$scope.showView = true;
+	$scope.init = function (item) {
+		drawAssigneeTable($scope.dataTable, item);
     }
-
-    $scope.onUpdate = function (item) {
-
+	
+	$scope.toggleView = function(){
+		console.log($scope.showView);
+		$scope.showView = !$scope.showView;
+	}
+	
+	$scope.editGreenhopperGadget = function(item){
+    	
     }
+	
+	$scope.deleteGreenhopperGadget = function(item)
+	{
+
+	}
 });
 
