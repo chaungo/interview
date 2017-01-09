@@ -7,7 +7,7 @@ import models.main.Release;
 import java.util.List;
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value={"author","name","pictureUrl","addnewUIurl","description"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "addnewUIurl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EpicVsTestExecution extends GadgetAPI {
     public static final String author = "";
@@ -15,7 +15,7 @@ public class EpicVsTestExecution extends GadgetAPI {
     public static final String pictureUrl = "";
     public static final String addnewUIurl = "assets/html/xxx.html";
     public static final String description = "Epic Test Execution Report";
-    
+
     private boolean selectAll;
     private Gadget.Type type = Gadget.Type.EPIC_US_TEST_EXECUTION;
     private String projectName;
@@ -25,11 +25,12 @@ public class EpicVsTestExecution extends GadgetAPI {
     public String getAuthor() {
         return author;
     }
+
     @Override
     public String getName() {
         return name;
     }
-    
+
     @Override
     public String getPictureUrl() {
         return pictureUrl;
@@ -39,11 +40,12 @@ public class EpicVsTestExecution extends GadgetAPI {
     public String getAddnewUIurl() {
         return addnewUIurl;
     }
+
     @Override
     public String getDescription() {
         return description;
     }
-    
+
     public Set<String> getEpic() {
         return epic;
     }

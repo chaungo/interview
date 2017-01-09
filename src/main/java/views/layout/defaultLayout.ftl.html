@@ -9,23 +9,23 @@
     <script type="text/javascript" src="/assets/js/angular-messages.min.js"></script>
     <script type="text/javascript" src="/assets/js/angular-cookies.min.js"></script>
     <script type="text/javascript" src="/assets/jquery/jquery-2.2.4.min.js"></script>
-    <script src="/assets/lobipanel/lib/highlight/highlight.pack.js"></script>
-	<script src="/assets/lobipanel/dist/js/lobipanel.js"></script>
-	<!-- Datatables -->
+    <!--<script src="/assets/lobipanel/lib/highlight/highlight.pack.js"></script>-->
+    <!--<script src="/assets/lobipanel/dist/js/lobipanel.js"></script>-->
+    <!-- Datatables -->
     <script type="text/javascript" src="/assets/datatables/DataTables-1.10.13/js/jquery.dataTables.min.js"></script>
-    
+
     <!-- Custom script -->
     <script type="text/javascript" src="/assets/js/app.js"></script>
     <script type="text/javascript" src="/assets/js/product.js"></script>
 
-	<!-- CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/assets/css/angular-material.css">
     <link rel="stylesheet" type="text/css" href="/assets/datatables/DataTables-1.10.13/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css"/>
-	<link rel="stylesheet"
-	href="/assets/lobipanel/dist/css/lobipanel.min.css" />
+    <!--<link rel="stylesheet"-->
+    <!--href="/assets/lobipanel/dist/css/lobipanel.min.css"/>-->
     <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/product.css">
 
@@ -46,12 +46,15 @@
         <div ng-controller="HeaderCtrl" layout="row" layout-wrap layout-align="start center">
 
             <div>
-                <h2 style="margin-left: 10px; margin-right: 10px" layout-fill>{{pageName}}</h2>
+                <h2 ng-if="!err" style="margin-left: 10px; margin-right: 10px" layout-fill>{{pageName}}</h2>
+                <h2 ng-if="err" style="margin-left: 10px; margin-right: 10px;color: yellow" layout-fill>Please check
+                    connection!</h2>
             </div>
             <!--<div flex></div>-->
 
             <#if (session.username)??>
-                <md-button ng-if="currentDashboard.owner == name" style="margin-right: 10px;margin-left: 0"
+                <md-button ng-if="currentDashboard.owner == name" ng-hide="err"
+                           style="margin-right: 10px;margin-left: 0"
                            class="md-icon-button"
                            ng-click="showAddWidgetDialog($event)">
                     <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
@@ -73,7 +76,7 @@
                 <div>Hi {{userfullname}}</div>
 
 
-                <md-button href="http://tiger.in.alcatel-lucent.com:8060/user/{{name}}"
+                <md-button ng-hide="err" href="http://tiger.in.alcatel-lucent.com:8060/user/{{name}}"
                            class="md-icon-button">
                     <md-icon style="color: white;" class="material-icons">account_circle</md-icon>
                 </md-button>

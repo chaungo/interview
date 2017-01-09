@@ -88,8 +88,16 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.name = $rootScope.userInfo.name;
             console.log(data);
             $rootScope.getDashboardList();
+            $rootScope.getting = false;
         }, function (error) {
+            $rootScope.getting = false;
+            $rootScope.err = true;
             console.log(error);
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Unable to connect to Jira server. Please check connection!')
+                    .hideDelay(30000)
+            );
         });
     } else {
         $rootScope.userInfo = $cookies.getObject("userInfo");
@@ -138,7 +146,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                 $rootScope.hasInfo = true;
 
                 if (respone.SonarGadget > 0) {
-                    $resource('/showSonarStatisticGadget', {
+                    $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
                         console.log(respone);
@@ -391,8 +399,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Release List')
-                .hideDelay(5000)
+                .textContent('Error! Can not get Release List. Please check connection!')
+                .hideDelay(10000)
         );
     });
 
@@ -428,8 +436,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             console.log(error);
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Error! Can not get IA Component')
-                    .hideDelay(5000)
+                    .textContent('Error! Can not get IA Component. Please check connection!')
+                    .hideDelay(10000)
             );
         });
     };
@@ -503,8 +511,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Metric List')
-                .hideDelay(5000)
+                .textContent('Error! Can not get Metric List. Please check connection!')
+                .hideDelay(10000)
         );
     });
 
@@ -585,8 +593,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get Period List')
-                        .hideDelay(5000)
+                        .textContent('Error! Can not get Period List. Please check connection!')
+                        .hideDelay(10000)
                 );
             });
         } else {
@@ -660,8 +668,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not update gadget')
-                        .hideDelay(5000)
+                        .textContent('Error! Can not update gadget. ')
+                        .hideDelay(10000)
                 );
             });
         } else {
@@ -695,7 +703,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('Error! Can not get add new gadget')
-                        .hideDelay(5000)
+                        .hideDelay(10000)
                 );
             });
 
@@ -755,8 +763,8 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Cru Project List')
-                .hideDelay(5000)
+                .textContent('Error! Can not get Cru Project List. Please check connection!')
+                .hideDelay(10000)
         );
     });
 
@@ -791,7 +799,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
                 console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get add new gadget')
+                        .textContent('Error! Can not get add new gadget.')
                         .hideDelay(5000)
                 );
             });
@@ -825,8 +833,8 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get project list')
-                .hideDelay(5000)
+                .textContent('Error! Can not get project list. Please check connection!')
+                .hideDelay(10000)
         );
     });
 

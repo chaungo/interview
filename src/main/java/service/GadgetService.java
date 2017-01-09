@@ -1,12 +1,10 @@
 package service;
 
-import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import models.gadget.Gadget;
 import models.gadget.GadgetAPI;
-
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -63,7 +61,7 @@ public class GadgetService {
     public static JSONArray getGadgetListfromDB() throws Exception {
         JSONArray gadgets = new JSONArray();
         Iterator<GadgetAPI> iterator = GadgetAPI.getIterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             GadgetAPI gadgetObj = iterator.next();
             JSONObject gadget = new JSONObject();
             gadget.put("name", gadgetObj.getName());

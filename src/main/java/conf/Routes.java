@@ -22,7 +22,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/clearCacheGadget").with(GadgetController.class, "clearCacheGadget");
         router.POST().route("/deleteGadget").with(GadgetController.class, "deleteGadget");
 
-        router.POST().route("/showSonarStatisticGadget").with(SonarStatisticGadgetController.class, "showSonarStatisticGadget");
+        router.POST().route("/showGadgets").with(GadgetController.class, "showGadgets");
         router.POST().route("/getIAComponents").with(SonarStatisticGadgetController.class, "getIAComponents");
         router.POST().route("/getMetrics").with(SonarStatisticGadgetController.class, "getMetricList");
         router.POST().route("/getReleaseList").with(SonarStatisticGadgetController.class, "getReleaseList");
@@ -41,7 +41,6 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/metric").with(ConfigurationController.class, "metricPost");
         router.POST().route("/metric/update").with(ConfigurationController.class, "metricUpdate");
         router.POST().route("/metric/delete").with(ConfigurationController.class, "metricDelete");
-
 
 
         router.GET().route("/dashboard/new").with(DashboardController.class, "new_dashboard");
