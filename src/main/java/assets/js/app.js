@@ -42,7 +42,9 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     $rootScope.gadgetId = "";
     $rootScope.gadgetType;
     $rootScope.currentDashboard = {};
-    $rootScope.colorRed = {color: 'red'};
+    $rootScope.colorRed = {
+        color: 'red'
+    };
     $rootScope.dashboardNameList = [];
     $rootScope.dashboardInfo = {};
     $rootScope.MetricsList = [];
@@ -72,8 +74,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Server error')
-                    .hideDelay(5000)
+                .textContent('Server error')
+                .hideDelay(5000)
             );
             //console.log(error);
         });
@@ -95,8 +97,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             //console.log(error);
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Unable to connect to Jira server. Please check connection!')
-                    .hideDelay(30000)
+                .textContent('Unable to connect to Jira server. Please check connection!')
+                .hideDelay(30000)
             );
         });
     } else {
@@ -109,15 +111,13 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
     $scope.showAddNewDialog = function (ev) {
         $mdDialog.show({
-            controller: DialogController,
-            templateUrl: 'assets/html/addNewDashboard.html',
-            parent: angular.element(document.html),
-            targetEvent: ev,
-            clickOutsideToClose: true
-        })
-            .then(function (answer) {
-            }, function () {
-            });
+                controller: DialogController,
+                templateUrl: 'assets/html/addNewDashboard.html',
+                parent: angular.element(document.html),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            })
+            .then(function (answer) {}, function () {});
     };
 
 
@@ -161,8 +161,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                         $rootScope.getting = false;
                         $mdToast.show(
                             $mdToast.simple()
-                                .textContent('Server error')
-                                .hideDelay(5000)
+                            .textContent('Server error')
+                            .hideDelay(5000)
                         );
                     });
                 }
@@ -194,8 +194,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         } else {
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Please wait!')
-                    .hideDelay(2000)
+                .textContent('Please wait!')
+                .hideDelay(2000)
             );
         }
     };
@@ -217,12 +217,12 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
 
         $mdDialog.show({
-            controller: AddWidgetDialogController,
-            templateUrl: 'assets/html/choseGadget.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose: true
-        })
+                controller: AddWidgetDialogController,
+                templateUrl: 'assets/html/choseGadget.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            })
             .then(function (answer) {
                 $scope.status = 'You said the information was "' + answer + '".';
             }, function () {
@@ -245,8 +245,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Server error')
-                    .hideDelay(5000)
+                .textContent('Server error')
+                .hideDelay(5000)
             );
             //console.log(error);
         });
@@ -399,8 +399,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         //console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Release List. Please check connection!')
-                .hideDelay(10000)
+            .textContent('Error! Can not get Release List. Please check connection!')
+            .hideDelay(10000)
         );
     });
 
@@ -416,7 +416,9 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
         $scope.IALoading = true;
         $resource('/getIAComponents', {
-            data: {url: $scope.releaseUrl}
+            data: {
+                url: $scope.releaseUrl
+            }
         }, {
             query: {
                 method: 'post',
@@ -436,8 +438,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             //console.log(error);
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Error! Can not get IA Component. Please check connection!')
-                    .hideDelay(10000)
+                .textContent('Error! Can not get IA Component. Please check connection!')
+                .hideDelay(10000)
             );
         });
     };
@@ -448,8 +450,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         var idx = $scope.selectedIA.indexOf(item);
         if (idx > -1) {
             $scope.selectedIA.splice(idx, 1);
-        }
-        else {
+        } else {
             $scope.selectedIA.push(item);
         }
 
@@ -462,7 +463,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
     $scope.isIAIndeterminate = function () {
         return ($scope.selectedIA.length !== 0 &&
-        $scope.selectedIA.length !== $scope.IAItemNames.length);
+            $scope.selectedIA.length !== $scope.IAItemNames.length);
     };
 
     $scope.isIAChecked = function () {
@@ -496,7 +497,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
     };
 
 
-/////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     $scope.itemsNameMetric = [];
     $scope.MetricItems = [];
@@ -511,8 +512,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         //console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Metric List. Please check connection!')
-                .hideDelay(10000)
+            .textContent('Error! Can not get Metric List. Please check connection!')
+            .hideDelay(10000)
         );
     });
 
@@ -521,8 +522,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         var idx = $scope.selectedMetric.indexOf(item);
         if (idx > -1) {
             $scope.selectedMetric.splice(idx, 1);
-        }
-        else {
+        } else {
             $scope.selectedMetric.push(item);
         }
     };
@@ -533,7 +533,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
     $scope.isMetricIndeterminate = function () {
         return ($scope.selectedMetric.length !== 0 &&
-        $scope.selectedMetric.length !== $scope.itemsNameMetric.length);
+            $scope.selectedMetric.length !== $scope.itemsNameMetric.length);
     };
 
     $scope.isMetricChecked = function () {
@@ -593,8 +593,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 //console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get Period List. Please check connection!')
-                        .hideDelay(10000)
+                    .textContent('Error! Can not get Period List. Please check connection!')
+                    .hideDelay(10000)
                 );
             });
         } else {
@@ -668,8 +668,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 //console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not update gadget. ')
-                        .hideDelay(10000)
+                    .textContent('Error! Can not update gadget. ')
+                    .hideDelay(10000)
                 );
             });
         } else {
@@ -702,8 +702,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 //console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get add new gadget')
-                        .hideDelay(10000)
+                    .textContent('Error! Can not get add new gadget')
+                    .hideDelay(10000)
                 );
             });
 
@@ -727,6 +727,8 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $resource) {
     $rootScope.pageName = "Configuration";
@@ -791,20 +793,20 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
         if ($scope.newMetricName.length == 0 || $scope.newMetricKey.length == 0) {
             $mdDialog.show(
                 $mdDialog.alert()
-                    .title('Oop!')
-                    .textContent('Metric name and metric key can not be empty')
-                    .ok('Got it!')
-                    .targetEvent(ev)
+                .title('Oop!')
+                .textContent('Metric name and metric key can not be empty')
+                .ok('Got it!')
+                .targetEvent(ev)
             );
         } else {
             for (var i = 0; i < $scope.MetricList.length; i++) {
                 if ($scope.newMetricName == $scope.MetricList[i].name) {
                     $mdDialog.show(
                         $mdDialog.alert()
-                            .title('Oop!')
-                            .textContent('Metric name ' + '"' + $scope.newMetricName + '"' + " is already exists")
-                            .ok('Got it!')
-                            .targetEvent(ev)
+                        .title('Oop!')
+                        .textContent('Metric name ' + '"' + $scope.newMetricName + '"' + " is already exists")
+                        .ok('Got it!')
+                        .targetEvent(ev)
                     );
                     return;
                 }
@@ -812,21 +814,23 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                 if ($scope.newMetricKey == $scope.MetricList[i].key) {
                     $mdDialog.show(
                         $mdDialog.alert()
-                            .title('Oop!')
-                            .textContent('Metric key ' + '"' + $scope.newMetricKey + '"' + " is already exists")
-                            .ok('Got it!')
-                            .targetEvent(ev)
+                        .title('Oop!')
+                        .textContent('Metric key ' + '"' + $scope.newMetricKey + '"' + " is already exists")
+                        .ok('Got it!')
+                        .targetEvent(ev)
                     );
                     return;
                 }
             }
 
-            $scope.MetricList.push({'name': $scope.newMetricName, 'key': $scope.newMetricKey});
+            $scope.MetricList.push({
+                'name': $scope.newMetricName,
+                'key': $scope.newMetricKey
+            });
             $resource('/addNewMetric', {
                 name: $scope.newMetricName,
                 key: $scope.newMetricKey
-            }).save().$promise.then(function (data) {
-            }, function (error) {
+            }).save().$promise.then(function (data) {}, function (error) {
                 console.log(error);
             });
         }
@@ -878,10 +882,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                     if (a == 2) {
                         $mdDialog.show(
                             $mdDialog.alert()
-                                .title('Oop!')
-                                .textContent('Metric name ' + '"' + metric.name + '"' + " is already exists")
-                                .ok('Got it!')
-                                .targetEvent(ev)
+                            .title('Oop!')
+                            .textContent('Metric name ' + '"' + metric.name + '"' + " is already exists")
+                            .ok('Got it!')
+                            .targetEvent(ev)
                         ).then(function () {
                             $scope.getMetricList();
                         });
@@ -894,10 +898,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                     if (b == 2) {
                         $mdDialog.show(
                             $mdDialog.alert()
-                                .title('Oop!')
-                                .textContent('Metric key ' + '"' + metric.key + '"' + " is already exists")
-                                .ok('Got it!')
-                                .targetEvent(ev)
+                            .title('Oop!')
+                            .textContent('Metric key ' + '"' + metric.key + '"' + " is already exists")
+                            .ok('Got it!')
+                            .targetEvent(ev)
                         ).then(function () {
                             $scope.getMetricList();
                         });
@@ -925,10 +929,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
         if ($scope.newReleaseName.length == 0 || $scope.newReleaseUrl.length == 0) {
             $mdDialog.show(
                 $mdDialog.alert()
-                    .title('Oop!')
-                    .textContent('Release name and release url can not be empty')
-                    .ok('Got it!')
-                    .targetEvent(ev)
+                .title('Oop!')
+                .textContent('Release name and release url can not be empty')
+                .ok('Got it!')
+                .targetEvent(ev)
             ).then(function () {
                 $scope.getReleaseList();
             });
@@ -939,10 +943,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                 if ($scope.newReleaseName == $scope.ReleaseList[i].name) {
                     $mdDialog.show(
                         $mdDialog.alert()
-                            .title('Oop!')
-                            .textContent('Release name ' + '"' + $scope.newReleaseName + '"' + " is already exists")
-                            .ok('Got it!')
-                            .targetEvent(ev)
+                        .title('Oop!')
+                        .textContent('Release name ' + '"' + $scope.newReleaseName + '"' + " is already exists")
+                        .ok('Got it!')
+                        .targetEvent(ev)
                     ).then(function () {
                         $scope.getReleaseList();
                     });
@@ -952,10 +956,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                 if ($scope.newReleaseUrl == $scope.ReleaseList[i].url) {
                     $mdDialog.show(
                         $mdDialog.alert()
-                            .title('Oop!')
-                            .textContent('Release url ' + '"' + $scope.newReleaseUrl + '"' + " is already exists")
-                            .ok('Got it!')
-                            .targetEvent(ev)
+                        .title('Oop!')
+                        .textContent('Release url ' + '"' + $scope.newReleaseUrl + '"' + " is already exists")
+                        .ok('Got it!')
+                        .targetEvent(ev)
                     ).then(function () {
                         $scope.getReleaseList();
                     });
@@ -963,12 +967,14 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                 }
             }
 
-            $scope.ReleaseList.push({'name': $scope.newReleaseName, 'url': $scope.newReleaseUrl});
+            $scope.ReleaseList.push({
+                'name': $scope.newReleaseName,
+                'url': $scope.newReleaseUrl
+            });
             $resource('/addNewRelease', {
                 name: $scope.newReleaseName,
                 url: $scope.newReleaseUrl
-            }).save().$promise.then(function (data) {
-            }, function (error) {
+            }).save().$promise.then(function (data) {}, function (error) {
                 console.log(error);
             });
         }
@@ -995,8 +1001,7 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                     console.log(error);
                 });
             }
-        }, function () {
-        });
+        }, function () {});
     };
 
 
@@ -1021,10 +1026,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                     if (a == 2) {
                         $mdDialog.show(
                             $mdDialog.alert()
-                                .title('Oop!')
-                                .textContent('Release name ' + '"' + release.name + '"' + " is already exists")
-                                .ok('Got it!')
-                                .targetEvent(ev)
+                            .title('Oop!')
+                            .textContent('Release name ' + '"' + release.name + '"' + " is already exists")
+                            .ok('Got it!')
+                            .targetEvent(ev)
                         ).then(function () {
                             $scope.getReleaseList();
                         });
@@ -1038,10 +1043,10 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                     if (b == 2) {
                         $mdDialog.show(
                             $mdDialog.alert()
-                                .title('Oop!')
-                                .textContent('Release url ' + '"' + release.url + '"' + " is already exists")
-                                .ok('Got it!')
-                                .targetEvent(ev)
+                            .title('Oop!')
+                            .textContent('Release url ' + '"' + release.url + '"' + " is already exists")
+                            .ok('Got it!')
+                            .targetEvent(ev)
                         ).then(function () {
                             $scope.getReleaseList();
                         });
@@ -1054,7 +1059,7 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
             $resource('/updateRelease', {
                 id: release.id,
                 name: release.name,
-                key: release.url
+                url: release.url
             }).save().$promise.then(function (data) {
                 console.log(data)
             }, function (error) {
@@ -1065,6 +1070,7 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
 
 
 });
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1102,8 +1108,8 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         //console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get Cru Project List. Please check connection!')
-                .hideDelay(10000)
+            .textContent('Error! Can not get Cru Project List. Please check connection!')
+            .hideDelay(10000)
         );
     });
 
@@ -1112,8 +1118,8 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         if ($scope.projectId == "") {
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Please choose a project')
-                    .hideDelay(5000)
+                .textContent('Please choose a project')
+                .hideDelay(5000)
             );
         } else {
             var data = {
@@ -1138,8 +1144,8 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
                 //console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
-                        .textContent('Error! Can not get add new gadget.')
-                        .hideDelay(5000)
+                    .textContent('Error! Can not get add new gadget.')
+                    .hideDelay(5000)
                 );
             });
         }
@@ -1172,8 +1178,8 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         //console.log(error);
         $mdToast.show(
             $mdToast.simple()
-                .textContent('Error! Can not get project list. Please check connection!')
-                .hideDelay(10000)
+            .textContent('Error! Can not get project list. Please check connection!')
+            .hideDelay(10000)
         );
     });
 
@@ -1271,8 +1277,8 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
             //console.log(error);
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Error! Can not update dashboard option')
-                    .hideDelay(5000)
+                .textContent('Error! Can not update dashboard option')
+                .hideDelay(5000)
             );
         });
     };
@@ -1288,8 +1294,8 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
-                    .textContent('Server error')
-                    .hideDelay(5000)
+                .textContent('Server error')
+                .hideDelay(5000)
             );
             //console.log(error);
         });
@@ -1323,7 +1329,10 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
 
 
 app.controller('StoryController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.dataTable = {"ajax": null, "loading": false};
+    $scope.dataTable = {
+        "ajax": null,
+        "loading": false
+    };
     $scope.showView = true;
     $scope.init = function (item) {
         drawUsTable($scope.dataTable, item);
@@ -1362,7 +1371,10 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
 });
 
 app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.dataTable = {"ajax": null, "loading": false};
+    $scope.dataTable = {
+        "ajax": null,
+        "loading": false
+    };
     $scope.showView = true;
     $scope.init = function (item) {
         drawAssigneeTable($scope.dataTable, item);
@@ -1381,4 +1393,3 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
 
     }
 });
-
