@@ -94,7 +94,8 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
     }
     
 
-
+    $scope.isDisabled = false;
+    
     $scope.saveGadget = function() {
         var epicProjectVal = $("#epicProject").val();
         var epicProductVal = $("#epicProduct").val();
@@ -102,7 +103,6 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
         var metricsVal = $("#epicMetricMultiSelect").val();
         var epicLink = $("#epicLinkSelection").val();
         var isNotEmpty;
-
         var epicCheckAllVal = $("#epicCheckAll").prop('checked');
         if (epicCheckAllVal) {
             isNotEmpty = verifyValue([ epicProjectVal, epicProductVal, epicReleaseVal ]);
@@ -120,7 +120,14 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
             object['projectName'] = epicProjectVal;
             object['products'] = [ epicProductVal ];
             object['metrics'] = metricsVal;
-            object['epic'] = epicLink;
+            if(epicCheckAllVal){
+                object['selectAll'] = true;
+            }else{
+                object['epic'] = epicLink;
+            }
+            if($rootScope.gadgetIdToEdit!=null){
+                object['id'] = $rootScope.gadgetToEdit.id;
+            }
             var jsonObj = JSON.stringify(object);
             var callback = function(result) {
                 if (result.type != SUCCESS) {
@@ -130,15 +137,15 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                     $scope.cancel();
                 }
             }
+            
             saveEpicSettings(jsonObj, callback);
-
         } else {
             showError("Need to select settings");
         }
 
     }
     function saveEpicSettings(settings, callback){
-       
+        $scope.isDisabled = true;
         $.ajax({
             url: "/gadget/save",
             method: 'POST',
@@ -148,9 +155,11 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
             },
             success: function(data) {
                 callback(data);
+                $scope.isDisabled = false;
             },
             error: function(xhr, textStatus, error) {
-
+                showError(error);
+                $scope.isDisabled = false;
             }
           });
     }

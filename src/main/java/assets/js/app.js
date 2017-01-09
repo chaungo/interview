@@ -364,6 +364,16 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         return val >= 0;
     };
 
+    $scope.editGreenhopperGadget = function (item , event) {
+        $rootScope.gadgetToEdit = item;
+        $mdDialog.show({
+            templateUrl: item.addnewUIurl,
+            parent: angular.element(document.getElementById('html')),
+            targetEvent: event,
+            clickOutsideToClose: false
+        });
+    }
+    
 
 });
 
@@ -1342,10 +1352,6 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     }
 
     $scope.onProjectReleaseProductChanged = function (item) {
-
-    }
-
-    $scope.editGreenhopperGadget = function (item) {
 
     }
 

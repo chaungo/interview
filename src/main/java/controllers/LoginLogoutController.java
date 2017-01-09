@@ -25,6 +25,7 @@ public class LoginLogoutController {
 
 
     public static boolean doLogin(String username, String password, Session session) throws Exception {
+        boolean success = true;
         try {
             Connection.Response respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
                     .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
@@ -40,7 +41,7 @@ public class LoginLogoutController {
                 String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
                 session.put(API_SESSION_INFO, sessionInfoStr);
             }else{
-                return false;
+                success = false;
             }
 
             if (respond.header("X-AUSERNAME").equals(username)) {
@@ -51,22 +52,21 @@ public class LoginLogoutController {
                 session.put("crucookies", CruCookies.toString());
 
                 if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                    session.clear();
-                    return false;
+                    success = false;
                 }
-
-                return true;
             }
 
             if (respond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                session.clear();
-                return false;
+                success = false;
             }
         } catch (Exception e) {
-            session.clear();
-            return false;
+            
+            success = false;
         }
-        return false;
+        if(!success){
+            session.clear();
+        }
+        return success;
 
     }
 

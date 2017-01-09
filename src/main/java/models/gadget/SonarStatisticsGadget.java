@@ -3,7 +3,7 @@ package models.gadget;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "addnewUIurl", "description"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SonarStatisticsGadget extends GadgetAPI {
     public static final String author = "By Alcatel-Lucent AMS R&D";

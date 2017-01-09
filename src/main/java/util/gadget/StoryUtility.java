@@ -71,10 +71,6 @@ public class StoryUtility {
         List<ExecutionIssueVO> result = new ArrayList<>();
         if (JQLIssuetypeVO.Type.STORY.toString().equalsIgnoreCase(issue.getFields().getIssuetype().getName())) {
             List<JQLIssueLinkVO> issueLinks = findAllTestIssueForStory(issue);
-            String test = "";
-            for (JQLIssueLinkVO t : issueLinks) {
-                test = test + (t.getInwardIssue().getKey()) + ",";
-            }
             if (issueLinks != null && !issueLinks.isEmpty()) {
                 for (JQLIssueLinkVO issueLink : issueLinks) {
                     List<ExecutionIssueVO> executionIssues = EpicUtility.getInstance().findTestExecutionInIsuee(issueLink.getInwardIssue().getKey(), cookies);

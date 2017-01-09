@@ -79,9 +79,9 @@ public class EpicUtility {
 
 //        issues.addAll(findAllIssuesInEpicLink(epic, cookies));
         List<JQLIssueVO> issuesInEpic = findAllIssuesInEpicLink(epic, cookies);
-        List<JQLIssueVO> storyInEpic = issuesInEpic.stream().filter(i -> Type.STORY.toString().equalsIgnoreCase(i.getFields().getIssuetype().getName())).collect(Collectors.toList());
+        List<JQLIssueVO> storyAndTestIssueInEpic = issuesInEpic.stream().filter(i -> Type.STORY.toString().equalsIgnoreCase(i.getFields().getIssuetype().getName()) || Type.TEST.toString().equalsIgnoreCase(i.getFields().getIssuetype().getName())).collect(Collectors.toList());
 
-        issues.addAll(storyInEpic);
+        issues.addAll(storyAndTestIssueInEpic);
         issues.addAll(findAllTestedIssueForEpic(epic, cookies));
         if (issues == null || issues.isEmpty()) {
             return resultWapper;

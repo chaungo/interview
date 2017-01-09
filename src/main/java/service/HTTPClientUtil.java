@@ -80,7 +80,7 @@ public class HTTPClientUtil {
         return httpclient;
     }
 
-    public Map<String, String> loginGreenhopper(String username, String password) {
+    public Map<String, String> loginGreenhopper(String username, String password) throws APIException {
         Map<String, String> sessionCookies = new HashMap<String, String>();
         try {
             Proxy proxy = getProxy();
@@ -95,6 +95,7 @@ public class HTTPClientUtil {
             logger.fasttrace("User: %s, cookies:%s", username, sessionCookies);
         } catch (IOException e) {
             logger.fastDebug("User: %s, cannot login to %s", e, username, loginURL);
+            throw new APIException(String.format("User: %s, cannot login to %s", e, username));
         }
         return sessionCookies;
     }
