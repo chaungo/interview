@@ -5,6 +5,12 @@ app.run(function ($rootScope, $resource, $location, $cookies) {
     /////////////////////////////////////////////////////////////
     //console.log($location.absUrl());
 
+    if ($location.absUrl().indexOf("configuration") > -1) {
+        $rootScope.configPage = true;
+    }else {
+        $rootScope.configPage = false;
+    }
+
     if ($location.absUrl().indexOf("release") > -1) {
         $rootScope.pageName = "Release";
     } else {
@@ -354,6 +360,7 @@ app.controller('HeaderCtrl', function ($rootScope, $scope, $resource, $mdDialog,
 
 app.controller('LoginCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $cookies) {
     $cookies.remove("userInfo");
+
     $rootScope.pageName = "Login";
     $scope.wronginfo = false;
     $scope.connectionfailed = false;
