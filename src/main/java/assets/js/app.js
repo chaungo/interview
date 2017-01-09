@@ -1,6 +1,16 @@
 var app = angular.module('App', ['ngAnimate', 'ngMaterial', 'ngResource', 'ngMessages', 'ngCookies']);
+var SUCCESS = "SUCCESS";
+function getGreenHopperProjectList(callback){
+    $.get("/listproject", function(data){
+        callback(data);
+    });
+}
 
-
+function getGreenHopperProduct(callback){
+    $.get("/product/getall", function(data){
+        callback(data);
+    });
+}
 app.run(function ($rootScope, $resource, $location, $cookies) {
     /////////////////////////////////////////////////////////////
     //console.log($location.absUrl());
@@ -957,7 +967,7 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     }
 
     $scope.onProjectReleaseProductChanged = function (item) {
-
+        
     }
 
     $scope.onCheckAllEpic = function (item) {
@@ -968,4 +978,46 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
 
     }
 });
+
+app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.getGreenHopperProjectList = [];
+    $scope.getGreenHopperProduct = [];
+    $scope.selectedProduct = null;
+    $scope.selectedProject = null;
+    $scope.init = function () {
+        console.log('init assignee controller');
+        var callBack = function (result){
+            $scope.getGreenHopperProjectList = result;
+            
+        }
+        var callBackProduct = function (result){
+            console.log(result);
+            if(result.type == SUCCESS){
+                $scope.getGreenHopperProduct = result.data;
+            }
+            
+        }
+        
+        getGreenHopperProjectList(callBack);
+        getGreenHopperProduct(callBackProduct)
+        
+    }
+    
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.onProjectReleaseProductChanged = function () {
+        
+    }
+
+    $scope.onCheckAllEpic = function (item) {
+
+    }
+
+    $scope.onUpdate = function (item) {
+
+    }
+    
+});
+
 

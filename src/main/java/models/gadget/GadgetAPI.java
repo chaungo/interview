@@ -17,7 +17,8 @@ public abstract class GadgetAPI implements Gadget {
     protected Release release;
     protected Set<String> products;
     protected List<String> metrics;
-
+    protected String projectName;
+    
     @Override
     public String getId() {
         return id;
@@ -41,6 +42,44 @@ public abstract class GadgetAPI implements Gadget {
     @Override
     public Release getRelease() {
         return release;
+    }
+    
+    @Override
+    public List<String> getMetrics() {
+        return metrics;
+    }
+    
+    @Override
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setDashboardId(String dashboardId) {
+        this.dashboardId = dashboardId;
+    }
+
+    public void setRelease(Release release) {
+        this.release = release;
+    }
+
+    public void setProducts(Set<String> products) {
+        this.products = products;
+    }
+
+    public void setMetrics(List<String> metrics) {
+        this.metrics = metrics;
     }
 
     public abstract String getAuthor();

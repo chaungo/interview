@@ -30,7 +30,7 @@ public class MyGadgetController {
         try {
             return handler.insertOrUpdateGadget(type, data, context);
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 
@@ -39,16 +39,16 @@ public class MyGadgetController {
             logger.fasttrace("deleteGadget(%s) , by user:%s", id, context.getSession().get(Constant.USERNAME));
             return handler.deleteGadget(id);
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 
-    public Result getGadgetsInDashboardId(@Param("dashboardId") String id) {
+    public Result getGadgetsInDashboardId(@Param("dashboardId") String id, Context context) {
         logger.fasttrace("getGadgetsInDashboardId(%s)", id);
         try {
             return handler.getGadgets(id);
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
 
     }
@@ -58,7 +58,7 @@ public class MyGadgetController {
         try {
             return handler.getDataGadget(id, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 
@@ -68,7 +68,7 @@ public class MyGadgetController {
             List<String> epics = JSONUtil.getInstance().convertJSONtoListObject(epic, String.class);
             return handler.getStoryInEpic(epics, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 
@@ -78,7 +78,7 @@ public class MyGadgetController {
         try {
             return handler.getProjectList(ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 }

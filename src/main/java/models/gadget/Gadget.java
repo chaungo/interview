@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import models.main.Release;
 
+import java.util.List;
 import java.util.Set;
 
 public interface Gadget {
@@ -21,6 +22,8 @@ public interface Gadget {
 
     String getProjectName();
 
+    List<String> getMetrics();
+    
     enum Type {
         ASSIGNEE_TEST_EXECUTION, TEST_CYCLE_TEST_EXECUTION, EPIC_US_TEST_EXECUTION, STORY_TEST_EXECUTION, AMS_SONAR_STATISTICS_GADGET, AMS_OVERDUE_REVIEWS;
 

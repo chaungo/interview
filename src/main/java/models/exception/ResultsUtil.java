@@ -9,7 +9,10 @@ import util.Constant;
 import util.PropertiesUtil;
 
 public class ResultsUtil {
-    public static Result convertException(APIException e) {
+    public static Result convertException(APIException e, Context context) {
+        if(APIErrorCode.COKKIES_EXPIRED.equals(e.getErrorCode())){
+            context.getSession().clear();
+        }
         Result result = Results.json();
         result.render("type", "error");
         result.render("data", e.getMessage());

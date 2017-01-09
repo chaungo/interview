@@ -1,4 +1,4 @@
-<md-dialog>
+<md-dialog ng-controller="AssigneeController" ng-init="init()">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Assignee Settings</h2>
@@ -19,14 +19,13 @@
 								<tr>
 									<td class="col-md-6"><label>Project</label></td>
 									<td class="col-md-6"><select class="form-control"
-										id="epicProject">
-											<option selected disabled>-Select Project-</option>
+										id="epicProject" ng-model="selectedProject" ng-change="onProjectReleaseProductChanged()" ng-options="item as item for item in getGreenHopperProjectList">
 									</select></td>
 								</tr>
 								<!-- Release Row -->
 								<tr>
 									<td class="col-md-6"><label>Release</label></td>
-									<td class="col-md-6"><select class="form-control"
+									<td class="col-md-6"><select class="form-control" ng-change="onProjectReleaseProductChanged()"
 										id="epicRelease">
 											<option value="" selected disabled>-Select Version-</option>
 											<option value="1.2.0">R1.2.0</option>
@@ -39,7 +38,7 @@
 									<td class="col-md-6"><label>Product</label></td>
 									<td class="col-md-12 row">
 									<div class="col-md-9">
-									<select id="epicProduct"
+									<select id="epicProduct" ng-model="selectedProduct" ng-change="onProjectReleaseProductChanged()" ng-options="item as item for item in getGreenHopperProduct"
 										class="form-control">
 											<option value="" selected disabled>-Select Product-</option>
 									</select></div><div class="col-md-3"><a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user." class="btn-to-product btn btn-default">Add Product</a></div></td>
