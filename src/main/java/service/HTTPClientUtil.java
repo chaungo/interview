@@ -128,10 +128,10 @@ public class HTTPClientUtil {
         }
         try {
             Response re = connection.execute();
-            if(401 == re.statusCode()){
-            //Unauthorized
+            if (401 == re.statusCode()) {
+                //Unauthorized
                 throw new APIException("Cookies has expired", APIErrorCode.COKKIES_EXPIRED);
-            }else{
+            } else {
                 data = re.body();
             }
         } catch (IOException e) {

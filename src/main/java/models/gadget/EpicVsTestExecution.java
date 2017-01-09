@@ -1,9 +1,9 @@
 package models.gadget;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "addnewUIurl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)

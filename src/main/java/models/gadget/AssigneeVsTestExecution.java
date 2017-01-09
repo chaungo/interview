@@ -1,11 +1,11 @@
 package models.gadget;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonIgnoreProperties(ignoreUnknown = true , value={"author","name","pictureUrl","addnewUIurl","description"})
+import java.util.Set;
+
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "addnewUIurl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssigneeVsTestExecution extends GadgetAPI {
     public static final String author = "";
@@ -13,7 +13,7 @@ public class AssigneeVsTestExecution extends GadgetAPI {
     public static final String pictureUrl = "";
     public static final String addnewUIurl = "assets/html/AssigneeSettings.html";
     public static final String description = "Assignee Test Execution Report";
-    
+
     private final Gadget.Type type = Gadget.Type.ASSIGNEE_TEST_EXECUTION;
     private boolean selectAllTestCycle;
     private Set<String> cycles;
@@ -22,11 +22,12 @@ public class AssigneeVsTestExecution extends GadgetAPI {
     public String getAuthor() {
         return author;
     }
+
     @Override
     public String getName() {
         return name;
     }
-    
+
     @Override
     public String getPictureUrl() {
         return pictureUrl;
@@ -36,6 +37,7 @@ public class AssigneeVsTestExecution extends GadgetAPI {
     public String getAddnewUIurl() {
         return addnewUIurl;
     }
+
     @Override
     public String getDescription() {
         return description;

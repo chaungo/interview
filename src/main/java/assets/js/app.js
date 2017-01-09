@@ -44,7 +44,6 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     $rootScope.colorRed = {color: 'red'};
     $rootScope.dashboardNameList = [];
     $rootScope.dashboardInfo = {};
-    //$rootScope.RsIAArray = [];
     $rootScope.MetricsList = [];
     $rootScope.getting = true;
     $rootScope.gettingRs = true;

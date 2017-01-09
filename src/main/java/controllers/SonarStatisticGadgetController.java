@@ -29,56 +29,6 @@ import static util.MyUtill.isCacheExpired;
 public class SonarStatisticGadgetController {
     final static Logger logger = Logger.getLogger(SonarStatisticGadgetController.class);
 
-    @FilterWith(SecureFilter.class)
-    public Result addNewSonarWidget() {
-        return Results.html();
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result getIAComponents(Session session, @Param("data") String data) {
-        try {
-            return Results.text().render(getIAComponentsRespond(session, (new JSONObject(data)).getString("url"), null));
-        } catch (Exception e) {
-            logger.error(e);
-            return Results.internalServerError();
-        }
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result getPeriodList(Session session) {
-        try {
-            return Results.text().render(getPeriod(session));
-
-        } catch (Exception e) {
-            logger.error(e);
-            return Results.internalServerError();
-        }
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result getReleaseList() {
-        try {
-            return Results.text().render(getReleasesFromDB(null));
-        } catch (Exception e) {
-            logger.error(e);
-            return Results.internalServerError();
-        }
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result getMetricList() {
-        try {
-            return Results.text().render(getMetricsFromDB());
-        } catch (Exception e) {
-            logger.error(e);
-            return Results.internalServerError();
-        }
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     public static JSONObject getSonarStatistic(Session session, JSONObject data, String GadgetId) throws Exception {
 
 
@@ -261,6 +211,9 @@ public class SonarStatisticGadgetController {
         return null;
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static JSONArray getIAComponentsRespond(Session session, String url, String iaList) throws Exception {
         JSONArray IAArray = new JSONArray();
 
@@ -321,6 +274,52 @@ public class SonarStatisticGadgetController {
         }
 
 
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result addNewSonarWidget() {
+        return Results.html();
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result getIAComponents(Session session, @Param("data") String data) {
+        try {
+            return Results.text().render(getIAComponentsRespond(session, (new JSONObject(data)).getString("url"), null));
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result getPeriodList(Session session) {
+        try {
+            return Results.text().render(getPeriod(session));
+
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result getReleaseList() {
+        try {
+            return Results.text().render(getReleasesFromDB(null));
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result getMetricList() {
+        try {
+            return Results.text().render(getMetricsFromDB());
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
     }
 
     static class getComponentInfo extends Thread {
