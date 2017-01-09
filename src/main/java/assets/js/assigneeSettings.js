@@ -1,18 +1,18 @@
 var SUCCESS = "SUCCESS";
-function getGreenHopperProjectList(callBack){
+function getGreenHopperProjectList(callBack) {
     $.get("/listproject", function (data) {
         callBack(data);
     });
 }
-function getGreenHopperProduct(callBack){
+function getGreenHopperProduct(callBack) {
     $.get("/product/getall", function (data) {
         callBack(data);
     });
 }
-function verifyValue(arrayArgument){
+function verifyValue(arrayArgument) {
     var verify = true;
-    $.each(arrayArgument, function( index, value ) {
-        verify &= (value !=null && value!= "");
+    $.each(arrayArgument, function (index, value) {
+        verify &= (value != null && value != "");
     });
     return verify;
 }
@@ -30,10 +30,10 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.init = function () {
         console.log('init assignee controller');
         var callBack = function (result) {
-            if(result.type ==null){
+            if (result.type == null) {
                 $scope.greenHopperProjectList = result;
                 $scope.$apply();
-            }else{
+            } else {
                 alert(result.data);
             }
         }
@@ -41,7 +41,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             if (result.type == SUCCESS) {
                 $scope.greenHopperProduct = result.data;
                 $scope.$apply();
-            }else{
+            } else {
                 alert(result.data);
             }
 
@@ -54,49 +54,49 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.onCheckAllEpic = function () {
         var epicMultiSelect = $("#epicMultiSelect");
         var epicCheckAll = $("#epicCheckAll").prop('checked');
-        if(epicCheckAll){
+        if (epicCheckAll) {
             epicMultiSelect.css("display", "none");
-        }else{
+        } else {
             epicMultiSelect.css("display", "");
         }
     }
 
     $scope.onProjectReleaseProductChanged = function () {
-                var epicProject = $("#epicProject").val();
-                var epicProduct = $("#epicProduct").val();
-                var epicRelease = $("#epicRelease").val();
-                var isNotEmpty = verifyValue([epicProject, epicProduct, epicRelease]);
-                var epicCheckAll = $("#epicCheckAll").prop('checked');
-                
-                if(isNotEmpty && !epicCheckAll){
-                    var requestData = {
-                            project : epicProject,
-                            release : epicRelease,
-                            products : JSON.stringify([epicProduct])
-                    }
-                    var epicLoader = $("#epiclinkloader");
-                    var callback = function(result){
-                        console.log(result);
-                        $scope.greenHopperEpicLink = result;
-                        $scope.$apply();
-                    }
-                    //load Epic Link
-                    loadEpicLink(epicLoader,requestData, callback);
-                    
-                }
+        var epicProject = $("#epicProject").val();
+        var epicProduct = $("#epicProduct").val();
+        var epicRelease = $("#epicRelease").val();
+        var isNotEmpty = verifyValue([epicProject, epicProduct, epicRelease]);
+        var epicCheckAll = $("#epicCheckAll").prop('checked');
+
+        if (isNotEmpty && !epicCheckAll) {
+            var requestData = {
+                project: epicProject,
+                release: epicRelease,
+                products: JSON.stringify([epicProduct])
+            }
+            var epicLoader = $("#epiclinkloader");
+            var callback = function (result) {
+                console.log(result);
+                $scope.greenHopperEpicLink = result;
+                $scope.$apply();
+            }
+            //load Epic Link
+            loadEpicLink(epicLoader, requestData, callback);
+
+        }
     }
-    function loadEpicLink(loader, requestData,callback){
+    function loadEpicLink(loader, requestData, callback) {
         loader.removeClass("hide");
         $.ajax({
             url: "/getEpicLinks",
-            method : "GET",
-            dataType : "json",
-            data:requestData,
-            success : function (result){
+            method: "GET",
+            dataType: "json",
+            data: requestData,
+            success: function (result) {
                 callback(result);
                 loader.addClass("hide");
             },
-            error : function (error){
+            error: function (error) {
                 console.log(error);
                 loader.addClass("hide");
             }

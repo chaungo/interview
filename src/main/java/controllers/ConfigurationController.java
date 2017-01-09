@@ -2,28 +2,15 @@ package controllers;
 
 import com.google.inject.Singleton;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.UpdateOptions;
 import filter.AdminSecureFilter;
-import filter.SecureFilter;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
-import ninja.params.PathParam;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Singleton
 public class ConfigurationController {
