@@ -6,9 +6,6 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import filter.SecureFilter;
-import models.gadget.Gadget;
-import models.gadget.OverdueReviewsGadget;
-import models.gadget.SonarStatisticsGadget;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -22,7 +19,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.util.*;
 
-import static service.GadgetService.getDashboardGadgetbyDashboardId;
 import static util.Constant.*;
 import static util.MyUtill.getHttpURLConnection;
 import static util.MyUtill.isCacheExpired;
@@ -32,8 +28,6 @@ import static util.MyUtill.isCacheExpired;
  */
 public class SonarStatisticGadgetController {
     final static Logger logger = Logger.getLogger(SonarStatisticGadgetController.class);
-
-
 
     @FilterWith(SecureFilter.class)
     public Result addNewSonarWidget() {
@@ -80,8 +74,6 @@ public class SonarStatisticGadgetController {
             return Results.internalServerError();
         }
     }
-
-
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

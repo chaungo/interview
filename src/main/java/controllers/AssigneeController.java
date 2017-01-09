@@ -36,7 +36,7 @@ public class AssigneeController {
         try {
             return handler.getAssigneeList(projectName, Release.fromString(release), ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 
@@ -50,7 +50,7 @@ public class AssigneeController {
             }
             return handler.getListCycleName(projectName, Release.fromString(release), products, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 

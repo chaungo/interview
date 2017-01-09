@@ -13,10 +13,12 @@ import ninja.session.Session;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static controllers.OverdueReviewReportController.getReview;
 import static controllers.SonarStatisticGadgetController.getSonarStatistic;
 import static service.GadgetService.*;
 
@@ -45,9 +47,9 @@ public class GadgetController {
     public Result showGadgets(@Param("id") String dashboardId, Session session) {
         JSONArray sonarStatisticsGadget = new JSONArray();
         JSONArray overdueReviewGadget = new JSONArray();
+        JSONArray greenHopperGadgets = new JSONArray();
         JSONObject result = new JSONObject();
         List<Gadget> dashboardGadgets;
-        List<Gadget> greenHopperGadget = new ArrayList<>();
         try {
             dashboardGadgets = getDashboardGadgetbyDashboardId(dashboardId);
             if (dashboardGadgets != null) {
@@ -56,21 +58,20 @@ public class GadgetController {
                     if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
                         sonarStatisticsGadget.put(getSonarStatistic(session, new JSONObject(((SonarStatisticsGadget) gadget).getData()), ((SonarStatisticsGadget) gadget).getId()));
                     } else if (Gadget.Type.AMS_OVERDUE_REVIEWS.equals(type)) {
-                        overdueReviewGadget.put(OverdueReviewReportController.getReview(session, new JSONObject(((OverdueReviewsGadget) gadget).getData()), ((OverdueReviewsGadget) gadget).getId()));
+                        overdueReviewGadget.put(getReview(session, new JSONObject(((OverdueReviewsGadget) gadget).getData()), ((OverdueReviewsGadget) gadget).getId()));
                     } else {
-                        greenHopperGadget.add(gadget);
+                        greenHopperGadgets.put(new JSONObject(JSONUtil.getInstance().convertToString(gadget)));
                     }
 
                 }
             }
             result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
             result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
-            result.put("GreenHopperGadget", greenHopperGadget);
+            result.put("GreenHopperGadget", greenHopperGadgets);
         } catch (Exception e) {
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
         }
-
         return Results.text().render(result);
     }
 

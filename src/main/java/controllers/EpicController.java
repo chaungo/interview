@@ -31,7 +31,7 @@ public class EpicController {
             List<String> products = JSONUtil.getInstance().convertJSONtoListObject(productArrays, String.class);
             return handler.getEpicLinks(project, release, products, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
-            return ResultsUtil.convertException(e);
+            return ResultsUtil.convertException(e, context);
         }
     }
 

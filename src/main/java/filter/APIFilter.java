@@ -27,7 +27,7 @@ public class APIFilter implements Filter {
                 logger.fastDebug("No cookies are available", e, new Object());
             }
         }
-        return ResultsUtil.convertException(new APIException(PropertiesUtil.getString(Constant.SESSION_ERROR_MESSAGE)));
+        return ResultsUtil.convertException(new APIException(PropertiesUtil.getString(Constant.SESSION_ERROR_MESSAGE)), context);
     }
 
 }

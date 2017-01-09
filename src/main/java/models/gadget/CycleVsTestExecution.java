@@ -1,11 +1,10 @@
 package models.gadget;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import models.main.Release;
-
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "addnewUIurl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -18,8 +17,6 @@ public class CycleVsTestExecution extends GadgetAPI {
 
     private Type type = Type.TEST_CYCLE_TEST_EXECUTION;
     @JsonProperty(required = true)
-    private String projectName;
-    private Set<String> metrics;
     private Set<String> cycles;
     private boolean selectAllCycle;
 
@@ -57,19 +54,6 @@ public class CycleVsTestExecution extends GadgetAPI {
         this.type = type;
     }
 
-    @Override
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setProducts(Set<String> products) {
-        this.products = products;
-    }
-
     public boolean isSelectAllCycle() {
         return selectAllCycle;
     }
@@ -78,36 +62,12 @@ public class CycleVsTestExecution extends GadgetAPI {
         this.selectAllCycle = selectAll;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public void setMetrics(Set<String> metrics) {
-        this.metrics = metrics;
-    }
-
     public Set<String> getCycles() {
         return cycles;
     }
 
     public void setCycles(Set<String> cycles) {
         this.cycles = cycles;
-    }
-
-    public void setRelease(Release release) {
-        this.release = release;
-    }
-
-    public void setDashboardId(String id) {
-        dashboardId = id;
     }
 
 }

@@ -1,6 +1,7 @@
 package service;
 
 import manament.log.LoggerWapper;
+import models.exception.APIErrorCode;
 import models.exception.APIException;
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
@@ -127,7 +128,12 @@ public class HTTPClientUtil {
         }
         try {
             Response re = connection.execute();
-            data = re.body();
+            if(401 == re.statusCode()){
+            //Unauthorized
+                throw new APIException("Cookies has expired", APIErrorCode.COKKIES_EXPIRED);
+            }else{
+                data = re.body();
+            }
         } catch (IOException e) {
             logger.fastDebug("Cannot connect to %s, %s", e, url, e.getMessage());
             throw new APIException("Cannot connect to " + host + ", " + e.getMessage(), e);
