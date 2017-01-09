@@ -31,6 +31,22 @@ app.run(function ($rootScope, $resource, $location, $cookies) {
             isArray: true
         }
     });
+    
+    $rootScope.debugAjaxAngular = function(data) {
+		if (data == null) {
+			$mdToast.show($mdToast.simple().textContent(
+					'Ajax response error: NULL').hideDelay(5000));
+			console.log(data);
+			return true;
+		} else if (data["type"] == "error") {
+			$mdToast.show($mdToast.simple().textContent(
+					"Ajax response error: " + data["data"]).hideDelay(5000));
+			console.log(data);
+			return true;
+		}
+
+		return false;
+	}
 
     //////////////////////////////////////////////////////
 
