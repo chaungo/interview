@@ -1,81 +1,71 @@
-<md-dialog ng-controller="AssigneeController" ng-init="init()">
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>Assignee Settings</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon class="material-icons">clear</md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-
-    <div id="epic-config">
-        <form action="/dashboard/${id}/update" method="post"
-              class="form-horizontal" role="form">
-            <div class="md-padding" data-ng-cloack>
-                <table class="table table-bordered">
-                    <tbody>
-                    <!-- Project Row -->
-                    <tr>
-                        <td class="col-md-6"><label>Project</label></td>
-                        <td class="col-md-6"><select class="form-control"
-                                                     id="epicProject" ng-model="selectedProject"
-                                                     ng-change="onProjectReleaseProductChanged()"
-                                                     ng-options="item as item for item in getGreenHopperProjectList">
-                        </select></td>
-                    </tr>
-                    <!-- Release Row -->
-                    <tr>
-                        <td class="col-md-6"><label>Release</label></td>
-                        <td class="col-md-6"><select class="form-control" ng-change="onProjectReleaseProductChanged()"
-                                                     id="epicRelease">
+<md-dialog ng-controller="AssigneeController" > <md-toolbar>
+<div class="md-toolbar-tools">
+    <h2>Assignee Settings</h2>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="cancel()"> <md-icon class="material-icons">clear</md-icon> </md-button>
+</div>
+</md-toolbar>
+<form action="/dashboard/id/update" method="post" class="form-horizontal" role="form" ng-init="init()">
+    <div class="md-padding" data-ng-cloack>
+        <table class="table table-bordered">
+            <tbody>
+                <!-- Project Row -->
+                <tr>
+                    <td class="col-md-6"><label>Project</label></td>
+                    <td class="col-md-6">
+                    <select class="form-control" id="epicProject" ng-model="selectedProject"
+                         ng-change="onProjectReleaseProductChanged()" 
+                         ng-options="selectedItem as selectedItem for selectedItem in getGreenHopperProjectList track by selectedItem" >
+                        <option value="" selected disabled>-Select Project-</option>
+                    </select></td>
+                </tr>
+                <!-- Release Row -->
+                <tr>
+                    <td class="col-md-6"><label>Release</label></td>
+                    <td class="col-md-6"><select class="form-control" ng-model="selectedRelease" ng-change="onProjectReleaseProductChanged()" id="epicRelease">
                             <option value="" selected disabled>-Select Version-</option>
                             <option value="1.2.0">R1.2.0</option>
                             <option value="1.2.01">R1.2.01</option>
                             <option value="1.3.0">R1.3.0</option>
-                        </select></td>
-                    </tr>
-                    <!-- Product Row -->
-                    <tr>
-                        <td class="col-md-6"><label>Product</label></td>
-                        <td class="col-md-12 row">
-                            <div class="col-md-9">
-                                <select id="epicProduct" ng-model="selectedProduct"
-                                        ng-change="onProjectReleaseProductChanged()"
-                                        ng-options="item as item for item in getGreenHopperProduct"
-                                        class="form-control">
-                                    <option value="" selected disabled>-Select Product-</option>
-                                </select></div>
-                            <div class="col-md-3"><a href="" data-toggle="tooltip"
-                                                     title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                                     class="btn-to-product btn btn-default">Add Product</a></div>
-                        </td>
-                    </tr>
-                    <!-- Epic Link Row -->
-                    <tr>
-                        <td class="col-md-6"><label>Epic Link</label></td>
-                        <td class="col-md-6">
-                            <div id="epic-link-container" style='display:none;'>
-                                <div id="epic-link-loader" align="center"
-                                     style="display: none">
-                                    <div class="loader"></div>
-                                </div>
-                                <select multiple class="form-control" id="epicMultiSelect">
-                                </select>
+                    </select></td>
+                </tr>
+                <!-- Product Row -->
+                <tr>
+                    <td class="col-md-6"><label>Product</label></td>
+                    <td class="col-md-12 row">
+                        <div class="col-md-9">
+                            <select id="epicProduct" ng-model="selectedProduct" ng-options="item as item for item in getGreenHopperProduct track by item"
+                                ng-change="onProjectReleaseProductChanged()" class="form-control">
+                                <option value="" selected disabled>-Select Product-</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
+                                class="btn-to-product btn btn-default">Add Product</a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Epic Link Row -->
+                <tr>
+                    <td class="col-md-6"><label>Epic Link</label></td>
+                    <td class="col-md-6">
+                        <div id="epic-link-container">
+                            <div id="epic-link-loader" align="center"  class ="hide">
+                                <div class ="myLoader loader"></div>
                             </div>
-                            <div class="col-md-12" align="center"
-                                 style="padding-top: 10px;">
-                                <label><input type="checkbox" id="epicCheckAll" checked>Select
-                                    All</label>
-                            </div>
-                        </td>
+                            <select style = "display :none" multiple class="form-control" id="epicMultiSelect" ng-model="selectedEpicLink" ng-options="item as item for item in greenHopperEpicLink">
+                            </select>
+                        </div>
+                        <div class="col-md-12" align="center" style="padding-top: 10px;">
+                            <label><input type="checkbox" id="epicCheckAll" ng-model="checked" ng-change="onCheckAllEpic()" ng-init="checked=true" >Select All</label>
+                        </div>
+                    </td>
 
-                    </tr>
-                    <!-- Metrics row -->
-                    <tr>
-                        <td class="col-md-6"><label>Metrics</label></td>
-                        <td class="col-md-6"><select multiple class="form-control"
-                                                     id="epicMetricMultiSelect">
+                </tr>
+                <!-- Metrics row -->
+                <tr>
+                    <td class="col-md-6"><label>Metrics</label></td>
+                    <td class="col-md-6"><select multiple class="form-control" id="epicMetricMultiSelect">
                             <option value="SUMMARY">SUMMARY</option>
                             <option value=PRIORITY>PRIORITY</option>
                             <option value="UNEXECUTED">UNEXECUTED</option>
@@ -85,91 +75,11 @@
                             <option value="PASSED">PASSED</option>
                             <option value="PLANNED">PLANNED</option>
                             <option value="UNPLANNED">UNPLANNED</option>
-                        </select></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <#if dashboard.owner == alias>
-                <button type="button" id="epic-add-gadget" class="btn btn-success">Update</button>
-            </#if>
-        </form>
+                    </select></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    
-				<form action="/dashboard/id/update" method="post"
-					class="form-horizontal" role="form">
-					<div class="md-padding" data-ng-cloack>
-						<table class="table table-bordered">
-							<tbody>
-								<!-- Project Row -->
-								<tr>
-									<td class="col-md-6"><label>Project</label></td>
-									<td class="col-md-6"><select class="form-control"
-										id="epicProject" ng-model="selectedProject" ng-options="item as item for item in getGreenHopperProjectList" ng-change="onProjectReleaseProductChanged()"> 
-									</select></td>
-								</tr>
-								<!-- Release Row -->
-								<tr>
-									<td class="col-md-6"><label>Release</label></td>
-									<td class="col-md-6"><select class="form-control" ng-model="selectedRelease" ng-change="onProjectReleaseProductChanged()"
-										id="epicRelease">
-											<option value="" selected disabled>-Select Version-</option>
-											<option value="1.2.0">R1.2.0</option>
-											<option value="1.2.01">R1.2.01</option>
-											<option value="1.3.0">R1.3.0</option>
-									</select></td>
-								</tr>
-								<!-- Product Row -->
-								<tr>
-									<td class="col-md-6"><label>Product</label></td>
-									<td class="col-md-12 row">
-									<div class="col-md-9">
-									<select id="epicProduct" ng-model="selectedProduct" ng-options="item as item for item in getGreenHopperProduct" ng-change="onProjectReleaseProductChanged()"
-										class="form-control">
-											<option value="" selected disabled>-Select Product-</option>
-									</select></div><div class="col-md-3"><a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user." class="btn-to-product btn btn-default">Add Product</a></div></td>
-								</tr>
-								<!-- Epic Link Row -->
-								<tr>
-									<td class="col-md-6"><label>Epic Link</label></td>
-									<td class="col-md-6">
-										<div id="epic-link-container" style='display:none;'>
-											<div id="epic-link-loader" align="center"
-												style="display: none">
-												<div class="loader"></div>
-											</div>
-											<select multiple class="form-control" id="epicMultiSelect">
-											</select>
-										</div>
-										<div class="col-md-12" align="center"
-											style="padding-top: 10px;">
-											<label><input type="checkbox" id="epicCheckAll" checked>Select
-												All</label>
-										</div>
-									</td>
-
-								</tr>
-								<!-- Metrics row -->
-								<tr>
-									<td class="col-md-6"><label>Metrics</label></td>
-									<td class="col-md-6"><select multiple class="form-control"
-										id="epicMetricMultiSelect">
-											<option value="SUMMARY">SUMMARY</option>
-											<option value=PRIORITY>PRIORITY</option>
-											<option value="UNEXECUTED">UNEXECUTED</option>
-											<option value="FAILED">FAILED</option>
-											<option value="WIP">WIP</option>
-											<option value="BLOCKED">BLOCKED</option>
-											<option value="PASSED">PASSED</option>
-											<option value="PLANNED">PLANNED</option>
-											<option value="UNPLANNED">UNPLANNED</option>
-									</select></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<#if dashboard.owner == alias>
-					<button type="button" id="epic-add-gadget" class="btn btn-success">Update</button>
-					</#if>
-				</form>
+    <button type="button" id="epic-add-gadget" class="btn btn-success">Save</button>
+</form>
 </md-dialog>
