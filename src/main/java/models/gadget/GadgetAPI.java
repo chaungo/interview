@@ -88,6 +88,10 @@ public abstract class GadgetAPI implements Gadget {
     public String getProjectName() {
         return projectName;
     }
+    
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
 
     public Type getType() {
         return type;

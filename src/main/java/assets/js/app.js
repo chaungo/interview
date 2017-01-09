@@ -966,6 +966,42 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.onProjectReleaseProductChanged = function (item) {
 
     }
+    
+});
+
+app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.getGreenHopperProjectList = [];
+    $scope.getGreenHopperProduct = [];
+    $scope.selectedProduct = null;
+    $scope.selectedProject = null;
+    $scope.selectedRelease = null;
+    $scope.init = function () {
+        console.log('init assignee controller');
+        var callBack = function (result){
+            $scope.getGreenHopperProjectList = result;
+            
+        }
+        var callBackProduct = function (result){
+            console.log(result);
+            if(result.type == SUCCESS){
+                $scope.getGreenHopperProduct = result.data;
+            }
+            
+        }
+        
+        getGreenHopperProjectList(callBack);
+        getGreenHopperProduct(callBackProduct)
+        
+    }
+    
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    $scope.onProjectReleaseProductChanged = function () {
+        console.log($("#epicProject").val());
+        console.log($("#epicProduct").val());
+        console.log($("#epicRelease").val());
+    }
 
     $scope.onCheckAllEpic = function (item) {
 
