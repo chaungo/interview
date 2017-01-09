@@ -111,6 +111,7 @@ public class SonarStatisticGadgetController {
             @Override
             public void apply(final org.bson.Document document) {
                 JSONObject metric = new JSONObject();
+                metric.put("id", document.getObjectId("_id"));
                 metric.put("name", document.get("name"));
                 metric.put("key", document.get("code"));
                 metrics.put(metric);
@@ -138,6 +139,7 @@ public class SonarStatisticGadgetController {
             @Override
             public void apply(final org.bson.Document document) {
                 JSONObject release = new JSONObject();
+                release.put("id", document.getObjectId("_id"));
                 release.put("name", document.getString("name"));
                 release.put("url", document.getString("url"));
                 releases.put(release);
