@@ -1354,44 +1354,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
-
-    $scope.init = function () {
-        console.log('init assignee controller');
-        var callBack = function (result) {
-            $scope.getGreenHopperProjectList = result;
-
-        }
-        var callBackProduct = function (result) {
-            console.log(result);
-            if (result.type == SUCCESS) {
-                $scope.getGreenHopperProduct = result.data;
-            }
-
-        }
-
-        getGreenHopperProjectList(callBack);
-        getGreenHopperProduct(callBackProduct);
-    }
-});
-
-app.controller('StoryController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.dataTable = {"ajax": null, "loading": false};
-    $scope.showView = true;
-    $scope.init = function (item) {
-        drawUsTable($scope.dataTable, item);
-    }
     
-    $scope.toggleView = function(){
-		$scope.showView = !$scope.showView;
-	}
-    
-    
-    
-    $scope.editGreenhopperGadget = function(item){
-    	
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    };
     $scope.onProjectReleaseProductChanged = function () {
         var epicProject = $("#epicProject").val();
         var epicProduct = $("#epicProduct").val();
@@ -1417,7 +1380,27 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         }
         
     }
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    };
+    
+    $scope.init = function () {
+        console.log('init assignee controller');
+        var callBack = function (result) {
+            $scope.getGreenHopperProjectList = result;
 
+        }
+        var callBackProduct = function (result) {
+            console.log(result);
+            if (result.type == SUCCESS) {
+                $scope.getGreenHopperProduct = result.data;
+            }
+
+        }
+
+        getGreenHopperProjectList(callBack);
+        getGreenHopperProduct(callBackProduct);
+    }
     $scope.onCheckAllEpic = function () {
         var epicMultiSelect = $("#epicMultiSelect");
         var epicCheckAll = $("#epicCheckAll").prop('checked');
@@ -1426,10 +1409,6 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         }else{
         epicMultiSelect.css("display", "");
         }
-    }
-
-    $scope.onUpdate = function (item) {
-
     }
     function loadEpicLink(loader, requestData,callback){
         loader.removeClass("hide");
@@ -1448,6 +1427,26 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
             }
         });
     }
+});
+
+app.controller('StoryController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.dataTable = {"ajax": null, "loading": false};
+    $scope.showView = true;
+    $scope.init = function (item) {
+        drawUsTable($scope.dataTable, item);
     }
+    
+    $scope.toggleView = function(){
+		$scope.showView = !$scope.showView;
+	}
+    
+    
+    $scope.editGreenhopperGadget = function(item){
+   
+
+    $scope.onUpdate = function (item) {
+
+    }
+    
 });
 
