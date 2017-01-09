@@ -13,7 +13,7 @@ public class AssigneeVsTestExecution extends GadgetAPI {
     public static final String author = "";
     public static final String name = "Assignee Test Execution Report";
     public static final String pictureUrl = "";
-    public static final String addnewUIurl = "assets/html/xxx.html";
+    public static final String addnewUIurl = "assets/html/AssigneeSettings.html";
     public static final String description = "Assignee Test Execution Report";
     
     private final Gadget.Type type = Gadget.Type.ASSIGNEE_TEST_EXECUTION;

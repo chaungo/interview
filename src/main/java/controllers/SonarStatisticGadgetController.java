@@ -9,6 +9,8 @@ import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
 import ninja.session.Session;
+import util.JSONUtil;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,9 +31,9 @@ public class SonarStatisticGadgetController {
     public Result showSonarStatisticGadget(@Param("id") String dashboardId, Session session) {
         JSONArray sonarStatisticsGadget = new JSONArray();
         JSONArray overdueReviewGadget = new JSONArray();
+        JSONArray greenHopperGadgets = new JSONArray();
         JSONObject result = new JSONObject();
         List<Gadget> dashboardGadgets;
-        List<Gadget> greenHopperGadget = new ArrayList<>();
         try {
             dashboardGadgets = getDashboardGadgetbyDashboardId(dashboardId);
             if (dashboardGadgets != null) {
@@ -42,19 +44,18 @@ public class SonarStatisticGadgetController {
                     } else if (Gadget.Type.AMS_OVERDUE_REVIEWS.equals(type)) {
                         overdueReviewGadget.put(getReview(session, new JSONObject(((OverdueReviewsGadget) gadget).getData()), ((OverdueReviewsGadget) gadget).getId()));
                     } else {
-                        greenHopperGadget.add(gadget);
+                        greenHopperGadgets.put(new JSONObject(JSONUtil.getInstance().convertToString(gadget)));
                     }
 
                 }
             }
             result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
             result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
-            result.put("GreenHopperGadget", greenHopperGadget);
+            result.put("GreenHopperGadget", greenHopperGadgets);
         } catch (Exception e) {
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
         }
-
         return Results.text().render(result);
     }
 
