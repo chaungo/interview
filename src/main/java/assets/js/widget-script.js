@@ -274,7 +274,7 @@ function cleanSelect(targetId) {
 function getColumnArray(metricArray, isCycleOrAssignee) {
     var columnList = [];
     for (var i = 0; i < metricArray; i++) {
-        metricArray[i] = metricArray[i].toLowerCase();
+        metricArray[i] = metricArray[i].toUpperCase();
     }
 
     if (metricArray == null) {
@@ -282,48 +282,48 @@ function getColumnArray(metricArray, isCycleOrAssignee) {
         return;
     }
     if (!isCycleOrAssignee) {
-        if ($.inArray('summary', metricArray) == -1) {
+        if ($.inArray('SUMMARY', metricArray) == -1) {
             columnList.push(1);
         }
-        if ($.inArray('prority', metricArray) == -1) {
+        if ($.inArray('PRIORITY', metricArray) == -1) {
             columnList.push(2);
         }
-        if ($.inArray('unexecuted', metricArray) == -1) {
+        if ($.inArray('UNEXECUTED', metricArray) == -1) {
             columnList.push(3);
         }
-        if ($.inArray('failed', metricArray) == -1) {
+        if ($.inArray('FAILED', metricArray) == -1) {
             columnList.push(4);
         }
-        if ($.inArray('wip', metricArray) == -1) {
+        if ($.inArray('WIP', metricArray) == -1) {
             columnList.push(5);
         }
-        if ($.inArray('blocked', metricArray) == -1) {
+        if ($.inArray('BLOCKED', metricArray) == -1) {
             columnList.push(6);
         }
-        if ($.inArray('passed', metricArray) == -1) {
+        if ($.inArray('PASSED', metricArray) == -1) {
             columnList.push(7);
         }
 
-        if ($.inArray('planned', metricArray) == -1) {
+        if ($.inArray('PLANNED', metricArray) == -1) {
             columnList.push(8);
         }
-        if ($.inArray('unplanned', metricArray) == -1) {
+        if ($.inArray('UNPLANNED', metricArray) == -1) {
             columnList.push(9);
         }
     } else {
-        if ($.inArray('unexecuted', metricArray) == -1) {
+        if ($.inArray('UNEXECUTED', metricArray) == -1) {
             columnList.push(1);
         }
-        if ($.inArray('failed', metricArray) == -1) {
+        if ($.inArray('FAILED', metricArray) == -1) {
             columnList.push(2);
         }
-        if ($.inArray('wip', metricArray) == -1) {
+        if ($.inArray('WIP', metricArray) == -1) {
             columnList.push(3);
         }
-        if ($.inArray('blocked', metricArray) == -1) {
+        if ($.inArray('BLOCKED', metricArray) == -1) {
             columnList.push(4);
         }
-        if ($.inArray('passed', metricArray) == -1) {
+        if ($.inArray('PASSED', metricArray) == -1) {
             columnList.push(5);
         }
     }
