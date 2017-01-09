@@ -167,7 +167,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                 $rootScope.getting = true;
                 $rootScope.hasInfo = true;
 
-                if (respone.SonarGadget > 0) {
+                if (respone.Gadget > 0) {
                     $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
