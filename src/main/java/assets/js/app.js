@@ -1341,20 +1341,53 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.init = function () {
         console.log('init assignee controller');
         var callBack = function (result) {
-            $scope.getGreenHopperProjectList = result;
-
+            if(result.type ==null){
+                $scope.getGreenHopperProjectList = result;
+                $scope.$apply();
+            }else{
+                alert(result.data);
+            }
         }
         var callBackProduct = function (result) {
-            console.log(result);
             if (result.type == SUCCESS) {
                 $scope.getGreenHopperProduct = result.data;
+                $scope.$apply();
+            }else{
+                alert(result.data);
             }
 
         }
 
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
-
+    }
+    
+    $scope.onCheckAllEpic = function () {
+        var epicMultiSelect = $("#epicMultiSelect");
+        var epicCheckAll = $("#epicCheckAll").prop('checked');
+        if(epicCheckAll){
+            epicMultiSelect.css("display", "none");
+        }else{
+            epicMultiSelect.css("display", "");
+        }
+    }
+    
+    function loadEpicLink(loader, requestData,callback){
+        loader.removeClass("hide");
+        $.ajax({
+            url: "/getEpicLinks",
+            method : "GET",
+            dataType : "json",
+            data:requestData,
+            success : function (result){
+                callback(result);
+                loader.addClass("hide");
+            },
+            error : function (error){
+                console.log(error);
+                loader.addClass("hide");
+            }
+        });
     }
 });
 
