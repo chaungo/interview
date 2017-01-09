@@ -1319,77 +1319,8 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.deleteGreenhopperGadget = function (item) {
 
     }
-
-    $scope.onProjectReleaseProductChanged = function () {
-        console.log($("#epicProject").val());
-        console.log($("#epicProduct").val());
-        console.log($("#epicRelease").val());
-    }
-
 });
 
-app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.getGreenHopperProjectList = [];
-    $scope.getGreenHopperProduct = [];
-    $scope.selectedProduct = null;
-    $scope.selectedProject = null;
-    $scope.selectedRelease = null;
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    }
-
-    $scope.init = function () {
-        console.log('init assignee controller');
-        var callBack = function (result) {
-            if(result.type ==null){
-                $scope.getGreenHopperProjectList = result;
-                $scope.$apply();
-            }else{
-                alert(result.data);
-            }
-        }
-        var callBackProduct = function (result) {
-            if (result.type == SUCCESS) {
-                $scope.getGreenHopperProduct = result.data;
-                $scope.$apply();
-            }else{
-                alert(result.data);
-            }
-
-        }
-
-        getGreenHopperProjectList(callBack);
-        getGreenHopperProduct(callBackProduct);
-    }
-    
-    $scope.onCheckAllEpic = function () {
-        var epicMultiSelect = $("#epicMultiSelect");
-        var epicCheckAll = $("#epicCheckAll").prop('checked');
-        if(epicCheckAll){
-            epicMultiSelect.css("display", "none");
-        }else{
-            epicMultiSelect.css("display", "");
-        }
-    }
-    
-    function loadEpicLink(loader, requestData,callback){
-        loader.removeClass("hide");
-        $.ajax({
-            url: "/getEpicLinks",
-            method : "GET",
-            dataType : "json",
-            data:requestData,
-            success : function (result){
-                callback(result);
-                loader.addClass("hide");
-            },
-            error : function (error){
-                console.log(error);
-                loader.addClass("hide");
-            }
-        });
-    }
-});
 
 app.controller('StoryController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.dataTable = {"ajax": null, "loading": false};

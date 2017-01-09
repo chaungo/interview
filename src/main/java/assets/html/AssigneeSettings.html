@@ -15,7 +15,7 @@
                     <td class="col-md-6">
                     <select class="form-control" id="epicProject" ng-model="selectedProject"
                          ng-change="onProjectReleaseProductChanged()" 
-                         ng-options="selectedItem as selectedItem for selectedItem in getGreenHopperProjectList track by selectedItem" >
+                         ng-options="selectedItem as selectedItem for selectedItem in greenHopperProjectList track by selectedItem" >
                         <option value="" selected disabled>-Select Project-</option>
                     </select></td>
                 </tr>
@@ -34,7 +34,7 @@
                     <td class="col-md-6"><label>Product</label></td>
                     <td class="col-md-12 row">
                         <div class="col-md-9">
-                            <select id="epicProduct" ng-model="selectedProduct" ng-options="item as item for item in getGreenHopperProduct track by item"
+                            <select id="epicProduct" ng-model="selectedProduct" ng-options="item as item for item in greenHopperProduct track by item"
                                 ng-change="onProjectReleaseProductChanged()" class="form-control">
                                 <option value="" selected disabled>-Select Product-</option>
                             </select>
@@ -50,7 +50,7 @@
                     <td class="col-md-6"><label>Epic Link</label></td>
                     <td class="col-md-6">
                         <div id="epic-link-container">
-                            <div id="epic-link-loader" align="center"  class ="hide">
+                            <div id="epiclinkloader" align="center"  class ="hide">
                                 <div class ="myLoader loader"></div>
                             </div>
                             <select style = "display :none" multiple class="form-control" id="epicMultiSelect" ng-model="selectedEpicLink" ng-options="item as item for item in greenHopperEpicLink">
