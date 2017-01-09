@@ -1336,13 +1336,6 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.deleteGreenhopperGadget = function (item) {
 
     }
-
-    $scope.onProjectReleaseProductChanged = function () {
-        console.log($("#epicProject").val());
-        console.log($("#epicProduct").val());
-        console.log($("#epicRelease").val());
-    }
-
 });
 
 app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
@@ -1410,6 +1403,13 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         epicMultiSelect.css("display", "");
         }
     }
+    
+    $scope.onProjectReleaseProductChanged = function () {
+        console.log($("#epicProject").val());
+        console.log($("#epicProduct").val());
+        console.log($("#epicRelease").val());
+    }
+    
     function loadEpicLink(loader, requestData,callback){
         loader.removeClass("hide");
         $.ajax({
@@ -1442,11 +1442,53 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     
     
     $scope.editGreenhopperGadget = function(item){
-   
-
+    	
+    }
+  
     $scope.onUpdate = function (item) {
 
     }
+});
+
+app.controller('CycleController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.dataTable = null;
+    $scope.showView = true;
+    $scope.init = function (item) {
+        drawCycleTable($scope.dataTable, item);
+    }
+    $scope.toggleView = function(){
+        $scope.showView = !$scope.showView;
+    }
     
+    $scope.editGreenhopperGadget = function(item){
+        
+    }
+
+    $scope.deleteGreenhopperGadget = function(item)
+    {
+
+    }
+});
+
+app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.dataTable = {"ajax": null, "loading": false};
+    $scope.showView = true;
+    $scope.init = function (item) {
+        drawAssigneeTable($scope.dataTable, item);
+    }
+    
+    $scope.toggleView = function(){
+        console.log($scope.showView);
+        $scope.showView = !$scope.showView;
+    }
+    
+    $scope.editGreenhopperGadget = function(item){
+        
+    }
+    
+    $scope.deleteGreenhopperGadget = function(item)
+    {
+
+    }
 });
 
