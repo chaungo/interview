@@ -200,8 +200,6 @@ function callAjaxToUpdateUsGadget(gadget, jsonString) {
         }
 
       }
-    }).always(function(returnMessage) {
-      console.log(jsonString);
     });
   }
 }
@@ -259,8 +257,8 @@ function reloadUSList(gadget, selectList) {
 
 function drawUsTable(dataTable, gadget) {
   var columnList = getColumnArray(gadget.metrics, false);
-  console.log("DRAW US TABLE:");
-  console.log(gadget);
+
+
   var jsonObjectForUsTable;
   if (dataTable.loading == true && GLOBAL_US_TABLES_AJAX.ajax != null) {
 	  dataTable.ajax.abort();
@@ -279,8 +277,7 @@ function drawUsTable(dataTable, gadget) {
       debugError(xhr, textStatus, error);
     },
     success: function(responseData) {
-    	console.log("Story Response: ");
-    	console.log(responseData);
+
     	
       if (debugAjaxResponse(responseData)) {
         $("#"+gadget.id).find("#us-update-btn").prop("disabled", false);
@@ -291,20 +288,17 @@ function drawUsTable(dataTable, gadget) {
       var index = 0;
 
       jsonObjectForUsTable = responseData;
-      console.log(jsonObjectForUsTable["data"]);
-      console.log("DRAWING TABLE");
-      console.log(jsonObjectForUsTable);
       $.each(jsonObjectForUsTable["data"], function(epicKey,
         storyArray) {
         if (storyArray["issueData"].length != 0) {
           var customTableId = "us-table-" + index;
           var usTableDataSet = [];
           var usIndividualTable;
-          console.log("here");
+
           appendTemplateTable(customTableId, epicKey + ": " + storyArray["summary"],gadget,
             "#us-table-container");
           $("#"+gadget.id).find("#" + customTableId).append(TEMPLATE_HEADER_FOOTER);
-          console.log("Pass each function");
+
 
           for (var i = 0; i < storyArray['issueData'].length; i++) {
             var aStoryDataSet = [];

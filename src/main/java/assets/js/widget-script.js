@@ -1,12 +1,7 @@
-var GLOBAL_EPIC_TABLE = null;
 var TEMPLATE_HEADER_FOOTER = "<thead><tr><th>User Story</th><th>SUMMARY</th><th>PRIORITY</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th><th>PLANNED</th><th>UNPLANNED</th></tr></thead><tfoot><tr><th>User Story</th><th>SUMMARY</th><th>PRIORITY</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th><th>PLANNED</th><th>UNPLANNED</th></tr></tfoot>";
 var TEMPLATE_HEADER_FOOTER_1 = "<thead><tr><th>Assignee</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th></tr></thead><tfoot><tr><th>Assignee</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th></tr></tfoot>";
-var GLOBAL_CYCLE_TABLE = null;
 var GREENHOPPER_ISSUE_API_LINK = 'https://greenhopper.app.alcatel-lucent.com/issues/?jql=';
 var GREENHOPPER_BROWSE_ISSUE_LINK = "https://greenhopper.app.alcatel-lucent.com/browse/";
-var IS_TESTING = true;
-var GLOBAL_US_TABLES_AJAX = {"ajax": null, "loading": false};
-var GLOBAL_ASSIGNEE_TABLES_AJAX = {"ajax": null, "loading": false};
 var SAVE_GADGET_URI = "/gadget/save";
 var GET_GADGETS_URI = "/gadget/gadgets";
 var GET_EPIC_URI = "/getEpicLinks";
@@ -20,10 +15,6 @@ var EPIC_TYPE;
 var US_TYPE;
 var ASSIGNEE_TYPE;
 var CYCLE_TYPE;
-var TEST_EPIC_ID = null;
-var TEST_US_ID = null;
-var TEST_ASSIGNEE_ID = null;
-var TEST_CYCLE_ID = null;
 
 $("#btn-add-gadget-epic").click(function(){
 	$("#epic-test-execution-div").show();

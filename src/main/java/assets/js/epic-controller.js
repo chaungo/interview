@@ -98,7 +98,6 @@ function createJsonStringObjectFromEpicInput(gadget) {
     return;
   }
   object['id'] = gadget.id;
-  console.log("Gadget Id: " + gadget.id);
   object['dashboardId'] = gadget.dashboardid;
   object['projectName'] = $("#" + gadget.id).find("#epicProject").val();
   object['release'] = $("#" + gadget.id).find("#epicRelease").val();
@@ -149,10 +148,8 @@ function callAjaxToUpdateGadget(gadget, jsonString) {
 function drawEpicTable(dataTable, gadget) {
 	
   var columnList = getColumnArray(gadget.metrics, false);
-  console.log(gadget);
   resetTableColumns(dataTable, false);
   if (dataTable != null) {
-    console.log(dataTable);
     hideEpicTable(gadget);
     dataTable.ajax.reload(function() {
       showEpicTable(gadget);
@@ -161,7 +158,6 @@ function drawEpicTable(dataTable, gadget) {
 
   } else {
     hideEpicTable(gadget);
-    console.log("DRAW EPIC TABLE: " + gadget.id);
     dataTable = $("#" + gadget.id).find('#epic-table').on(
       'error.dt',
       function(e, settings, techNote, message) {
@@ -180,7 +176,6 @@ function drawEpicTable(dataTable, gadget) {
         },
         dataSrc: function(responseJson) {
           var tempArray = [];
-          console.log(responseJson);
           if (debugAjaxResponse(responseJson)) {
             $("#" + gadget.id).find("#epic-add-gadget").prop("disabled", false);
             showEpicTable(gadget);
@@ -192,7 +187,6 @@ function drawEpicTable(dataTable, gadget) {
               tempArray.push(v2);
             });
           });
-          console.log(tempArray);
           return tempArray;
         }
       },

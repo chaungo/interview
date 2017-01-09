@@ -178,8 +178,6 @@ function updateAssigneeGadget(gadget, jsonString) {
         }
 
       }
-    }).always(function(returnMessage) {
-      console.log(jsonString);
     });
   }
 }
@@ -209,8 +207,6 @@ function drawAssigneeTable(dataTable,gadget) {
         showAssigneeTable(gadget);
       },
       success: function(responseData) {
-    	  console.log("ASSIGNEE REP");
-    	  console.log(responseData);
         dataTable.loading = false;
         var index = 0;
         $("#"+ gadget.id).find("#assignee-table-container").html("");
@@ -373,8 +369,6 @@ function callAjaxOnAssigneeTable(gadget) {
     beforeSend: function() {
       hideAssigneeTable(gadget);
     }
-  }).always(function(gadgetList) {
-    console.log(gadgetList);
   });
 }
 
@@ -408,7 +402,6 @@ function callAjaxOnAssigneeProjectAndRelease(gadget) {
       error: function(xhr, textStatus, error) {
         debugError(xhr, textStatus, error);
         showAssigneeCycle(gadget);
-        console.log(data);
       }
     }).always(function() {
       showAssigneeCycle(gadget);
@@ -439,7 +432,6 @@ function callAjaxOnAssigneeProjectAndRelease(gadget) {
       },
       error: function(xhr, textStatus, error) {
         debugError(xhr, textStatus, error);
-        console.log(data);
       }
     }).always(function() {
       showAssignee(gadget);
@@ -465,7 +457,6 @@ function getExistingCycleAssigneeWidget(gadget) {
       error: function(xhr, textStatus, error) {
         debugError(xhr, textStatus, error);
         showAssigneeCycle(gadget);
-        console.log(data);
       }
     }).always(function() {
       showAssigneeCycle(gadget);
@@ -496,7 +487,6 @@ function getExistingCycleAssigneeWidget(gadget) {
       },
       error: function(xhr, textStatus, error) {
         debugError(xhr, textStatus, error);
-        console.log(data);
       }
     }).always(function() {
       showAssignee(gadget);

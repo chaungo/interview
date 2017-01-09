@@ -128,8 +128,6 @@ function callAjaxToUpdateCycle(gadget, jsonString) {
         }
 
       }
-    }).always(function() {
-      console.log(jsonString);
     });
   }
 }
@@ -138,7 +136,7 @@ function drawCycleTable(dataTable, gadget) {
   var columnList = getColumnArray(gadget.metrics, true);
   resetTableColumns(dataTable, true);
   if (dataTable != null) {
-    console.log(dataTable);
+
     hideCycleTable(gadget);
     dataTable.ajax.reload(function() {
       $("#"+gadget.id).find("#cycle-update-btn").prop("disabled", false);
@@ -177,7 +175,7 @@ function drawCycleTable(dataTable, gadget) {
               tempArray.push(v2);
             });
           });
-          console.log(tempArray);
+
           return tempArray;
         }
       },
