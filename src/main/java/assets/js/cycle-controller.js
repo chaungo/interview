@@ -56,7 +56,7 @@ $("#"+gadget.id).find("#cycleCheckAll").click(function() {
  * 
  */
 
-function createJsonStringObjectFromCycleInput() {
+function createJsonStringObjectFromCycleInput(gadget) {
   var object = {};
   if (null == $("#"+gadget.id).find("#dashboardId").val()) {
     alert("No valid dashboard id provided.");
@@ -84,7 +84,7 @@ function createJsonStringObjectFromCycleInput() {
     return;
   }
 
-  object['id'] = TEST_CYCLE_ID;
+  object['id'] = gadget.id;
   object['dashboardId'] = $("#"+gadget.id).find("#dashboardId").val();
   object['projectName'] = $("#"+gadget.id).find("#cycleProject").val();
   object['release'] = $("#"+gadget.id).find("#cycleRelease").val();
@@ -99,7 +99,7 @@ function createJsonStringObjectFromCycleInput() {
   return jsonString
 }
 
-function callAjaxToUpdateCycle(jsonString) {
+function callAjaxToUpdateCycle(gadget, jsonString) {
   if (jsonString != null && jsonString != "") {
     $.ajax({
       url: SAVE_GADGET_URI,
@@ -124,8 +124,7 @@ function callAjaxToUpdateCycle(jsonString) {
           return;
         } else {
           alert("Gadget updated succesfully");
-          TEST_CYCLE_ID = data["data"];
-          drawCycleTable(TEST_CYCLE_ID, $("#"+gadget.id).find("#cycleMetricMultiSelect").val());
+          drawCycleTable(data["data"], $("#" + gadget.id).find("#cycleMetricMultiSelect").val());
         }
 
       }
@@ -216,7 +215,7 @@ function drawCycleTable(dataTable, gadget) {
   }
 }
 
-function callAjaxOnCycleProjectAndRelease() {
+function callAjaxOnCycleProjectAndRelease(gadget) {
   if ($("#"+gadget.id).find("#cycleRelease").val() == null || $("#"+gadget.id).find("#cycleProduct").val() == null || $("#"+gadget.id).find("#cycleRelease").val() == null) {
     return;
   } else if ($("#"+gadget.id).find("#cycleRelease").val() == "" || $("#"+gadget.id).find("#cycleProduct").val() == "" || $("#"+gadget.id).find("#cycleRelease").val() == "") {
@@ -252,7 +251,7 @@ function callAjaxOnCycleProjectAndRelease() {
   }
 }
 
-function getExistingCycleList() {
+function getExistingCycleList(gadget) {
   if (!$("#"+gadget.id).find("#cycleCheckAll").prop("checked")) {
     $.ajax({
       url: GET_EXISTING_CYCLE_URI,

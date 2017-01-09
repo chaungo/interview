@@ -89,7 +89,7 @@ $("#"+ gadget.id).find("#assigneeCheckAllCycle").click(function() {
 /*
  * Function section
  */
-function createJsonStringFromAssigneeInput() {
+function createJsonStringFromAssigneeInput(gadget) {
   var object = {};
   var options;
   var values;
@@ -129,8 +129,8 @@ function createJsonStringFromAssigneeInput() {
     return option.value;
   });
 
-  object['id'] = TEST_ASSIGNEE_ID;
-  object['projectName'] = $("#"+ gadget.id).find("#assigneeProject").val();
+  object['id'] = gadget.id;
+  object['projectName'] = gadget.dashboardId;
   object['release'] = $("#"+ gadget.id).find("#assigneeRelease").val();
   object['products'] = [$("#"+ gadget.id).find("#assigneeProduct").val()];
   object['metrics'] = $("#"+ gadget.id).find("#assigneeMetricMultiSelect").val();
@@ -150,7 +150,7 @@ function createJsonStringFromAssigneeInput() {
   return jsonString;
 }
 
-function updateAssigneeGadget(jsonString) {
+function updateAssigneeGadget(gadget, jsonString) {
   if (jsonString != null) {
     $.ajax({
       url: SAVE_GADGET_URI,
@@ -174,7 +174,6 @@ function updateAssigneeGadget(jsonString) {
           return;
         } else {
           alert("Gadget updated succesfully")
-          TEST_ASSIGNEE_ID = data["data"];
           drawAssigneeTable(data["data"], $("#"+ gadget.id).find("#assigneeMetricMultiSelect").val());
         }
 
@@ -353,7 +352,7 @@ function drawAssigneeTable(dataTable,gadget) {
     });
 }
 
-function callAjaxOnAssigneeTable() {
+function callAjaxOnAssigneeTable(gadget) {
   $.ajax({
     url: GET_GADGETS_URI,
     data: {
@@ -379,7 +378,7 @@ function callAjaxOnAssigneeTable() {
   });
 }
 
-function callAjaxOnAssigneeProjectAndRelease() {
+function callAjaxOnAssigneeProjectAndRelease(gadget) {
   if ($("#"+ gadget.id).find("#assigneeRelease").val() == null || $("#"+ gadget.id).find("#assigneeProject").val() == null || $("#"+ gadget.id).find("#assigneeProduct").val() == null) {
     return;
   } else if ($("#"+ gadget.id).find("#assigneeRelease").val() == "" || $("#"+ gadget.id).find("#assigneeProject").val() == "" || $("#"+ gadget.id).find("#assigneeProduct").val() == "") {
@@ -448,7 +447,7 @@ function callAjaxOnAssigneeProjectAndRelease() {
   }
 }
 
-function getExistingCycleAssigneeWidget() {
+function getExistingCycleAssigneeWidget(gadget) {
   if (!$("#"+ gadget.id).find("#assigneeCheckAllCycle").prop("checked")) {
     $.ajax({
       url: GET_EXISTING_CYCLE_URI,
@@ -524,31 +523,31 @@ function removeAllCycle(gadget) {
 }
 
 function hideAssigneeCycle(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assignee-cycle-available-div').fadeOut();
+  $("#"+ gadget.id).find('#assignee-cycle-available-div').fadeOut();
   $("#"+ gadget.id).find("#assignee-cycle-loader").fadeIn();
 }
 
 function showAssigneeCycle(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assignee-cycle-available-div').fadeIn();
+  $("#"+ gadget.id).find('#assignee-cycle-available-div').fadeIn();
   $("#"+ gadget.id).find("#assignee-cycle-loader").fadeOut();
 }
 
 function hideAssignee(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assigneeMultiSelect').fadeOut();
+  $("#"+ gadget.id).find('#assigneeMultiSelect').fadeOut();
   $("#"+ gadget.id).find("#assignee-loader").fadeIn();
 }
 
 function showAssignee(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assigneeMultiSelect').fadeIn();
+  $("#"+ gadget.id).find('#assigneeMultiSelect').fadeIn();
   $("#"+ gadget.id).find("#assignee-loader").fadeOut();
 }
 
 function hideAssigneeTable(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assignee-table-container').fadeOut();
+  $("#"+ gadget.id).find('#assignee-table-container').fadeOut();
   $("#"+ gadget.id).find("#assignee-table-loader").fadeIn();
 }
 
 function showAssigneeTable(gadget) {
-  $("#"+ gadget.id).find("#"+ gadget.id).find('#assignee-table-container').fadeIn();
+  $("#"+ gadget.id).find('#assignee-table-container').fadeIn();
   $("#"+ gadget.id).find("#assignee-table-loader").fadeOut();
 }

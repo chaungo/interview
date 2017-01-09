@@ -109,7 +109,7 @@ $("#"+gadget.id).find("#usCheckAllStory").click(function() {
  * create json object to update
  */
 
-function createJsonStringObjectFromUsInputField() {
+function createJsonStringObjectFromUsInputField(gadget) {
   var options;
   var values;
   var object = {};
@@ -149,8 +149,8 @@ function createJsonStringObjectFromUsInputField() {
     return option.value;
   });
 
-  object['id'] = TEST_US_ID;
-  object['dashboardId'] = $("#"+gadget.id).find("#dashboardId").val();
+  object['id'] = gadget.id;
+  object['dashboardId'] = gadget.dashboardId;
   object['projectName'] = $("#"+gadget.id).find("#usProject").val();
   object['release'] = $("#"+gadget.id).find("#usRelease").val();
   object['products'] = [$("#"+gadget.id).find("#usProduct").val()];
@@ -172,7 +172,7 @@ function createJsonStringObjectFromUsInputField() {
   return jsonString;
 }
 
-function callAjaxToUpdateUsGadget(jsonString) {
+function callAjaxToUpdateUsGadget(gadget, jsonString) {
   if (null != jsonString && "" != jsonString) {
     $.ajax({
       url: SAVE_GADGET_URI,
@@ -196,8 +196,7 @@ function callAjaxToUpdateUsGadget(jsonString) {
           return;
         } else {
           alert("Gadget updated succesfully");
-          TEST_US_ID = data["data"];
-          drawUsTable(TEST_US_ID, $("#"+gadget.id).find("#usMetricMultiSelect").val());
+          drawUsTable(data["data"], $("#"+gadget.id).find("#usMetricMultiSelect").val());
         }
 
       }
@@ -207,7 +206,7 @@ function callAjaxToUpdateUsGadget(jsonString) {
   }
 }
 
-function reloadUSList(selectList) {
+function reloadUSList(gadget, selectList) {
   if ($("#"+gadget.id).find("#usCheckAllStory").prop("checked,true")) {
     return;
   } else if ($("#"+gadget.id).find("#usEpic option").length == 0) {
@@ -382,7 +381,7 @@ function drawUsTable(dataTable, gadget) {
 
 }
 
-function callAjaxOnUsProjectAndRelease(selectList, usSelectList) {
+function callAjaxOnUsProjectAndRelease(gadget, selectList, usSelectList) {
   if ($("#"+gadget.id).find("#usProject").val() == null || $("#"+gadget.id).find("#usRelease").val() == null || $("#"+gadget.id).find("#usProduct").val() == null) {
     return;
   } else if ($("#"+gadget.id).find("#usProject").val() == "" || $("#"+gadget.id).find("#usRelease").val() == "" || $("#"+gadget.id).find("#usProduct").val() == "") {
