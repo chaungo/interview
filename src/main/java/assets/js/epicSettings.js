@@ -80,7 +80,6 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
             var epicLoader = $("#epicLinkSelection");
             
             var callback = function(result) {
-                console.log(result);
                 if (result.type == null) {
                     $scope.greenHopperEpicLink = result;
                     $scope.$apply();

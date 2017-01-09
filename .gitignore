@@ -5,3 +5,4 @@
 .settings/
 *.log 
 .idea/workspace.xml
+dependency-reduced-pom.xml
