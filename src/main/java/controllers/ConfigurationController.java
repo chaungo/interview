@@ -14,6 +14,7 @@ import ninja.params.Param;
 import ninja.params.PathParam;
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +22,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Singleton
 public class ConfigurationController {
@@ -35,7 +37,7 @@ public class ConfigurationController {
 
 
     @FilterWith(AdminSecureFilter.class)
-    public Result addNewMetric(@Param("name") String name, @Param("url") String url) {
+    public Result addNewRelease(@Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
         collection.insertOne(new Document("name", name).append("url", url));
@@ -44,101 +46,49 @@ public class ConfigurationController {
     }
 
     @FilterWith(AdminSecureFilter.class)
-    public Result releaseUpdate(@Param("name") String name, @Param("url") String url) {
+    public Result updateRelease(@Param("id") String id, @Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
-        collection.updateOne(new Document("name", name), new Document("$set", new Document("name", name).append("url", url)), new UpdateOptions().upsert(true));
+        collection.updateOne(new Document("_id", new ObjectId(id)), new Document("$set", new Document("name", name).append("url", url)));
         mongoClient.close();
-        return Results.redirect("/release");
+        return Results.ok();
     }
 
     @FilterWith(AdminSecureFilter.class)
-    public Result releaseDelete(@Param("name") String name, @Param("url") String url) {
+    public Result deleteRelease(@Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
-        collection.deleteOne(new Document("name", name).append("url", url));
+        collection.deleteOne(new Document("url", url));
         mongoClient.close();
-        return Results.redirect("/release");
+        return Results.ok();
+    }
+
+
+    @FilterWith(AdminSecureFilter.class)
+    public Result addNewMetric(@Param("name") String name, @Param("key") String key) {
+        MongoClient mongoClient = new MongoClient();
+        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
+        collection.insertOne(new Document("name", name).append("code", key));
+        mongoClient.close();
+        return Results.ok();
     }
 
     @FilterWith(AdminSecureFilter.class)
-    public Result metric() {
+    public Result updateMetric(@Param("id") String id, @Param("name") String name, @Param("key") String key) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        FindIterable<Document> iterable = collection.find();
-        List<Map<String, Object>> metrics = new ArrayList<>();
-
-        for (Document document : iterable) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", document.get("name"));
-            map.put("code", document.get("code"));
-            metrics.add(map);
-        }
-
-        logger.info("metrics " + metrics);
-
+        collection.updateOne(new Document("_id", new ObjectId(id)), new Document("$set", new Document("name", name).append("code", key)));
         mongoClient.close();
-        return Results.html().render("metrics", metrics);
+        return Results.ok();
     }
 
     @FilterWith(AdminSecureFilter.class)
-    public Result metricPost(@Param("name") String name, @Param("code") String code) {
+    public Result deleteMetric(@Param("key") String key) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.insertOne(new Document("name", name).append("code", code));
+        collection.deleteOne(new Document("code", key));
         mongoClient.close();
-        return Results.redirect("/metric");
-    }
-
-    @FilterWith(AdminSecureFilter.class)
-    public Result metricUpdate(@Param("name") String name, @Param("code") String code) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.updateOne(new Document("name", name), new Document("$set", new Document("name", name).append("code", code)), new UpdateOptions().upsert(true));
-        mongoClient.close();
-        return Results.redirect("/metric");
-    }
-
-    @FilterWith(AdminSecureFilter.class)
-    public Result metricDelete(@Param("name") String name, @Param("code") String code) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.deleteOne(new Document("name", name).append("code", code));
-        mongoClient.close();
-        return Results.redirect("/metric");
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result releaseURL(@PathParam("name") String name) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
-        FindIterable<Document> iterable = collection.find(new Document("name", name));
-
-        String url = null;
-        for (Document document : iterable) {
-            url = document.getString("url");
-        }
-        mongoClient.close();
-        Set<String> set = new TreeSet<>();
-        URL url2;
-        try {
-            url2 = new URL(url);
-            URLConnection conn = url2.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-
-            while ((inputLine = br.readLine()) != null) {
-                String[] arr = inputLine.split(",");
-                set.add(arr[0]);
-            }
-            br.close();
-        } catch (MalformedURLException e) {
-            logger.error("MalformedURLException " + e);
-        } catch (IOException e) {
-            logger.error("IOException " + e);
-        }
-        logger.info(String.format("Get ia list from url %s \n%s", url, set));
-        return Results.text().render(set);
+        return Results.ok();
     }
 
 }
