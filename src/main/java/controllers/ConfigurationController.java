@@ -29,24 +29,10 @@ public class ConfigurationController {
     final static Logger logger = Logger.getLogger(ConfigurationController.class);
 
     @FilterWith(AdminSecureFilter.class)
-    public Result release() {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
-        FindIterable<Document> iterable = collection.find();
-        List<Map<String, Object>> releases = new ArrayList<>();
-
-        for (Document document : iterable) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", document.get("name"));
-            map.put("url", document.get("url"));
-            releases.add(map);
-        }
-
-        logger.info("releases " + releases);
-
-        mongoClient.close();
-        return Results.html().render("releases", releases);
+    public Result configuration() {
+        return Results.html();
     }
+
 
     @FilterWith(AdminSecureFilter.class)
     public Result releasePost(@Param("name") String name, @Param("url") String url) {
