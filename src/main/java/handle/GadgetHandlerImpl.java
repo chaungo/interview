@@ -99,8 +99,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
         } else {
             throw new APIException("can not map to any Epic gadget");
         }
-
-        return Results.json().render("message", "successful").render("data", gadgetId);
+        return ResultsUtil.convertToResult(ResultCode.SUCCESS, gadgetId);
     }
 
     @Override

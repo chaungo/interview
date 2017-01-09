@@ -289,22 +289,23 @@ public class GadgetUtility extends DatabaseUtility {
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put(Constant.PARAMERTER_JQL_QUERY, String.format(query, issueKey));
         parameters.put(Constant.PARAMERTER_MAXRESULTS,
-                PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS,
-                        Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS_DEFAULT));
+                PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS, Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS_DEFAULT));
         parameters.put(Constant.PARAMERTER_OFFSET, "0");
-        String data = HTTPClientUtil.getInstance().getLegacyData(
-                PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters, cookies);
-        try {
+        String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters, cookies);
+        try{
             searchResult = JSONUtil.getInstance().convertJSONtoObject(data, JQLSearchResult.class);
-        } catch (APIException e) {
+        } catch (APIException e){
             // ignore exception, issue not found.
-            if (!APIErrorCode.PARSE_JSON.equals(e.getErrorCode())) {
+            if(!APIErrorCode.PARSE_JSON.equals(e.getErrorCode())){
                 return null;
-            } else {
+            } else{
                 throw e;
             }
         }
-        return searchResult.getIssues().get(0);
+        if(searchResult.getIssues() != null && !searchResult.getIssues().isEmpty()){
+            return searchResult.getIssues().get(0);
+        }
+        return null;
     }
 
     public List<String> getProjectList(Map<String, String> cookies) throws APIException {

@@ -11,7 +11,7 @@ public class EpicVsTestExecution extends GadgetAPI {
     public static final String author = "";
     public static final String name = "Epic Test Execution Report";
     public static final String pictureUrl = "";
-    public static final String addnewUIurl = "assets/html/xxx.html";
+    public static final String addnewUIurl = "assets/html/EpicSettings.html";
     public static final String description = "Epic Test Execution Report";
 
     private boolean selectAll;

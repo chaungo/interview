@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:src/main/java/assets/html/AssigneeSettings.html
 <md-dialog ng-controller="AssigneeSettingController">
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -12,6 +13,19 @@
         <div class="md-padding" data-ng-cloack>
             <table class="table table-bordered">
                 <tbody>
+=======
+<md-dialog ng-controller="EpicSettingController" > <md-toolbar>
+<div class="md-toolbar-tools">
+    <h2>Assignee Settings</h2>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="cancel()"> <md-icon class="material-icons">clear</md-icon> </md-button>
+</div>
+</md-toolbar>
+<form action="/dashboard/id/update" method="post" class="form-horizontal" role="form" ng-init="init()">
+    <div class="md-padding" data-ng-cloack>
+        <table class="table table-bordered">
+            <tbody>
+>>>>>>> Stashed changes:src/main/java/assets/html/EpicSettings.html
                 <!-- Project Row -->
                 <tr>
                     <td class="col-md-6"><label>Project</label></td>
@@ -59,9 +73,8 @@
                             <div id="epiclinkloader" align="center" class="hide">
                                 <div class="myLoader loader"></div>
                             </div>
-                            <select style="display :none" multiple class="form-control" id="epicMultiSelect"
-                                    ng-model="selectedEpicLink"
-                                    ng-options="item as item for item in greenHopperEpicLink">
+
+                            <select style = "display :none" multiple class="form-control" id="epicLinkSelection" ng-model="selectedEpicLink" ng-options="item as item for item in greenHopperEpicLink track by item">
                             </select>
                         </div>
                         <div class="col-md-12" align="center" style="padding-top: 10px;">
@@ -86,9 +99,9 @@
                         <option value="UNPLANNED">UNPLANNED</option>
                     </select></td>
                 </tr>
-                </tbody>
-            </table>
-        </div>
-        <button type="button" id="epic-add-gadget" class="btn btn-success">Save</button>
-    </form>
+            </tbody>
+        </table>
+    </div>
+    <button type="button" ng-click = "saveGadget()" id="epic-add-gadget" class="btn btn-success">Save</button>
+</form>
 </md-dialog>

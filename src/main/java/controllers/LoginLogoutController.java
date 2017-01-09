@@ -39,6 +39,8 @@ public class LoginLogoutController {
                 sessionInfo.setCookies(cookiesMap);
                 String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
                 session.put(API_SESSION_INFO, sessionInfoStr);
+            }else{
+                return false;
             }
 
             if (respond.header("X-AUSERNAME").equals(username)) {

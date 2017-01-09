@@ -187,13 +187,16 @@ public class EpicUtility {
     }
 
     public List<JQLIssueVO> findAllTestedIssueForEpic(String epic, Map<String, String> cookies) throws APIException {
+        List<JQLIssueVO> testIssues = new ArrayList<>();
         JQLIssueVO epicIssue = GadgetUtility.getInstance().findIssue(epic, cookies);
+        if(epicIssue == null){
+            return testIssues;
+        }
         List<JQLIssueLinkVO> issueLinks = epicIssue.getFields().getIssuelinks();
         List<JQLIssueLinkVO> testedByIssue = issueLinks.stream().filter(i -> IS_TESED_BY.equals(i.getType().getInward())).collect(Collectors.toList());
 
         List<FindIssueCallable> tasks = new ArrayList<FindIssueCallable>();
         testedByIssue.forEach(s -> tasks.add(new FindIssueCallable(s.getInwardIssue().getKey(), cookies)));
-        List<JQLIssueVO> testIssues = new ArrayList<>();
 
         List<JQLIssueVO> resultTask = ExecutorManagement.getInstance().invokeAndGet(tasks);
         testIssues.addAll(resultTask);

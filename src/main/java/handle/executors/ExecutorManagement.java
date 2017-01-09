@@ -49,11 +49,11 @@ public class ExecutorManagement {
                 logger.error("error during invoke", e);
                 throw new APIException("error during invoke", e);
             } catch (ExecutionException e) {
-                logger.fastDebug("erorrrrrrrrrrrrr", e);
                 if (e.getCause() != null && e.getCause() instanceof APIException) {
                     logger.error(e.getMessage(), e.getCause());
                     throw (APIException) e.getCause();
                 }
+                logger.fastDebug("error", e);
                 throw new APIException("error during invoke", e);
             }
         }
