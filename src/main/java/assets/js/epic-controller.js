@@ -15,63 +15,42 @@
  * #epic-table-loader
  */
 
-/*
- * Set listeners for project, release, product select option.
- */
-$("#epicProject").change(function() {
-  callAjaxOnEpicProjectAndRelease(null);
-});
+function onClickUpdateEpic(gadget) {
+	$(gadget.id).find("#epic-add-gadget").prop("disabled", true);
+	var jsonString = createJsonStringObjectFromEpicInput(gadget);
+	callAjaxToUpdateGadget(gadget, jsonString);
+}
 
-$("#epicRelease").change(function() {
-  callAjaxOnEpicProjectAndRelease(null);
-});
+function onCheckAllEpic(gadget) {
+	if ($(gadget.id).find("#epicCheckAll").prop("checked")) {
+		$(gadget.id).find("#epic-link-container").fadeOut();
+	} else {
+		$(gadget.id).find("#epic-link-container").fadeIn();
+		if ($(gadget.id).find("#epicMultiSelect option").length == 0) {
+			callAjaxOnEpicProjectAndRelease(gadget, null);
+		}
+	}
+}
 
-$("#epicProduct").change(function() {
-  callAjaxOnEpicProjectAndRelease(null);
-});
-
-/*
- * Set listener for update button
- */
-$("#epic-add-gadget").click(function() {
-  $(this).prop("disabled", true);
-  var jsonString = createJsonStringObjectFromEpicInput();
-  callAjaxToUpdateGadget(jsonString);
-});
-
-/*
- * Set listener for input check option.
- */
-$("#epicCheckAll").click(function() {
-  if ($(this).prop("checked")) {
-    $("#epic-link-container").fadeOut();
-  } else {
-    $("#epic-link-container").fadeIn();
-    if ($("#epicMultiSelect option").length == 0) {
-      callAjaxOnEpicProjectAndRelease(null);
-    }
-  }
-});
-
-function callAjaxOnEpicProjectAndRelease(selectList) {
-  if ($("#epicProject").val() == null || $("#epicRelease").val() == null || $("#epicProduct").val() == null) {
+function callAjaxOnEpicProjectAndRelease(gadget, selectList) {
+  if ($(gadget.id).find("#epicProject").val() == null || $(gadget.id).find("#epicRelease").val() == null || $(gadget.id).find("#epicProduct").val() == null) {
     return;
-  } else if ($("#epicProject").val() == "" || $("#epicRelease").val() == "" || $("#epicProduct").val() == "") {
+  } else if ($(gadget.id).find("#epicProject").val() == "" || $(gadget.id).find("#epicRelease").val() == "" || $(gadget.id).find("#epicProduct").val() == "") {
     return;
 
   }
 
-  if (!$("#epicCheckAll").prop("checked")) {
+  if (!$(gadget.id).find("#epicCheckAll").prop("checked")) {
     $.ajax({
       url: GET_EPIC_URI,
       data: {
-        project: $("#epicProject").val(),
-        release: $("#epicRelease").val(),
-        products: JSON.stringify([$("#epicProduct").val()])
+        project: $(gadget.id).find("#epicProject").val(),
+        release: $(gadget.id).find("#epicRelease").val(),
+        products: JSON.stringify([$(gadget.id).find("#epicProduct").val()])
       },
 
       beforeSend: function() {
-        hideEpicLinks();
+        hideEpicLinks(gadget);
       },
       success: function(data) {
         if (debugAjaxResponse(data)) {
@@ -80,62 +59,62 @@ function callAjaxOnEpicProjectAndRelease(selectList) {
           data.sort();
           appendToSelect(true, data, "#epicMultiSelect");
           if (selectList != null) {
-            $("#epicMultiSelect").val(selectList);
+            $(gadget.id).find("#epicMultiSelect").val(selectList);
           }
         }
 
       }
     }).always(function(data) {
-      showEpicLinks();
+      showEpicLinks(gadget);
     });
   }
 }
 
-function createJsonStringObjectFromEpicInput() {
+function createJsonStringObjectFromEpicInput(gadget) {
   var object = {};
-  if (null == $("#dashboardId").val()) {
+  if (null == $(gadget.id).find("#dashboardId").val()) {
     alert("No valid dashboard id provided.");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
-  } else if ($("#epicProject").val() == null || $("#epicProject").val() == "") {
+  } else if ($(gadget.id).find("#epicProject").val() == null || $(gadget.id).find("#epicProject").val() == "") {
     alert("No project selected");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
-  } else if ($("#epicRelease").val() == null || $("#epicRelease").val() == "") {
+  } else if ($(gadget.id).find("#epicRelease").val() == null || $(gadget.id).find("#epicRelease").val() == "") {
     alert("No release selected");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
-  } else if ($("#epicProduct").val() == null || $("#epicProduct").val() == "") {
+  } else if ($(gadget.id).find("#epicProduct").val() == null || $(gadget.id).find("#epicProduct").val() == "") {
     alert("No product selected");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
-  } else if ($("#epicMultiSelect").val() == null && !$("#epicCheckAll").prop("checked")) {
+  } else if ($(gadget.id).find("#epicMultiSelect").val() == null && !$(gadget.id).find("#epicCheckAll").prop("checked")) {
     alert("No epic links selected");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
-  } else if ($("#epicMetricMultiSelect") == null) {
+  } else if ($(gadget.id).find("#epicMetricMultiSelect") == null) {
     alert("No test metric selected");
-    $("#epic-add-gadget").prop("disabled", false);
+    $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     return;
   }
-  object['id'] = TEST_EPIC_ID;
-  console.log("TEST_EPIC_ID: " + TEST_EPIC_ID);
-  object['dashboardId'] = $("#dashboardId").val();
-  object['projectName'] = $("#epicProject").val();
-  object['release'] = $("#epicRelease").val();
-  object['products'] = [$("#epicProduct").val()];
-  object['metrics'] = $("#epicMetricMultiSelect").val();
+  object['id'] = gadget.id;
+  console.log("Gadget Id: " + gadget.id);
+  object['dashboardId'] = gadget.dashboardid;
+  object['projectName'] = $(gadget.id).find("#epicProject").val();
+  object['release'] = $(gadget.id).find("#epicRelease").val();
+  object['products'] = [$(gadget.id).find("#epicProduct").val()];
+  object['metrics'] = $(gadget.id).find("#epicMetricMultiSelect").val();
 
-  if ($("#epicCheckAll").prop("checked")) {
+  if ($(gadget.id).find("#epicCheckAll").prop("checked")) {
     object['selectAll'] = true;
     object['epic'] = null;
   } else {
-    object['epic'] = $("#epicMultiSelect").val();
+    object['epic'] = $(gadget.id).find("#epicMultiSelect").val();
   }
   return JSON.stringify(object);
 }
 
-function callAjaxToUpdateGadget(jsonString) {
+function callAjaxToUpdateGadget(gadget, jsonString) {
   if (jsonString != null && jsonString != "") {
     $.ajax({
       url: SAVE_GADGET_URI,
@@ -145,70 +124,68 @@ function callAjaxToUpdateGadget(jsonString) {
         data: jsonString
       },
       beforeSend: function() {
-        hideEpicTable();
+        hideEpicTable(gadget);
       },
       success: function(data) {
         if (debugAjaxResponse(data)) {
-          $("#epic-add-gadget").prop("disabled", false);
-          showEpicTable();
+          $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
+          showEpicTable(gadget);
           return;
         } else {
           alert("Gadget updated succesfully");
-          TEST_EPIC_ID = data["data"];
-          drawEpicTable(TEST_EPIC_ID, $("#epicMetricMultiSelect").val());
+          drawEpicTable(data["data"], $(gadget.id).find("#epicMetricMultiSelect").val());
         }
 
       },
       error: function(xhr, textStatus, error) {
         debugError(xhr, textStatus, error);
-        $("#epic-add-gadget").prop("disabled", false);
-        showEpicTable();
+        $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
+        showEpicTable(gadget);
       }
     });
   }
 }
 
-
-function drawEpicTable(gadgetId, metricArray) {
+function drawEpicTable(gadget, metricArray) {
   var columnList = getColumnArray(metricArray, false);
-  console.log(gadgetId);
+  console.log(gadget);
   resetTableColumns(GLOBAL_EPIC_TABLE, false);
   if (GLOBAL_EPIC_TABLE != null) {
     console.log(GLOBAL_EPIC_TABLE);
-    hideEpicTable();
+    hideEpicTable(gadget);
     GLOBAL_EPIC_TABLE.ajax.reload(function() {
-      showEpicTable();
-      $("#epic-add-gadget").prop("disabled", false);
+      showEpicTable(gadget);
+      $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
     });
     GLOBAL_EPIC_TABLE.columns(columnList).visible(false);
 
   } else {
-    hideEpicTable();
-    console.log("DRAW EPIC TABLE: " + gadgetId);
-    GLOBAL_EPIC_TABLE = $('#epic-table').on(
+    hideEpicTable(gadget);
+    console.log("DRAW EPIC TABLE: " + gadget.id);
+    GLOBAL_EPIC_TABLE = $(gadget.id).find('#epic-table').on(
       'error.dt',
       function(e, settings, techNote, message) {
         console.log('An error has been reported by DataTables: ',
           message);
-        $("#epic-add-gadget").prop("disabled", false);
-        showEpicTable();
+        $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
+        showEpicTable(gadget);
       }).DataTable({
       "fnDrawCallback": function(oSettings) {
-        $("#epic-add-gadget").prop("disabled", false);
-        showEpicTable();
+        $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
+        showEpicTable(gadget);
       },
       bAutoWidth: false,
       "ajax": {
         url: GET_DATA_URI,
         data: {
-          id: gadgetId
+          id: gadget.id
         },
         dataSrc: function(responseJson) {
           var tempArray = [];
           console.log(responseJson);
           if (debugAjaxResponse(responseJson)) {
-            $("#epic-add-gadget").prop("disabled", false);
-            showEpicTable();
+            $(gadget.id).find("#epic-add-gadget").prop("disabled", false);
+            showEpicTable(gadget);
             return [];
           }
 
@@ -287,22 +264,56 @@ function drawEpicTable(gadgetId, metricArray) {
 
 }
 
-function showEpicLinks() {
-  $('#epicMultiSelect').fadeIn();
-  $('#epic-link-loader').fadeOut();
+function drawEpicWidget(gadget){
+	$(gadget.id).find("#epic-test-execution-div").show();
+	$(gadget.id).find("#btn-add-gadget-epic").prop("disabled", true);
+	hideEpicTable(gadget.id);
+	if (gadget.projectName != ""
+			&& gadget.projectName != null) {
+		$(gadget.id).find("#epicProject").val(gadget.projectName);
+	}
+
+	if (gadget.product != null) {
+		$(gadget.id).find("#epicProduct").val(gadget.product);
+	}
+	else{
+		$(gadget.id).find("#epicProduct").val("");
+	}
+
+	if (gadget.release != null) {
+		$(gadget.id).find("#epicRelease").val(gadget.release);
+	}
+
+	if (gadget.metrics != null) {
+		$(gadget.id).find("#epicMetricMultiSelect").val(gadget.metrics);
+	}
+	if (gadget.selectAll == true) {
+		$(gadget.id).find("#epicCheckAll").prop("checked", true);
+		$(gadget.id).find("#epic-link-container").hide();
+	} else if (gadget.epic != null) {
+		$(gadget.id).find("#epicCheckAll").prop("checked", false);
+		$(gadget.id).find("#epic-link-container").show();
+		$(gadget.id).find("#epic-link-loader").hide();
+		callAjaxOnEpicProjectAndRelease(gadget.id, gadget.epic);
+	}
 }
 
-function showEpicTable() {
-  $('#epic-table-container').fadeIn();
-  $('#epic-table-loader').fadeOut();
+function showEpicLinks(gadget) {
+  $(gadget.id).find('#epicMultiSelect').fadeIn();
+  $(gadget.id).find('#epic-link-loader').fadeOut();
 }
 
-function hideEpicTable() {
-  $('#epic-table-container').fadeOut();
-  $('#epic-table-loader').fadeIn();
+function showEpicTable(gadget) {
+  $(gadget.id).find('#epic-table-container').fadeIn();
+  $(gadget.id).find('#epic-table-loader').fadeOut();
 }
 
-function hideEpicLinks() {
-  $('#epicMultiSelect').fadeOut();
-  $('#epic-link-loader').fadeIn();
+function hideEpicTable(gadget) {
+  $(gadget.id).find('#epic-table-container').fadeOut();
+  $(gadget.id).find('#epic-table-loader').fadeIn();
+}
+
+function hideEpicLinks(gadget) {
+  $(gadget.id).find('#epicMultiSelect').fadeOut();
+  $(gadget.id).find('#epic-link-loader').fadeIn();
 }
