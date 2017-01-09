@@ -35,12 +35,12 @@ public class ConfigurationController {
 
 
     @FilterWith(AdminSecureFilter.class)
-    public Result releasePost(@Param("name") String name, @Param("url") String url) {
+    public Result addNewMetric(@Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
         collection.insertOne(new Document("name", name).append("url", url));
         mongoClient.close();
-        return Results.redirect("/release");
+        return Results.ok();
     }
 
     @FilterWith(AdminSecureFilter.class)

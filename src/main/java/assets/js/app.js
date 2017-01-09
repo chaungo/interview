@@ -1,22 +1,5 @@
 var app = angular.module('App', ['ngAnimate', 'ngMaterial', 'ngResource', 'ngMessages', 'ngCookies']);
-var SUCCESS = "SUCCESS";
-function getGreenHopperProjectList(callBack){
-    $.get("/listproject", function (data) {
-        callBack(data);
-    });
-}
-function getGreenHopperProduct(callBack){
-    $.get("/product/getall", function (data) {
-        callBack(data);
-    });
-}
-function verifyValue(arrayArgument){
-    var verify = true;
-    $.each(arrayArgument, function( index, value ) {
-        verify &= (value !=null && value!= "");
-      });
-    return verify;
-}
+
 
 app.run(function ($rootScope, $resource, $location, $cookies) {
     /////////////////////////////////////////////////////////////
@@ -1322,7 +1305,7 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-    	drawEpicTable($scope.dataTable, item);
+        drawEpicTable($scope.dataTable, item);
     }
 
     $scope.onProjectReleaseProductChanged = function (item) {
@@ -1336,47 +1319,25 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.deleteGreenhopperGadget = function (item) {
 
     }
+
+    $scope.onProjectReleaseProductChanged = function () {
+        console.log($("#epicProject").val());
+        console.log($("#epicProduct").val());
+        console.log($("#epicRelease").val());
+    }
+
 });
 
 app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.greenHopperProjectList = [];
-    $scope.greenHopperProduct = [];
-    $scope.greenHopperProduct = [];
-    $scope.greenHopperEpicLink = [];
-    
+    $scope.getGreenHopperProjectList = [];
+    $scope.getGreenHopperProduct = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
-    
-    $scope.onProjectReleaseProductChanged = function () {
-        var epicProject = $("#epicProject").val();
-        var epicProduct = $("#epicProduct").val();
-        var epicRelease = $("#epicRelease").val();
-        var isNotEmpty = verifyValue([epicProject, epicProduct, epicRelease]);
-        var epicCheckAll = $("#epicCheckAll").prop('checked');
-        
-        if(isNotEmpty && !epicCheckAll){
-            var requestData = {
-                    project : epicProject,
-                    release : epicRelease,
-                    products : JSON.stringify([epicProduct])
-            }
-            var epicLoader = $("#epic-link-loader");
-            var callback = function(result){
-                console.log(result);
-                $scope.greenHopperEpicLink = result;
-                $scope.$apply();
-            }
-            //load Epic Link
-            loadEpicLink(epicLoader,requestData, callback);
-            
-        }
-        
-    }
     $scope.cancel = function () {
         $mdDialog.cancel();
-    };
-    
+    }
+
     $scope.init = function () {
         console.log('init assignee controller');
         var callBack = function (result) {
@@ -1393,39 +1354,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
 
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
-    }
-    $scope.onCheckAllEpic = function () {
-        var epicMultiSelect = $("#epicMultiSelect");
-        var epicCheckAll = $("#epicCheckAll").prop('checked');
-        if(epicCheckAll){
-            epicMultiSelect.css("display", "none");
-        }else{
-        epicMultiSelect.css("display", "");
-        }
-    }
-    
-    $scope.onProjectReleaseProductChanged = function () {
-        console.log($("#epicProject").val());
-        console.log($("#epicProduct").val());
-        console.log($("#epicRelease").val());
-    }
-    
-    function loadEpicLink(loader, requestData,callback){
-        loader.removeClass("hide");
-        $.ajax({
-            url: "/getEpicLinks",
-            method : "GET",
-            dataType : "json",
-            data:requestData,
-            success : function (result){
-                callback(result);
-                loader.addClass("hide");
-            },
-            error : function (error){
-                console.log(error);
-                loader.addClass("hide");
-            }
-        });
+
     }
 });
 
@@ -1435,17 +1364,16 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     $scope.init = function (item) {
         drawUsTable($scope.dataTable, item);
     }
-    
-    $scope.toggleView = function(){
-		$scope.showView = !$scope.showView;
-	}
-    
-    
-    $scope.editGreenhopperGadget = function(item){
-    	
+    $scope.toggleView = function () {
+        $scope.showView = !$scope.showView;
     }
-  
-    $scope.onUpdate = function (item) {
+
+
+    $scope.editGreenhopperGadget = function (item) {
+
+    }
+
+    $scope.deleteGreenhopperGadget = function (item) {
 
     }
 });
@@ -1456,16 +1384,15 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
     $scope.init = function (item) {
         drawCycleTable($scope.dataTable, item);
     }
-    $scope.toggleView = function(){
+    $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
-    
-    $scope.editGreenhopperGadget = function(item){
-        
+
+    $scope.editGreenhopperGadget = function (item) {
+
     }
 
-    $scope.deleteGreenhopperGadget = function(item)
-    {
+    $scope.deleteGreenhopperGadget = function (item) {
 
     }
 });
@@ -1476,18 +1403,17 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     $scope.init = function (item) {
         drawAssigneeTable($scope.dataTable, item);
     }
-    
-    $scope.toggleView = function(){
+
+    $scope.toggleView = function () {
         console.log($scope.showView);
         $scope.showView = !$scope.showView;
     }
-    
-    $scope.editGreenhopperGadget = function(item){
-        
+
+    $scope.editGreenhopperGadget = function (item) {
+
     }
-    
-    $scope.deleteGreenhopperGadget = function(item)
-    {
+
+    $scope.deleteGreenhopperGadget = function (item) {
 
     }
 });
