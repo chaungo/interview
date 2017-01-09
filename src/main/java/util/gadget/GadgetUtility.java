@@ -71,7 +71,7 @@ public class GadgetUtility extends DatabaseUtility {
         gadget.setEpic(epic);
         gadget.setMetrics(metrics);
         gadget.setProducts(products);
-        gadget.setProjectName("FNMS 557x");
+        //gadget.setProjectName("FNMS 557x");
         // gadget.setSelectAllStory(true);
         // gadget.setStories(story);
         gadget.setUser("tducle");

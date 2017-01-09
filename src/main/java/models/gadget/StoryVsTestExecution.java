@@ -85,4 +85,7 @@ public class StoryVsTestExecution extends GadgetAPI {
     public void setSelectAllStory(boolean selectAll) {
         this.selectAllStory = selectAll;
     }
+
+
+
 }

@@ -51,7 +51,7 @@
 
             <div id="gadgetContainer" layout="column" layout-align="start center">
 
-                <div id="{{item.id}}" ng-repeat="item in sonarStList" layout-wrap>
+                <div id="{{item.id}}" ng-repeat="item in sonarStList" style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
                             <b>AMS SONAR Statistics {{item.release}}</b>
@@ -64,7 +64,7 @@
                                 ng-click="deleteGagdget(item)">Delete</b> <b
                                 ng-click="clearCacheGagdget(item)">Clear cache</b>
                         </div>
-                        <table class="responstable">
+                        <table class="responstable"  style="width: 100%">
                             <tr>
                                 <th>Index</th>
                                 <th>Component</th>
@@ -111,7 +111,7 @@
                     </md-card>
                 </div>
 
-                <div id="{{re.id}}" ng-repeat="re in reviewList" layout-wrap>
+                <div id="{{re.id}}" ng-repeat="re in reviewList"  style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
                             <b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
