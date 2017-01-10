@@ -159,6 +159,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
         $rootScope.sonarStList = [];
         $rootScope.reviewList = [];
+        $rootScope.greenHopperGadgets = [];
+
 
         $resource('/getDashboardInfo', {
             id: $rootScope.currentDashboard.id
@@ -282,15 +284,15 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.gadgetToEdit = null;
             //console.log(item.name);
             $rootScope.gadgetType = item.type;
-            
+
             $mdDialog.show({
                 templateUrl: item.addnewUIurl,
                 parent: angular.element(document.getElementById('html')),
                 targetEvent: event,
                 clickOutsideToClose: false
             });
-            
-            
+
+
         };
 
         $scope.hide = function () {
@@ -800,7 +802,6 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
     $scope.ReleaseList = [];
     $scope.newReleaseName = "";
     $scope.newReleaseUrl = "";
-
 
 
     $rootScope.getReleaseRs = $resource('/getReleaseList', {}, {

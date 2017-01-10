@@ -69,21 +69,12 @@ public class Constant {
     public static final String USERNAME = "username";
     //message
     public static final String SESSION_ERROR_MESSAGE = "session.error.message";
-    public static String UserName = "name";
-    public static String EmailAddress = "emailAddress";
-    //	public static final String LINK_REST_USER2 = "http://tiger.in.alcatel-lucent.com:8060/rest-service/users-v1/";
-    public static String AvatarUrl = "avatarUrls";
-    public static String Avatar48 = "48x48";
+
     public static String DisplayName = "displayName";
-    public static String Active = "active";
-    public static String TimeZone = "timeZone";
+
     public static String Groups = "groups";
     public static String GroupsItems = "items";
-    public static String GroupsItemsName = "name";
-    public static String GroupsItemsLink = "self";
-    public static String MetricName[] = {"Coverage", "Critical Violations", "New Coverage*", "Unit Test Errors",
-            "Unit tests duration", "Unit Test Failures"};
+
     public static String MetricKey[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
             "test_execution_time", "test_failures"};
-    public static String MetricValueKey[] = {"frmt_val", "var1"};
 }
