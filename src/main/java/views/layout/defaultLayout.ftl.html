@@ -87,6 +87,9 @@
                 <#if (session.role)??>
                     <md-button ng-href="/" ng-if="configPage" class="md-icon-button">
                         <md-icon style="color: white;" class="material-icons">home</md-icon>
+                        <md-tooltip md-direction="bottom">
+                            Home page
+                        </md-tooltip>
                     </md-button>
                     <md-button ng-if="!configPage" ng-href="/configuration" class="md-icon-button">
                         <md-icon style="color: white;" class="material-icons">settings</md-icon>
