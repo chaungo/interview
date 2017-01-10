@@ -11,8 +11,11 @@ import ninja.params.Param;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import util.AdminUtility;
 import util.Constant;
 import util.PropertiesUtil;
+
+import java.util.Set;
 
 @Singleton
 public class ConfigurationController {
@@ -21,7 +24,9 @@ public class ConfigurationController {
 
     @FilterWith(AdminSecureFilter.class)
     public Result configuration() {
-        return Results.html();
+        Set<String> products = AdminUtility.getInstance().getAllProduct();
+        Set<String> cycles = AdminUtility.getInstance().getAllCycle();
+        return Results.html().render("isProductPage", true).render("products", products).render("cycles", cycles);
     }
 
 

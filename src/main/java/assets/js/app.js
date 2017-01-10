@@ -1012,8 +1012,11 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
             isArray: true
         }
     }).query().$promise.then(function (respone) {
-        //console.log(respone);
+        console.log(respone);
         $scope.CruProjectList = respone;
+        if($scope.CruProjectList.length == 0){
+            $window.location.href = '/logout';
+        }
         $scope.Loading = false;
     }, function (error) {
         //console.log(error);
