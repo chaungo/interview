@@ -127,18 +127,20 @@ public class GadgetHandlerImpl extends GadgetHandler {
         if (gadget != null) {
             if (Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadget.getType())) {
                 EpicVsTestExecution epicGadget = (EpicVsTestExecution) gadget;
+                String projectName = epicGadget.getProjectName() !=null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
                 List<GadgetData> epicData = epicService.getDataEPic(epicGadget, sessionInfo.getCookies());
                 GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                 epicDataWapper.setIssueData(epicData);
-                epicDataWapper.setSummary(epicGadget.getProjectName());
-                gadgetsData.put(epicGadget.getProjectName(), epicDataWapper);
+                epicDataWapper.setSummary(projectName);
+                gadgetsData.put(projectName, epicDataWapper);
             } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadget.getType())) {
                 CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
+                String projectName = cycleGadget.getProjectName() !=null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
                 List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo.getCookies());
                 GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                 epicDataWapper.setIssueData(cycleData);
-                epicDataWapper.setSummary(cycleGadget.getProjectName());
-                gadgetsData.put(cycleGadget.getProjectName(), epicDataWapper);
+                epicDataWapper.setSummary(projectName);
+                gadgetsData.put(projectName, epicDataWapper);
             } else if (Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadget.getType())) {
                 AssigneeVsTestExecution assigneeGadget = (AssigneeVsTestExecution) gadget;
                 gadgetsData = assigneeService.getDataAssignee(assigneeGadget, sessionInfo.getCookies());
