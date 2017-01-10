@@ -63,8 +63,11 @@ public class GadgetHandlerImpl extends GadgetHandler {
         } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadgetType)) {
             CycleVsTestExecution cycleGadget = JSONUtil.getInstance().convertJSONtoObject(data, CycleVsTestExecution.class);
             cycleGadget.setUser(username);
-            if (!cycleGadget.isSelectAllCycle() && (cycleGadget.getCycles() == null || cycleGadget.getCycles().isEmpty())) {
-                errorMessages.add("Cycle name");
+            if(!cycleGadget.isSelectAllCycle()){
+                toVerify = false;
+                if(cycleGadget.getCycles() == null || cycleGadget.getCycles().isEmpty()){
+                    errorMessages.add("Cycle name");
+                }
             }
             gadget = cycleGadget;
         } else if (Gadget.Type.STORY_TEST_EXECUTION.equals(gadgetType)) {

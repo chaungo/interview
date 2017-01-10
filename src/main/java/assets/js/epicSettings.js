@@ -43,7 +43,11 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
-
+    $scope.isAdmin = false;
+    if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+        $scope.isAdmin = true;
+    }
+    
     $scope.init = function () {
         var callBack = function (result) {
             if(result.type ==null){

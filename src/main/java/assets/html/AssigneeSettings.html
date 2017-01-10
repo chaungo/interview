@@ -41,8 +41,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                    class="btn-to-product btn btn-default">Add Product</a>
+                                <a href="/product" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
+                                    class="btn-to-product btn btn-default" ng-disabled="!isAdmin" >Add Product</a>
                             </div>
                         </td>
                     </tr>

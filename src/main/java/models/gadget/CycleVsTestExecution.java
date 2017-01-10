@@ -12,7 +12,7 @@ public class CycleVsTestExecution extends GadgetAPI {
     public static final String author = "";
     public static final String name = "Cycle Test Execution Report";
     public static final String pictureUrl = "";
-    public static final String addnewUIurl = "assets/html/xxx.html";
+    public static final String addnewUIurl = "assets/html/CycleSettings.html";
     public static final String description = "Cycle Test Execution Report";
 
     private Type type = Type.TEST_CYCLE_TEST_EXECUTION;
