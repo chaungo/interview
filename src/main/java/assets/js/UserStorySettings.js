@@ -18,7 +18,7 @@ app.controller('UserStorySettingsController', function($scope, $rootScope, $wind
   $scope.showStoryLoader = false;
   $scope.isAdmin = false;
   if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
-  	$scope.productPage = "product";
+  	$scope.productPage = "configuration";
       $scope.isAdmin = true;
   }
 

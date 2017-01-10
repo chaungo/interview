@@ -31,7 +31,7 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
     }
     $scope.isAdmin = false;
     if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
-    	$scope.productPage = "product";
+    	$scope.productPage = "configuration";
         $scope.isAdmin = true;
     }
     $scope.init = function () {
