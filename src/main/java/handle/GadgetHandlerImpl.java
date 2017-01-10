@@ -53,9 +53,9 @@ public class GadgetHandlerImpl extends GadgetHandler {
         } else if (Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadgetType)) {
             AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance().convertJSONtoObject(data, AssigneeVsTestExecution.class);
             assigneeGadget.setUser(username);
-            if (!assigneeGadget.isSelectAllTestCycle()){
+            if (!assigneeGadget.isSelectAllTestCycle()) {
                 toVerify = false;
-                if(assigneeGadget.getCycles() == null || assigneeGadget.getCycles().isEmpty()) {
+                if (assigneeGadget.getCycles() == null || assigneeGadget.getCycles().isEmpty()) {
                     errorMessages.add("Cycle name");
                 }
             }
@@ -63,9 +63,9 @@ public class GadgetHandlerImpl extends GadgetHandler {
         } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadgetType)) {
             CycleVsTestExecution cycleGadget = JSONUtil.getInstance().convertJSONtoObject(data, CycleVsTestExecution.class);
             cycleGadget.setUser(username);
-            if(!cycleGadget.isSelectAllCycle()){
+            if (!cycleGadget.isSelectAllCycle()) {
                 toVerify = false;
-                if(cycleGadget.getCycles() == null || cycleGadget.getCycles().isEmpty()){
+                if (cycleGadget.getCycles() == null || cycleGadget.getCycles().isEmpty()) {
                     errorMessages.add("Cycle name");
                 }
             }
@@ -82,23 +82,23 @@ public class GadgetHandlerImpl extends GadgetHandler {
             gadget = storyGadget;
         }
         if (gadget != null) {
-            if(toVerify){
-                if(gadget.getDashboardId() == null){
+            if (toVerify) {
+                if (gadget.getDashboardId() == null) {
                     errorMessages.add("dashboardId");
                 }
-                if(gadget.getProducts() == null || gadget.getProducts().isEmpty()){
+                if (gadget.getProducts() == null || gadget.getProducts().isEmpty()) {
                     errorMessages.add("Products");
                 }
-                if(gadget.getProjectName() == null || gadget.getProjectName().isEmpty()){
+                if (gadget.getProjectName() == null || gadget.getProjectName().isEmpty()) {
                     errorMessages.add("Project");
                 }
-                if(gadget.getRelease() == null){
+                if (gadget.getRelease() == null) {
                     errorMessages.add("Release");
                 }
             }
-            if(errorMessages.isEmpty()){
+            if (errorMessages.isEmpty()) {
                 gadgetId = gadgetService.insertOrUpdate(gadget);
-            } else{
+            } else {
                 StringBuffer error = new StringBuffer();
                 errorMessages.forEach(e -> error.append(e).append(", "));
                 error.append("cannot be null");
@@ -127,7 +127,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
         if (gadget != null) {
             if (Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadget.getType())) {
                 EpicVsTestExecution epicGadget = (EpicVsTestExecution) gadget;
-                String projectName = epicGadget.getProjectName() !=null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
+                String projectName = epicGadget.getProjectName() != null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
                 List<GadgetData> epicData = epicService.getDataEPic(epicGadget, sessionInfo.getCookies());
                 GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                 epicDataWapper.setIssueData(epicData);
@@ -135,7 +135,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
                 gadgetsData.put(projectName, epicDataWapper);
             } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadget.getType())) {
                 CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
-                String projectName = cycleGadget.getProjectName() !=null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
+                String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
                 List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo.getCookies());
                 GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                 epicDataWapper.setIssueData(cycleData);

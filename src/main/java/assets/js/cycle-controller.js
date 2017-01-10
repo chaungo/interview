@@ -45,7 +45,7 @@ function drawCycleTable(dataTable, gadget, callback) {
                 },
                 dataSrc: function (responseJson) {
                     if (debugAjaxResponse(responseJson)) {
-                    	callback(responseJson);
+                        callback(responseJson);
                         showCycleTable(gadget);
                         return [];
                     }

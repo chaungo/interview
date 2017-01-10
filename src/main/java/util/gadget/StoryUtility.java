@@ -39,7 +39,7 @@ public class StoryUtility {
         for (String epic : epics) {
             if (storyInEpic.get(epic) == null) {
                 JQLIssueVO epicIssue = GadgetUtility.getInstance().findIssue(epic, cookies);
-                if(epicIssue == null){
+                if (epicIssue == null) {
                     throw new APIException("Cannot find out epic = " + epic);
                 }
                 tasks.add(new FindIssueInEpicCallable(epicIssue, cookies));
@@ -130,8 +130,8 @@ public class StoryUtility {
                 epicWrapperMap = new HashMap<>();
                 for (String epicKey : epicMap.keySet()) {
                     JQLIssueVO epicIssue = GadgetUtility.getInstance().findIssue(epicKey, cookies);
-                    if(epicIssue == null){
-                        throw new APIException("cannot find out issue = "+ epicKey);
+                    if (epicIssue == null) {
+                        throw new APIException("cannot find out issue = " + epicKey);
                     }
                     epicWrapperMap.put(epicKey, new JQLIssueWapper(epicIssue, epicMap.get(epicKey)));
                 }

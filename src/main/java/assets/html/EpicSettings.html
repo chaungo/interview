@@ -1,14 +1,17 @@
-<md-dialog class="settingForm" ng-controller="EpicSettingController" > <md-toolbar>
-<div class="md-toolbar-tools">
-    <h2>Epic Settings</h2>
-    <span flex></span>
-    <md-button class="md-icon-button" ng-click="cancel()"> <md-icon class="material-icons">clear</md-icon> </md-button>
-</div>
-</md-toolbar>
-<form action="/dashboard/id/update" method="post" class="form-horizontal" role="form" ng-init="init()">
-    <div class="md-padding" data-ng-cloack>
-        <table class="table table-bordered">
-            <tbody>
+<md-dialog class="settingForm" ng-controller="EpicSettingController">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Epic Settings</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form action="/dashboard/id/update" method="post" class="form-horizontal" role="form" ng-init="init()">
+        <div class="md-padding" data-ng-cloack>
+            <table class="table table-bordered">
+                <tbody>
                 <!-- Project Row -->
                 <tr>
                     <td class="col-md-6"><label>Project</label></td>
@@ -42,8 +45,9 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <a href="/{{productPage}}" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                    class="btn-to-product btn btn-default" ng-disabled="!isAdmin" >Add Product</a>
+                            <a href="/{{productPage}}" data-toggle="tooltip"
+                               title="Only Jira Administrator can add new product. Function disabled for normal user."
+                               class="btn-to-product btn btn-default" ng-disabled="!isAdmin">Add Product</a>
                         </div>
                     </td>
                 </tr>
@@ -56,7 +60,9 @@
                                 <div class="myLoader loader"></div>
                             </div>
 
-                            <select multiple class="form-control" data-ng-hide="showEpicLoader" id="epicLinkSelection" ng-model="selectedEpicLink" ng-options="item as item for item in greenHopperEpicLink track by item">
+                            <select multiple class="form-control" data-ng-hide="showEpicLoader" id="epicLinkSelection"
+                                    ng-model="selectedEpicLink"
+                                    ng-options="item as item for item in greenHopperEpicLink track by item">
                             </select>
                         </div>
                         <div class="col-md-12" align="center" style="padding-top: 10px;">
@@ -69,7 +75,8 @@
                 <!-- Metrics row -->
                 <tr>
                     <td class="col-md-6"><label>Metrics</label></td>
-                    <td class="col-md-6"><select multiple class="form-control" id="epicMetricMultiSelect" data-ng-model="selectedMetric">
+                    <td class="col-md-6"><select multiple class="form-control" id="epicMetricMultiSelect"
+                                                 data-ng-model="selectedMetric">
                         <option value="SUMMARY">SUMMARY</option>
                         <option value=PRIORITY>PRIORITY</option>
                         <option value="UNEXECUTED">UNEXECUTED</option>
@@ -81,9 +88,9 @@
                         <option value="UNPLANNED">UNPLANNED</option>
                     </select></td>
                 </tr>
-            </tbody>
-        </table>
-    </div>
-    <button type="button" ng-disabled="isDisabled" ng-click = "saveGadget()" class="btn btn-success">Save</button>
-</form>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" ng-disabled="isDisabled" ng-click="saveGadget()" class="btn btn-success">Save</button>
+    </form>
 </md-dialog>

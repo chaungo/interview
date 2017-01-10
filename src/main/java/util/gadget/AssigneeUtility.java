@@ -8,7 +8,6 @@ import models.exception.APIException;
 import models.gadget.AssigneeVsTestExecution;
 import models.main.*;
 import service.HTTPClientUtil;
-import util.AdminUtility;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
@@ -101,11 +100,11 @@ public class AssigneeUtility {
 
     public ExecutionsVO findExecution(String project, String cyclename, Set<String> assignees, Map<String, String> cookies) throws APIException {
         StringBuilder query = new StringBuilder();
-        if(project != null){
+        if (project != null) {
             query.append(String.format("project = \"%s\"", project));
         }
         if (assignees != null && !assignees.isEmpty()) {
-            if(project != null){
+            if (project != null) {
                 query.append(Constant.AND);
             }
             query.append("(");
@@ -119,8 +118,8 @@ public class AssigneeUtility {
             }
             query.append(")");
         }
-        if(cyclename != null){
-            if((assignees != null && !assignees.isEmpty()) || project != null){
+        if (cyclename != null) {
+            if ((assignees != null && !assignees.isEmpty()) || project != null) {
                 query.append(Constant.AND);
             }
             query.append(String.format("cycleName ~ \"%s\"", cyclename));

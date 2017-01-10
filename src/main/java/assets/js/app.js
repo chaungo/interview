@@ -797,7 +797,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $resource,$cookies) {
+app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $resource, $cookies) {
     $rootScope.pageName = "Configuration";
     $rootScope.userInfo = $cookies.getObject("userInfo");
     $rootScope.userfullname = $rootScope.userInfo.displayName;
@@ -1016,7 +1016,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
     }).query().$promise.then(function (respone) {
         //console.log(respone);
         $scope.CruProjectList = respone;
-        if($scope.CruProjectList.length == 0){
+        if ($scope.CruProjectList.length == 0) {
             $window.location.href = '/logout';
         }
         $scope.Loading = false;

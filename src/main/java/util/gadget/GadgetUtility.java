@@ -292,17 +292,17 @@ public class GadgetUtility extends DatabaseUtility {
                 PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS, Constant.RESOURCE_BUNLE_SEARCH_MAXRECORDS_DEFAULT));
         parameters.put(Constant.PARAMERTER_OFFSET, "0");
         String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_SEARCH_PATH), parameters, cookies);
-        try{
+        try {
             searchResult = JSONUtil.getInstance().convertJSONtoObject(data, JQLSearchResult.class);
-        } catch (APIException e){
+        } catch (APIException e) {
             // ignore exception, issue not found.
-            if(!APIErrorCode.PARSE_JSON.equals(e.getErrorCode())){
+            if (!APIErrorCode.PARSE_JSON.equals(e.getErrorCode())) {
                 return null;
-            } else{
+            } else {
                 throw e;
             }
         }
-        if(searchResult.getIssues() != null && !searchResult.getIssues().isEmpty()){
+        if (searchResult.getIssues() != null && !searchResult.getIssues().isEmpty()) {
             return searchResult.getIssues().get(0);
         }
         return null;

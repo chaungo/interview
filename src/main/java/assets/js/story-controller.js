@@ -44,11 +44,11 @@ function drawUsTable(dataTable, gadget, callback) {
         },
         success: function (responseData) {
             if (debugAjaxResponse(responseData)) {
-            	callback(responseData);
+                callback(responseData);
                 showUsTable(gadget);
                 return;
             }
-            
+
             $("#" + gadget.id).find("#us-table-container").html("");
             var index = 0;
 
@@ -141,11 +141,11 @@ function drawUsTable(dataTable, gadget, callback) {
 }
 
 function showUsTable(gadget) {
-	$("#" + gadget.id).find('#us-table-loader').fadeOut();
+    $("#" + gadget.id).find('#us-table-loader').fadeOut();
     $("#" + gadget.id).find("#us-table-container").fadeIn();
 }
 
 function hideUsTable(gadget) {
-	$("#" + gadget.id).find('#us-table-loader').fadeIn();
+    $("#" + gadget.id).find('#us-table-loader').fadeIn();
     $("#" + gadget.id).find("#us-table-container").fadeOut();
 }

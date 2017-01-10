@@ -189,7 +189,7 @@ public class EpicUtility {
     public List<JQLIssueVO> findAllTestedIssueForEpic(String epic, Map<String, String> cookies) throws APIException {
         List<JQLIssueVO> testIssues = new ArrayList<>();
         JQLIssueVO epicIssue = GadgetUtility.getInstance().findIssue(epic, cookies);
-        if(epicIssue == null){
+        if (epicIssue == null) {
             return testIssues;
         }
         List<JQLIssueLinkVO> issueLinks = epicIssue.getFields().getIssuelinks();

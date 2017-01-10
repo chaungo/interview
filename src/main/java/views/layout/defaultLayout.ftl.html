@@ -21,12 +21,12 @@
     <script type="text/javascript" src="/assets/js/story-controller.js"></script>
     <script type="text/javascript" src="/assets/js/assignee-controller.js"></script>
     <script type="text/javascript" src="/assets/js/cycle-controller.js"></script>
-    
+
     <script type="text/javascript" src="/assets/js/epicSettings.js"></script>
     <script type="text/javascript" src="/assets/js/assigneeSettings.js"></script>
     <script type="text/javascript" src="/assets/js/cycleSettings.js"></script>
     <script type="text/javascript" src="/assets/js/UserStorySettings.js"></script>
-    
+
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/assets/css/angular-material.css">
     <link rel="stylesheet" type="text/css" href="/assets/datatables/DataTables-1.10.13/css/jquery.dataTables.min.css">
@@ -58,7 +58,8 @@
             <!--<div flex></div>-->
 
             <#if (session.username)??>
-                <md-button ng-if="currentDashboard.owner == name && !configPage" style="margin-right: 10px;margin-left: 0"
+                <md-button ng-if="currentDashboard.owner == name && !configPage"
+                           style="margin-right: 10px;margin-left: 0"
                            class="md-icon-button"
                            ng-click="showAddWidgetDialog($event)">
                     <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>

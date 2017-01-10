@@ -29,7 +29,7 @@ import static service.GadgetService.getDashboardGadgetbyDashboardId;
 @Singleton
 public class DashboardController {
 
-      public final static Logger logger = Logger.getLogger(DashboardController.class);
+    public final static Logger logger = Logger.getLogger(DashboardController.class);
 
     @FilterWith(SecureFilter.class)
     public Result getDashboardInfo(@Param("id") String id) {

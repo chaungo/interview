@@ -1,4 +1,4 @@
- /*
+/*
  * Function section
  */
 
@@ -31,7 +31,7 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                 var index = 0;
                 $("#" + gadget.id).find("#assignee-table-container").html("");
                 if (debugAjaxResponse(responseData)) {
-                	callback(responseData);
+                    callback(responseData);
                     showAssigneeTable(gadget);
                     return;
                 }
