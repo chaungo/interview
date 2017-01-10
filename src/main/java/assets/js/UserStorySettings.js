@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 app.controller('UserStorySettingsController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.gadgetId = null;
     $scope.usProject = null;
@@ -21,6 +22,31 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
         $scope.productPage = "product";
         $scope.isAdmin = true;
     }
+=======
+app.controller('UserStorySettingsController', function($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+  $scope.gadgetId = null;
+  $scope.usProject = null;
+  $scope.usProjectOptions = [];
+  $scope.usRelease = null;
+  $scope.usReleaseOptions = [];
+  $scope.usProduct = null;
+  $scope.usProductOptions = null;
+  $scope.showEpic = true; 
+  $scope.showStory = true; 
+  $scope.usEpicAvailable = [];
+  $scope.usEpic = []; 
+  $scope.usEpicAvailableOptions = []; 
+  $scope.usEpicOptions = [];
+  $scope.usMultiSelect = [];
+  $scope.usMultiSelectOptions = [];
+  $scope.showEpicLoader = false;
+  $scope.showStoryLoader = false;
+  $scope.isAdmin = false;
+  if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+  	$scope.productPage = "configuration";
+      $scope.isAdmin = true;
+  }
+>>>>>>> bee80334ae5aa0140a42acaa771afa9a93977969
 
     $scope.onProjectReleaseProductChanged = function () {
         $scope.getEpicsAngular(null);

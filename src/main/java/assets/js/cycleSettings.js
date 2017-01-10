@@ -30,8 +30,13 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
         $mdDialog.cancel();
     }
     $scope.isAdmin = false;
+<<<<<<< HEAD
     if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
         $scope.productPage = "product";
+=======
+    if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+    	$scope.productPage = "configuration";
+>>>>>>> bee80334ae5aa0140a42acaa771afa9a93977969
         $scope.isAdmin = true;
     }
     $scope.init = function () {
