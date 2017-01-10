@@ -1355,10 +1355,6 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.onProjectReleaseProductChanged = function (item) {
 
     }
-
-    $scope.deleteGreenhopperGadget = function (item) {
-
-    }
 });
 
 
@@ -1375,14 +1371,6 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         $scope.showView = !$scope.showView;
     }
 
-
-    $scope.editGreenhopperGadget = function (item) {
-
-    }
-
-    $scope.deleteGreenhopperGadget = function (item) {
-
-    }
 });
 
 app.controller('CycleController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
@@ -1395,13 +1383,6 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
         $scope.showView = !$scope.showView;
     }
 
-    $scope.editGreenhopperGadget = function (item) {
-
-    }
-
-    $scope.deleteGreenhopperGadget = function (item) {
-
-    }
 });
 
 app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
@@ -1419,11 +1400,4 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
         $scope.showView = !$scope.showView;
     }
 
-    $scope.editGreenhopperGadget = function (item) {
-
-    }
-
-    $scope.deleteGreenhopperGadget = function (item) {
-
-    }
 });

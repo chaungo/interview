@@ -50,6 +50,16 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         }
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
+        
+        var callback = function(result) {
+            if (result.type == null) {
+                $scope.greenHopperCycleLink = result;
+                $scope.$apply();
+            } else {
+                showError(result.data);
+            }
+        }
+        loadCycle(callback);
     }
 
     $scope.onCheckAllCycle = function () {
@@ -64,29 +74,6 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     }
 
     $scope.onProjectReleaseProductChanged = function () {
-        var assigneeProjectVal = $("#assigneeProject").val();
-        var assigneeProductVal = $("#assigneeProduct").val();
-        var assigneeReleaseVal = $("#assigneeRelease").val();
-        var isNotEmpty = verifyValue([assigneeProjectVal, assigneeProductVal, assigneeReleaseVal]);
-        
-        var assigneeCheckAllCycleVal = $("#assigneeCheckAllCycle").prop('checked');
-
-        if(isNotEmpty && !assigneeCheckAllCycleVal){
-            var requestData = {};
-            var assigneeLoader = $("#assigneeCycle");
-            
-            var callback = function(result) {
-                if (result.type == null) {
-                    $scope.greenHopperCycleLink = result;
-                    $scope.$apply();
-                } else {
-                    showError(result.data);
-                }
-            }
-            // load Assignee Link
-            loadCycle(assigneeLoader,requestData, callback);
-
-        }
     }
     
 
@@ -100,10 +87,8 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         var assigneeCycle = $("#assigneeCycle").val();
         var isNotEmpty;
         var assigneeCheckAllCycleVal = $("#assigneeCheckAllCycle").prop('checked');
-        if (assigneeCheckAllCycleVal) {
-            isNotEmpty = verifyValue([ assigneeProjectVal, assigneeProductVal, assigneeReleaseVal ]);
-        } else {
-            isNotEmpty = verifyValue([ assigneeProjectVal, assigneeProductVal, assigneeReleaseVal ]);
+        isNotEmpty = verifyValue([ assigneeProjectVal, assigneeProductVal, assigneeReleaseVal ]);
+        if (!assigneeCheckAllCycleVal) {
             isNotEmpty &= (assigneeCycle != null && assigneeCycle.length > 0);
         }
 
@@ -142,20 +127,17 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
 
     }
         
-    function loadCycle(loader, requestData, callback){
-        loader.addClass("loader");
+    function loadCycle(callback){
         $.ajax({
             url: "/cycleExisting",
             method : "GET",
             dataType : "json",
-            data:requestData,
             success : function (result){ 
                 callback(result);
-                loader.removeClass("loader");
             },
             error : function (error){
                 console.log(error);
-                loader.removeClass("loader");
+                showError(error);
             }
         });
     }
