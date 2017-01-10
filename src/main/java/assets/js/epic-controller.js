@@ -13,7 +13,7 @@ function drawEpicTable(dataTable, gadget, callback) {
         dataTable = $("#" + gadget.id).find('#epic-table').on(
             'error.dt',
             function (e, settings, techNote, message) {
-            	callback('An error has been reported by DataTables: ' + message)
+                callback('An error has been reported by DataTables: ' + message)
                 showEpicTable(gadget);
             }).DataTable({
             "fnDrawCallback": function (oSettings) {
@@ -28,7 +28,7 @@ function drawEpicTable(dataTable, gadget, callback) {
                 dataSrc: function (responseJson) {
                     var tempArray = [];
                     if (debugAjaxResponse(responseJson)) {
-                    	callback(responseJson);
+                        callback(responseJson);
                         showEpicTable(gadget);
                         return [];
                     }
@@ -105,7 +105,6 @@ function drawEpicTable(dataTable, gadget, callback) {
         dataTable.columns(columnList).visible(false);
     }
 }
-
 
 
 function showEpicTable(gadget) {
