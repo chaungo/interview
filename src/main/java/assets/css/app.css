@@ -6,3 +6,6 @@
 .hide {
     display: none;
 }
+md-dialog.settingForm{
+	width: 80%;
+}

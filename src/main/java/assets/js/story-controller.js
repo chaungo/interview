@@ -48,6 +48,7 @@ function drawUsTable(dataTable, gadget, callback) {
                 showUsTable(gadget);
                 return;
             }
+            
             $("#" + gadget.id).find("#us-table-container").html("");
             var index = 0;
 
@@ -140,11 +141,11 @@ function drawUsTable(dataTable, gadget, callback) {
 }
 
 function showUsTable(gadget) {
-    $('#us-table-loader').fadeOut();
+	$("#" + gadget.id).find('#us-table-loader').fadeOut();
     $("#" + gadget.id).find("#us-table-container").fadeIn();
 }
 
 function hideUsTable(gadget) {
-    $('#us-table-loader').fadeIn();
+	$("#" + gadget.id).find('#us-table-loader').fadeIn();
     $("#" + gadget.id).find("#us-table-container").fadeOut();
 }
