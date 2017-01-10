@@ -797,8 +797,10 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $resource) {
+app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, $location, $resource,$cookies) {
     $rootScope.pageName = "Configuration";
+    $rootScope.userInfo = $cookies.getObject("userInfo");
+    $rootScope.userfullname = $rootScope.userInfo.displayName;
     $scope.ReleaseList = [];
     $scope.newReleaseName = "";
     $scope.newReleaseUrl = "";
