@@ -1,0 +1,135 @@
+<md-dialog class="settingForm" data-ng-init="init()" ng-controller="UserStorySettingsController"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>User Story Settings</h2>
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		class="material-icons">clear</md-icon> </md-button>
+</div>
+</md-toolbar>
+<form class="form-horizontal" role="form">
+	<div class="md-padding" data-ng-cloack>
+		<table class="table table-bordered">
+			<tbody>
+				<!-- US Project Row -->
+				<tr>
+					<td class="col-md-6"><label>Project</label></td>
+					<td class="col-md-6"><select data-ng-change="onProjectReleaseProductChanged()" class="form-control"
+						id="usProject" data-ng-model="usProject" data-ng-options="project for project in usProjectOptions">
+							<option selected disabled>-Select Project-</option>
+					</select></td>
+				</tr>
+				<!-- US Release Row -->
+				<tr>
+					<td class="col-md-6"><label>Release</label></td>
+					<td class="col-md-6"><select class="form-control"
+						id="usRelease" data-ng-change="onProjectReleaseProductChanged()" data-ng-model="usRelease">
+							<option selected disabled>-Select Version-</option>
+							<option  value="1.2.0">R1.2.0</option>
+							<option value="1.2.01">R1.2.01</option>
+							<option value="1.3.0">R1.3.0</option>
+					</select></td>
+				</tr>
+				<!-- Product Row -->
+				<tr>
+					<td class="col-md-6"><label>Product</label></td>
+					<td class="col-md-12 row">
+						<div class="col-md-9">
+							<select id="usProduct" class="form-control" data-ng-model="usProduct" data-ng-options="product for product in usProductOptions" data-ng-change="onProjectReleaseProductChanged()">
+								<option selected disabled>-Select Product-</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<a href="" data-toggle="tooltip"
+								title="Only Jira Administrator can add new product. Function disabled for normal user."
+								class="btn-to-product btn btn-default">Add Product</a>
+						</div>
+					</td>
+				</tr>
+				<!-- US EPIC LINK Row -->
+				<tr>
+					<td class="col-md-6"><label>Epic Link</label></td>
+					<td class="col-md-6">
+						<div id="us-epic-container" data-ng-hide="showEpic">
+							<div id="us-epic-loader" align="center" data-ng-show="showEpicLoader">
+								<div class="loader"></div>
+							</div>
+							<div id="us-epic-available-div" data-ng-hide="showEpicLoader">
+								<label>Available</label> <select class="form-control" multiple
+									id="usEpicAvailable" data-ng-model="usEpicAvailable" data-ng-options="epic for epic in usEpicAvailableOptions | orderBy">
+								</select>
+								<div align="center" style="padding-top: 20px;">
+									<button id="us-add-epic-btn" style="width: 35px;"
+										class="btn btn-primary btn-sm" data-ng-click="onAddEpic()">
+										<i style="font-size: 20px" class="fa fa-angle-down"></i>
+									</button>
+
+									<button id="us-remove-epic-btn" style="width: 35px;"
+										class="btn btn-primary btn-sm" data-ng-click="onRemoveEpic()">
+										<i style="font-size: 20px" class="fa fa-angle-up"></i>
+									</button>
+
+									<button id="us-add-all-epic-btn" style="width: 35px;"
+										class="btn btn-primary btn-sm" data-ng-click="onAddAllEpic()">
+										<i style="font-size: 20px" class="fa fa-angle-double-down"></i>
+									</button>
+
+									<button id="us-remove-all-epic-btn" style="width: 35px;"
+										class="btn btn-primary btn-sm" data-ng-click="onRemoveAllEpic()">
+										<i style="font-size: 20px" class="fa fa-angle-double-up"></i>
+									</button>
+
+								</div>
+								<label>To be fetched</label> <select class="form-control"
+									multiple id="usEpic" data-ng-model="usEpic" data-ng-options="epic for epic in usEpicOptions | orderBy">
+								</select>
+							</div>
+						</div>
+						<div class="col-md-12" align="center" style="padding-top: 10px;">
+							<label><input type="checkbox" data-ng-click="onAddAllEpic()" id="usCheckAllEpic" data-ng-model="showEpic">Select
+								All</label>
+
+						</div>
+					</td>
+				</tr>
+
+				<!-- Us story row -->
+				<tr>
+					<td class="col-md-6"><label>User Story</label></td>
+					<td class="col-md-6">
+						<div id="us-container" data-ng-hide="showStory">
+							<select multiple class="form-control" data-ng-hide="showStoryLoader" id="usMultiSelect" data-ng-model="usMultiSelect" data-ng-options="story for story in usMultiSelectOptions | orderBy">
+							</select>
+
+							<div id="us-us-loader" data-ng-show="showStoryLoader" align="center">
+								<div class="loader"></div>
+							</div>
+						</div>
+						<div class="col-md-12" align="center" style="padding-top: 10px;">
+							<label><input type="checkbox" id="usCheckAllStory"
+								 data-ng-model="showStory">Select All</label>
+						</div>
+					</td>
+
+				</tr>
+				<!-- US Metrics row -->
+				<tr>
+					<td class="col-md-6"><label>Metrics</label></td>
+					<td class="col-md-6"><select multiple class="form-control"
+						id="usMetricMultiSelect" data-ng-model="usMetricMultiSelect">
+							<option value="SUMMARY">SUMMARY</option>
+							<option value=PRIORITY>PRIORITY</option>
+							<option value="UNEXECUTED">UNEXECUTED</option>
+							<option value="FAILED">FAILED</option>
+							<option value="WIP">WIP</option>
+							<option value="BLOCKED">BLOCKED</option>
+							<option value="PASSED">PASSED</option>
+							<option value="PLANNED">PLANNED</option>
+							<option value="UNPLANNED">UNPLANNED</option>
+					</select></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<button type="button" data-ng-click="onUpdate()" id="us-update-btn" class="btn btn-success">Update</button>
+</form>
+</md-dialog>
