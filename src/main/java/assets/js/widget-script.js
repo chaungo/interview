@@ -1,26 +1,3 @@
-
-
-$("#btn-add-gadget-epic").click(function () {
-    $("#epic-test-execution-div").show();
-    $(this).prop("disabled", true);
-});
-
-$("#btn-add-gadget-us").click(function () {
-    $("#us-test-execution-div").show();
-    $(this).prop("disabled", true);
-});
-
-$("#btn-add-gadget-assignee").click(function () {
-    $("#assignee-test-execution-div").show();
-    $(this).prop("disabled", true);
-});
-
-$("#btn-add-gadget-cycle").click(function () {
-    $("#cycle-test-execution-div").show();
-    $(this).prop("disabled", true);
-});
-
-
 function fetchGadgetList() {
     if (null != $("#dashboardId").val()) {
         $.ajax({
@@ -358,10 +335,8 @@ function resetTableColumns(table, isCycleOrAssignee) {
 
 function debugAjaxResponse(data) {
     if (data == null) {
-        alert("Ajax response error: Server returned null response");
         return true;
     } else if (data["type"] == "error") {
-        alert("Ajax response error: " + data["data"]);
         return true;
     }
     console.log(data);
