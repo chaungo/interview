@@ -38,11 +38,11 @@ public class ProductController {
     }
 
     //     @FilterWith(AdminSecureFilter.class)
-    public Result productPage() {
-        Set<String> products = AdminUtility.getInstance().getAllProduct();
-        Set<String> cycles = AdminUtility.getInstance().getAllCycle();
-        return Results.html().render("isProductPage", true).render("products", products).render("cycles", cycles);
-    }
+//    public Result productPage() {
+//        Set<String> products = AdminUtility.getInstance().getAllProduct();
+//        Set<String> cycles = AdminUtility.getInstance().getAllCycle();
+//        return Results.html().render("isProductPage", true).render("products", products).render("cycles", cycles);
+//    }
 
     public Result getAllProduct() {
         Set<String> products = AdminUtility.getInstance().getAllProduct();

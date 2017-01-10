@@ -58,7 +58,7 @@
             <!--<div flex></div>-->
 
             <#if (session.username)??>
-                <md-button ng-if="currentDashboard.owner == name" style="margin-right: 10px;margin-left: 0"
+                <md-button ng-if="currentDashboard.owner == name && !configPage" style="margin-right: 10px;margin-left: 0"
                            class="md-icon-button"
                            ng-click="showAddWidgetDialog($event)">
                     <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
@@ -85,19 +85,13 @@
                     <md-icon style="color: white;" class="material-icons">account_circle</md-icon>
                 </md-button>
                 <#if (session.role)??>
-                    <md-button ng-href="/" class="md-icon-button">
+                    <md-button ng-href="/" ng-if="configPage" class="md-icon-button">
                         <md-icon style="color: white;" class="material-icons">home</md-icon>
                     </md-button>
-                    <md-button ng-href="/configuration" class="md-icon-button">
+                    <md-button ng-if="!configPage" ng-href="/configuration" class="md-icon-button">
                         <md-icon style="color: white;" class="material-icons">settings</md-icon>
                         <md-tooltip md-direction="bottom">
                             Configuration page
-                        </md-tooltip>
-                    </md-button>
-                    <md-button ng-href="/product" class="md-icon-button">
-                        <md-icon style="color: white;" class="material-icons">shop</md-icon>
-                        <md-tooltip md-direction="bottom">
-                            Product page
                         </md-tooltip>
                     </md-button>
                 </#if>
