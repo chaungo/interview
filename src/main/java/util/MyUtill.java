@@ -10,6 +10,8 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.*;
 
+import static util.Constant.LINK_CRUCIBLE;
+
 
 public class MyUtill {
 
@@ -48,7 +50,8 @@ public class MyUtill {
             myURLConnection = (HttpURLConnection) url2.openConnection();
         }
 
-        if (url.contains("http://tiger.in.alcatel-lucent.com:8060")) {
+
+        if (url.contains(LINK_CRUCIBLE)) {
             myURLConnection.setRequestProperty("Cookie", getCruCookies(session).toString());
         } else {
             myURLConnection.setRequestProperty("Cookie", getCookies(session).toString());

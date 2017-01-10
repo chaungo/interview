@@ -8,10 +8,11 @@ import ninja.Result;
 import ninja.Results;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
-import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
+import util.Constant;
+import util.PropertiesUtil;
 
 import java.io.BufferedReader;
 import java.text.DateFormat;
@@ -38,48 +39,23 @@ public class OverdueReviewReportController {
 
         JSONArray projectDataArray = new JSONArray();
 
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Gadget");
-        org.bson.Document document = collection.find(new org.bson.Document("Name", "AMS Overdue Reviews Report Gadget")).first();
-        JSONObject cache;
-        try {
-            cache = new JSONObject(document.getString("cache"));
-        } catch (Exception e) {
-            logger.warn(e);
-            cache = new JSONObject();
-            cache.put("project", new JSONArray());
-            cache.put("user", new JSONArray());
+        String rs = "";
+        BufferedReader br = getHttpURLConnection(LINK_GET_CRU_PROJECTS, session);
+        String inputLine;
+        while ((inputLine = br.readLine()) != null) {
+            rs = rs + inputLine;
+        }
+        br.close();
+        JSONArray dataArray = new JSONArray(rs);
+
+        for (int i = 0; i < dataArray.length(); i++) {
+            JSONObject project = dataArray.getJSONObject(i);
+            JSONObject projectInfo = new JSONObject();
+            projectInfo.put("id", project.getString("id"));
+            projectInfo.put("name", project.getString("displaySecondary"));
+            projectDataArray.put(projectInfo);
         }
 
-
-        if (isCacheExpired(document, 24)) {
-            String rs = "";
-            BufferedReader br = getHttpURLConnection(LINK_GET_CRU_PROJECTS, session);
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                rs = rs + inputLine;
-            }
-            br.close();
-            JSONArray dataArray = new JSONArray(rs);
-            if (dataArray.length() != 0) {
-                for (int i = 0; i < dataArray.length(); i++) {
-                    JSONObject project = dataArray.getJSONObject(i);
-                    JSONObject projectInfo = new JSONObject();
-                    projectInfo.put("id", project.getString("id"));
-                    projectInfo.put("name", project.getString("displaySecondary"));
-                    projectDataArray.put(projectInfo);
-                }
-                cache.remove("project");
-                cache.put("project", projectDataArray);
-                collection.updateOne(new org.bson.Document("Name", "AMS Overdue Reviews Report Gadget"), new org.bson.Document("$set", new org.bson.Document("cache", cache.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
-            } else {
-                projectDataArray = cache.getJSONArray("project");
-            }
-        } else {
-            projectDataArray = cache.getJSONArray("project");
-        }
-
-        mongoClient.close();
 
         return projectDataArray;
     }
@@ -89,7 +65,7 @@ public class OverdueReviewReportController {
         JSONArray userArray = new JSONArray();
 
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("Gadget");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Gadget");
         org.bson.Document document = collection.find(new org.bson.Document("Name", "AMS Overdue Reviews Report Gadget")).first();
         JSONObject cache = new JSONObject(document.getString("cache"));
 
@@ -134,7 +110,7 @@ public class OverdueReviewReportController {
         result.put("id", GadgetId);
         result.put("project", data.getString("Project"));
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
         if (isCacheExpired(document, 3)) {

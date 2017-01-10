@@ -21,7 +21,7 @@ public class Constant {
 
     //
     public static final String LOGIN_LINK = "http://tiger.in.alcatel-lucent.com:8091/login.jsp";
-    public static final String LINK_CRUCIBLE = "http://tiger.in.alcatel-lucent.com:8060/login";
+    public static final String LINK_CRUCIBLE = "http://tiger.in.alcatel-lucent.com:8060";
     public static final String LINK_GET_CRU_PROJECTS = "http://tiger.in.alcatel-lucent.com:8060/json/cru/projectFinder.do?limit=99999&q=";
     public static final String LINK_GET_CRU_USERS = "http://tiger.in.alcatel-lucent.com:8060/json/fe/activeUserFinder.do?limit=99999&q=";
     public static final String LINK_GET_ODREVIEW_REPORTS = "http://tiger.in.alcatel-lucent.com:8060/rest-service/reviews-v1/filter/details?creator=&project=%s&states=Review";
@@ -77,4 +77,5 @@ public class Constant {
 
     public static String MetricKey[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
             "test_execution_time", "test_failures"};
+
 }

@@ -9,6 +9,8 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.Constant;
+import util.PropertiesUtil;
 import util.gadget.GadgetUtility;
 
 import java.util.Iterator;
@@ -20,7 +22,7 @@ import java.util.List;
 public class GadgetService {
     public static void insertDashboardGadgettoDB(String dashboardId, String name, String data) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         org.bson.Document doc = new org.bson.Document("dashboardId", dashboardId).append("type", name).append("data", data);
         collection.insertOne(doc);
         mongoClient.close();
@@ -28,7 +30,7 @@ public class GadgetService {
 
     public static void updateDashboardGadgettoDB(String GadgetId, String data) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         org.bson.Document doc = new org.bson.Document("data", data).append("cache", "").append("updateDate", 0);
         collection.updateOne(new org.bson.Document("_id", new ObjectId(GadgetId)), new org.bson.Document("$set", doc));
         mongoClient.close();
@@ -37,7 +39,7 @@ public class GadgetService {
     public static void deleteDashboardGadgetfromDB(String gadgetId) {
         ////System.out.println(gadgetId);
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         FindIterable<Document> gadgetIterable = gadgetCollection.find(new org.bson.Document("_id", new ObjectId(gadgetId)));
         gadgetCollection.deleteOne(gadgetIterable.first());
 
@@ -46,7 +48,7 @@ public class GadgetService {
 
     public static void clearCacheGadgetfromDB(String gadgetId) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         org.bson.Document doc = new org.bson.Document("cache", "").append("updateDate", 0);
         collection.updateOne(new org.bson.Document("_id", new ObjectId(gadgetId)), new org.bson.Document("$set", doc));
         mongoClient.close();

@@ -11,6 +11,8 @@ import ninja.params.Param;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import util.Constant;
+import util.PropertiesUtil;
 
 @Singleton
 public class ConfigurationController {
@@ -26,7 +28,7 @@ public class ConfigurationController {
     @FilterWith(AdminSecureFilter.class)
     public Result addNewRelease(@Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
         collection.insertOne(new Document("name", name).append("url", url));
         mongoClient.close();
         return Results.ok();
@@ -35,7 +37,7 @@ public class ConfigurationController {
     @FilterWith(AdminSecureFilter.class)
     public Result updateRelease(@Param("id") String id, @Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
         collection.updateOne(new Document("_id", new ObjectId(id)), new Document("$set", new Document("name", name).append("url", url)));
         mongoClient.close();
         return Results.ok();
@@ -44,38 +46,11 @@ public class ConfigurationController {
     @FilterWith(AdminSecureFilter.class)
     public Result deleteRelease(@Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
         collection.deleteOne(new Document("url", url));
         mongoClient.close();
         return Results.ok();
     }
 
-
-    @FilterWith(AdminSecureFilter.class)
-    public Result addNewMetric(@Param("name") String name, @Param("key") String key) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.insertOne(new Document("name", name).append("code", key));
-        mongoClient.close();
-        return Results.ok();
-    }
-
-    @FilterWith(AdminSecureFilter.class)
-    public Result updateMetric(@Param("id") String id, @Param("name") String name, @Param("key") String key) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.updateOne(new Document("_id", new ObjectId(id)), new Document("$set", new Document("name", name).append("code", key)));
-        mongoClient.close();
-        return Results.ok();
-    }
-
-    @FilterWith(AdminSecureFilter.class)
-    public Result deleteMetric(@Param("key") String key) {
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
-        collection.deleteOne(new Document("code", key));
-        mongoClient.close();
-        return Results.ok();
-    }
 
 }

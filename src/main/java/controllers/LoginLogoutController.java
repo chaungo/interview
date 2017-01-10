@@ -46,7 +46,7 @@ public class LoginLogoutController {
 
             if (respond.header("X-AUSERNAME").equals(username)) {
                 session.put("username", username);
-                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE).data("username", username).data("password", password)
+                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE+"/login").data("username", username).data("password", password)
                         .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
                 Map<String, String> CruCookies = cruRespond.cookies();
                 session.put("crucookies", CruCookies.toString());
