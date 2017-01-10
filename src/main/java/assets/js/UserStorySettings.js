@@ -16,6 +16,11 @@ app.controller('UserStorySettingsController', function($scope, $rootScope, $wind
   $scope.usMultiSelectOptions = [];
   $scope.showEpicLoader = false;
   $scope.showStoryLoader = false;
+  $scope.isAdmin = false;
+  if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+  	$scope.productPage = "product";
+      $scope.isAdmin = true;
+  }
 
   $scope.onProjectReleaseProductChanged = function() {
 	  $scope.getEpicsAngular(null);
@@ -85,15 +90,17 @@ app.controller('UserStorySettingsController', function($scope, $rootScope, $wind
       }
       
       var callback = function(result) {
-          if (result.type != SUCCESS) {
-              console.log(result);
-              $rootScope.debugAjaxAngular(result);
-          } else {
-        	  $mdToast.show(
+    	  if(result.type == "SUCCESS"){
+      		$mdToast.show(
                       $mdToast.simple()
                           .textContent('Gadget updated succesfully')
                           .hideDelay(5000)
                   );
+      	}
+          if (result.type != SUCCESS) {
+              console.log(result);
+              $rootScope.debugAjaxAngular(result);
+          } else {
         	  $mdDialog.cancel();
               $rootScope.showGadget();
           }

@@ -18,21 +18,25 @@ function verifyValue(arrayArgument){
 }
 
 app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.greenHopperProjectList = [];
+    $scope.gadgetId = null;
+	$scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
+    $scope.selectedMetric = null;
     $scope.greenHopperCycleLink = [];
-    $scope.selectAllCycle=true;
+    $scope.selectAllCycle = true;
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
     $scope.isAdmin = false;
     if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+    	$scope.productPage = "product";
         $scope.isAdmin = true;
     }
     $scope.init = function () {
+    	var item;
         var callBack = function (result) {
             if(result.type ==null){
                 $scope.greenHopperProjectList = result;
@@ -64,10 +68,22 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             }
         }
         loadCycle(callback);
+        item = $rootScope.gadgetToEdit;
+        if(item != null){
+        	if(item.type == "ASSIGNEE_TEST_EXECUTION"){
+        		$scope.gadgetId = item.id;
+            	$scope.selectedProject = item.projectName;
+            	$scope.selectedRelease = item.release;
+            	$scope.selectedProject = item.products[0];
+            	$scope.selectAllCycle = item.selectAllTestCycle;
+            	$scope.selectedCycleLink = item.cycles;
+            	$scope.selectedMetric = item.metrics;
+        	}
+        	$rootScope.gadgetToEdit = null;
+        }
     }
 
     $scope.onCheckAllCycle = function () {
-        
         var assigneeCycle = $("#assigneeCycle");
         var assigneeCheckAllCycle = $("#assigneeCheckAllCycle").prop('checked');
         if(assigneeCheckAllCycle){
@@ -85,9 +101,9 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.isDisabled = false;
     
     $scope.saveGadget = function() {
-        var assigneeProjectVal = $("#assigneeProject").val();
-        var assigneeProductVal = $("#assigneeProduct").val();
-        var assigneeReleaseVal = $("#assigneeRelease").val();
+        var assigneeProjectVal = $scope.selectedProject;
+        var assigneeProductVal = $scope.selectedProduct;
+        var assigneeReleaseVal = $scope.selectedRelease;
         var metricsVal = $("#assigneeMetricMultiSelect").val();
         var assigneeCycle = $("#assigneeCycle").val();
         var isNotEmpty =true;
@@ -103,6 +119,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             var object = {};
             // object['id'] = TEST_EPIC_ID;
             var dashboardId = $rootScope.currentDashboard.id;
+            object["id"] = $scope.gadgetId;
             object['dashboardId'] = dashboardId;
             object['release'] = assigneeReleaseVal;
             object['projectName'] = assigneeProjectVal;
@@ -113,11 +130,15 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             }else{
                 object['cycles'] = assigneeCycle;
             }
-            if($rootScope.gadgetToEdit!=null){
-                object['id'] = $rootScope.gadgetToEdit.id;
-            }
             var jsonObj = JSON.stringify(object);
             var callback = function(result) {
+            	if(result.type == "SUCCESS"){
+            		$mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Gadget updated succesfully')
+                                .hideDelay(5000)
+                        );
+            	}
                 if (result.type != SUCCESS) {
                     console.log(result);
                     showError(result.data);

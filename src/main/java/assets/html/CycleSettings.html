@@ -41,8 +41,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                    class="btn-to-product btn btn-default" ng-disabled="isAdmin">Add Product</a>
+                                <a href="/{{productPage}}" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
+                                    class="btn-to-product btn btn-default" ng-disabled="!isAdmin" >Add Product</a>
                             </div>
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
                     <td class="col-md-6"><label>Test Cycle</label></td>
                     <td class="col-md-6">
                             <div>
-                                <select class="form-control" style = "display :none" multiple id="cycleCycle" ng-model="selectedCycleLink" ng-options="item as item for item in greenHopperCycleLink track by item">
+                                <select class="form-control" multiple id="cycleCycle" data-ng-hide="selectAllCycle" ng-model="selectedCycleLink" ng-options="item as item for item in greenHopperCycleLink track by item">
                                 </select>
                             </div>
                         <div class="col-md-12" align="center" style="padding-top: 10px;">
@@ -65,7 +65,7 @@
                 <!-- Cycle Metrics row -->
                 <tr>
                     <td class="col-md-6"><label>Metrics</label></td>
-                    <td class="col-md-6"><select multiple class="form-control" id="cycleMetricMultiSelect">
+                    <td class="col-md-6"><select multiple class="form-control" id="cycleMetricMultiSelect" data-ng-model="selectedMetric">
                             <option value="UNEXECUTED">UNEXECUTED</option>
                             <option value="FAILED">FAILED</option>
                             <option value="WIP">WIP</option>

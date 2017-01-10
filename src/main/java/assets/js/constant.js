@@ -12,7 +12,3 @@ var GET_CYCLE_URI = "/listcycle";
 var GET_PRODUCT_URI = "/product/getall";
 var GET_ASSIGNEE_URI = "/getassignee";
 var GET_EXISTING_CYCLE_URI = "/cycleExisting";
-var EPIC_TYPE;
-var US_TYPE;
-var ASSIGNEE_TYPE;
-var CYCLE_TYPE;
