@@ -129,51 +129,25 @@ public class OverdueReviewReportController {
         return userArray;
     }
 
-
-    static class GetReviewThread extends Thread {
-        private Session session;
-        private JSONObject data;
-        private String GadgetId;
-        private JSONObject result;
-
-        public GetReviewThread(Session session, JSONObject data, String GadgetId, JSONObject result) {
-            this.session = session;
-            this.data = data;
-            this.GadgetId = GadgetId;
-            this.result = result;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            try {
-                result.put("id", GadgetId);
-                result.put("project", data.getString("Project"));
-                MongoClient mongoClient = new MongoClient();
-                MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
-                org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
-
-                if (isCacheExpired(document, 3)) {
-                    JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
-                    result.put("ReviewDataArray", ReviewDataArray);
-
-                    collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
-                } else {
-                    result = new JSONObject(document.getString("cache"));
-                }
-            } catch (Exception e) {
-                logger.error(e);
-            }
-        }
-    }
-
-
     public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
         JSONObject result = new JSONObject();
-        GetReviewThread getReviewThread = new GetReviewThread(session, data, GadgetId, result);
-        getReviewThread.start();
-        getReviewThread.join();
+        result.put("id", GadgetId);
+        result.put("project", data.getString("Project"));
+        MongoClient mongoClient = new MongoClient();
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
+
+        if (isCacheExpired(document, 3)) {
+            JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
+            result.put("ReviewDataArray", ReviewDataArray);
+
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+        } else {
+            result = new JSONObject(document.getString("cache"));
+        }
+
         return result;
+
     }
 
     public static JSONArray getReviewfromServer(Session session, String project) throws Exception {

@@ -29,98 +29,71 @@ import static util.MyUtill.isCacheExpired;
 public class SonarStatisticGadgetController {
     final static Logger logger = Logger.getLogger(SonarStatisticGadgetController.class);
 
-    static class GetSonarStatisticThread extends Thread {
-        private Session session;
-        private JSONObject data;
-        private String GadgetId;
-        private JSONObject result;
-
-        public GetSonarStatisticThread(Session session, JSONObject data, String GadgetId, JSONObject result) {
-            this.session = session;
-            this.data = data;
-            this.GadgetId = GadgetId;
-            this.result = result;
-        }
-
-
-        @Override
-        public void run() {
-            super.run();
-            try {
-                MongoClient mongoClient = new MongoClient();
-                MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
-                org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
-
-
-                if (isCacheExpired(document, 3)) {
-                    result.put("id", GadgetId);
-                    result.put("release", data.getString("Release"));
-                    result.put("period", data.getString("Period"));
-                    JSONArray metricList = new JSONArray();
-
-                    JSONArray metricsFromDB = getMetricsFromDB();
-                    List metrics = Arrays.asList(data.getString("Metrics").split(","));
-
-                    for (int i = 0; i < metricsFromDB.length(); i++) {
-                        JSONObject metric = metricsFromDB.getJSONObject(i);
-                        if (metrics.contains(metric.getString("key"))) {
-                            metricList.put(metric);
-                        }
-                    }
-
-                    result.put("metricList", metricList);
-
-                    JSONArray releases = getReleasesFromDB(data.getString("Release"));
-                    String releaseUrl = releases.getJSONObject(0).getString("url");
-
-                    JSONArray IAComponent = new JSONArray();
-
-                    try {
-                        IAComponent = getIAComponentsRespond(session, releaseUrl, data.getString("IANames"));
-                    } catch (Exception e) {
-                        DashboardController.logger.error("Can not get IAComponent from " + releaseUrl, e);
-                    }
-
-                    JSONArray RsIAArray = new JSONArray();
-                    ArrayList<Thread> threads = new ArrayList<>();
-                    for (int i = 0; i < IAComponent.length(); i++) {
-                        getComponentInfo getComponentInfo = new getComponentInfo(IAComponent.getJSONObject(i), data.getString("Metrics"), data.getString("Period"), RsIAArray, session);
-                        threads.add(getComponentInfo);
-
-                    }
-
-                    for (Thread thread : threads) {
-                        thread.start();
-                    }
-                    for (Thread thread : threads) {
-                        try {
-                            thread.join();
-                        } catch (InterruptedException e) {
-                            DashboardController.logger.error("cannot get statistic", e);
-                        }
-                    }
-
-                    result.put("RsIAArray", RsIAArray);
-
-                    collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
-
-                } else {
-                    result = new JSONObject(document.getString("cache"));
-                }
-
-                mongoClient.close();
-            } catch (Exception e) {
-                logger.error(e);
-            }
-        }
-    }
-
     public static JSONObject getSonarStatistic(Session session, JSONObject data, String GadgetId) throws Exception {
 
         JSONObject result = new JSONObject();
-        GetSonarStatisticThread getSonarStatisticThread = new GetSonarStatisticThread(session, data, GadgetId, result);
-        getSonarStatisticThread.start();
-        getSonarStatisticThread.join();
+        MongoClient mongoClient = new MongoClient();
+        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
+
+
+        if (isCacheExpired(document, 3)) {
+            result.put("id", GadgetId);
+            result.put("release", data.getString("Release"));
+            result.put("period", data.getString("Period"));
+            JSONArray metricList = new JSONArray();
+
+            JSONArray metricsFromDB = getMetricsFromDB();
+            List metrics = Arrays.asList(data.getString("Metrics").split(","));
+
+            for (int i = 0; i < metricsFromDB.length(); i++) {
+                JSONObject metric = metricsFromDB.getJSONObject(i);
+                if (metrics.contains(metric.getString("key"))) {
+                    metricList.put(metric);
+                }
+            }
+
+            result.put("metricList", metricList);
+
+            JSONArray releases = getReleasesFromDB(data.getString("Release"));
+            String releaseUrl = releases.getJSONObject(0).getString("url");
+
+            JSONArray IAComponent = new JSONArray();
+
+            try {
+                IAComponent = getIAComponentsRespond(session, releaseUrl, data.getString("IANames"));
+            } catch (Exception e) {
+                DashboardController.logger.error("Can not get IAComponent from " + releaseUrl, e);
+            }
+
+            JSONArray RsIAArray = new JSONArray();
+            ArrayList<Thread> threads = new ArrayList<>();
+            for (int i = 0; i < IAComponent.length(); i++) {
+                getComponentInfo getComponentInfo = new getComponentInfo(IAComponent.getJSONObject(i), data.getString("Metrics"), data.getString("Period"), RsIAArray, session);
+                threads.add(getComponentInfo);
+
+            }
+
+            for (Thread thread : threads) {
+                thread.start();
+            }
+            for (Thread thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    DashboardController.logger.error("cannot get statistic", e);
+                }
+            }
+
+            result.put("RsIAArray", RsIAArray);
+
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+
+        } else {
+            result = new JSONObject(document.getString("cache"));
+        }
+
+        mongoClient.close();
 
         return result;
     }
