@@ -410,8 +410,7 @@ public class SonarStatisticGadgetController {
                             value = Math.round(val) + "";
 
                         } catch (Exception e) {
-                            DashboardController.logger.warn("Can not getMetricRs", e);
-                            value = "-";
+                            DashboardController.logger.info("No Metric Found");
                         }
                         RsMetricArray.put(msrJSONObject.getString("key"), value);
                         for (int i = 0; i < metrics.size(); i++) {
@@ -424,7 +423,7 @@ public class SonarStatisticGadgetController {
                     RsComponent.put("metricVal", RsMetricArray);
                     RsComponentArray.put(RsComponent);
                 } catch (Exception e) {
-                    DashboardController.logger.error("Can not getMetricRs", e);
+                    DashboardController.logger.warn("No Metric Found");
                 }
             }
 
