@@ -1225,7 +1225,7 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         var errorHandling = function (res) {
             if (res.type == "error") {
                 console.log(res);
-                $rootScope.debugAjaxAngular(res);
+                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
             } else {
                 $rootScope.debugAjaxAngular(res);
                 console.log(res);
@@ -1249,9 +1249,8 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         var errorHandling = function (res) {
             if (res.type == "error") {
                 console.log(res);
-                $rootScope.debugAjaxAngular(res);
+                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
             } else {
-                $rootScope.debugAjaxAngular(res);
                 console.log(res);
                 $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
             }
@@ -1272,9 +1271,8 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
         var errorHandling = function (res) {
             if (res.type == "error") {
                 console.log(res);
-                $rootScope.debugAjaxAngular(res);
+                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
             } else {
-                $rootScope.debugAjaxAngular(res);
                 console.log(res);
                 $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
             }
@@ -1298,9 +1296,8 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
         var errorHandling = function (res) {
             if (res.type == "error") {
                 console.log(res);
-                $rootScope.debugAjaxAngular(res);
+                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
             } else {
-                $rootScope.debugAjaxAngular(res);
                 console.log(res);
                 $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
             }
