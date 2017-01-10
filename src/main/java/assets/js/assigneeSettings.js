@@ -28,7 +28,10 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
-
+    $scope.isAdmin = false;
+    if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+        $scope.isAdmin = true;
+    }
     $scope.init = function () {
         var callBack = function (result) {
             if(result.type ==null){
@@ -87,10 +90,12 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         var assigneeReleaseVal = $("#assigneeRelease").val();
         var metricsVal = $("#assigneeMetricMultiSelect").val();
         var assigneeCycle = $("#assigneeCycle").val();
-        var isNotEmpty;
+        var isNotEmpty =true;
         var assigneeCheckAllCycleVal = $("#assigneeCheckAllCycle").prop('checked');
-        isNotEmpty = verifyValue([ assigneeProjectVal, assigneeProductVal, assigneeReleaseVal ]);
-        if (!assigneeCheckAllCycleVal) {
+        isNotEmpty &= (metricsVal!=null && metricsVal.length > 0);
+        if (assigneeCheckAllCycleVal) {
+            isNotEmpty &= verifyValue([ assigneeProjectVal, assigneeProductVal, assigneeReleaseVal ]);
+        }else{
             isNotEmpty &= (assigneeCycle != null && assigneeCycle.length > 0);
         }
 

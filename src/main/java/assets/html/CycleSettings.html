@@ -1,6 +1,6 @@
-<md-dialog class="settingForm" ng-controller="AssigneeSettingController" ng-init="init()"> <md-toolbar>
+<md-dialog class="settingForm" ng-controller="CycleSettingController" ng-init="init()"> <md-toolbar>
 <div class="md-toolbar-tools">
-    <h2>Assignee Settings</h2>
+    <h2>Cycle Settings</h2>
     <span flex></span>
     <md-button class="md-icon-button" ng-click="cancel()"> <md-icon class="material-icons">clear</md-icon> </md-button>
 </div>
@@ -9,63 +9,63 @@
     <div class="md-padding" data-ng-cloack>
         <table class="table table-bordered">
             <tbody ng-if="selectAllCycle">
-             <!-- Assignee Project Row -->
+             <!-- Cycle Project Row -->
                     <tr>
                         <td class="col-md-6"><label>Project</label></td>
-                        <td class="col-md-6"><select class="form-control" id="assigneeProject" ng-model="selectedProject"
+                        <td class="col-md-6"><select class="form-control" id="cycleProject" ng-model="selectedProject"
                                     ng-change="onProjectReleaseProductChanged()"
                                     ng-options="selectedItem as selectedItem for selectedItem in greenHopperProjectList track by selectedItem"> 
                                 <option value="" selected disabled>-Select Project-</option>
                         </select></td>
                     </tr>
-                    <!-- Assignee Release Row -->
+                    <!-- Cycle Release Row -->
                     <tr>
                         <td class="col-md-6"><label>Release</label></td>
     
-                        <td class="col-md-6"><select class="form-control" ng-model="selectedRelease" ng-change="onProjectReleaseProductChanged()" id="assigneeRelease">
+                        <td class="col-md-6"><select class="form-control" ng-model="selectedRelease" ng-change="onProjectReleaseProductChanged()" id="cycleRelease">
                                 <option value="" selected disabled>-Select Version-</option>
                                 <option value="1.2.0">R1.2.0</option>
                                 <option value="1.2.01">R1.2.01</option>
                                 <option value="1.3.0">R1.3.0</option>
                         </select></td>
                     </tr>
-                    <!-- Assignee Product -->
+                    <!-- Cycle Product -->
                     <tr>
                         <td class="col-md-6"><label>Product</label></td>
     
                         <td class="col-md-12 row">
                             <div class="col-md-9">
-                                <select id="assigneeProduct" ng-model="selectedProduct" ng-options="item as item for item in greenHopperProduct track by item"
+                                <select id="cycleProduct" ng-model="selectedProduct" ng-options="item as item for item in greenHopperProduct track by item"
                                     ng-change="onProjectReleaseProductChanged()" class="form-control">
                                     <option value="" selected disabled>-Select Product-</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <a href="/product" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
-                                    class="btn-to-product btn btn-default" ng-disabled="!isAdmin" >Add Product</a>
+                                <a href="" data-toggle="tooltip" title="Only Jira Administrator can add new product. Function disabled for normal user."
+                                    class="btn-to-product btn btn-default" ng-disabled="isAdmin">Add Product</a>
                             </div>
                         </td>
                     </tr>
             </tbody>
             <tbody>
                
-                <!-- Assignee Cycle Row -->
+                <!-- Cycle Cycle Row -->
                 <tr>
                     <td class="col-md-6"><label>Test Cycle</label></td>
                     <td class="col-md-6">
                             <div>
-                                <select class="form-control" style = "display :none" multiple id="assigneeCycle" ng-model="selectedCycleLink" ng-options="item as item for item in greenHopperCycleLink track by item">
+                                <select class="form-control" style = "display :none" multiple id="cycleCycle" ng-model="selectedCycleLink" ng-options="item as item for item in greenHopperCycleLink track by item">
                                 </select>
                             </div>
                         <div class="col-md-12" align="center" style="padding-top: 10px;">
-                            <label><input type="checkbox" id="assigneeCheckAllCycle" ng-model="selectAllCycle" ng-change="onCheckAllCycle()" ng-init="checked=true">Select All</label>
+                            <label><input type="checkbox" id="cycleCheckAllCycle" ng-model="selectAllCycle" ng-change="onCheckAllCycle()" ng-init="checked=true">Select All</label>
                         </div>
                 </tr>
 
-                <!-- Assignee Metrics row -->
+                <!-- Cycle Metrics row -->
                 <tr>
                     <td class="col-md-6"><label>Metrics</label></td>
-                    <td class="col-md-6"><select multiple class="form-control" id="assigneeMetricMultiSelect">
+                    <td class="col-md-6"><select multiple class="form-control" id="cycleMetricMultiSelect">
                             <option value="UNEXECUTED">UNEXECUTED</option>
                             <option value="FAILED">FAILED</option>
                             <option value="WIP">WIP</option>
