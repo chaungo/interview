@@ -1,0 +1,158 @@
+var SUCCESS = "SUCCESS";
+function getGreenHopperProjectList(callBack){
+    $.get("/listproject", function (data) {
+        callBack(data);
+    });
+}
+function getGreenHopperProduct(callBack){
+    $.get("/product/getall", function (data) {
+        callBack(data);
+    });
+}
+function verifyValue(arrayArgument){
+    var verify = true;
+    $.each(arrayArgument, function( index, value ) {
+        verify &= (value !=null && value!= "");
+    });
+    return verify;
+}
+
+app.controller('CycleSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
+    $scope.greenHopperProjectList = [];
+    $scope.greenHopperProduct = [];
+    $scope.selectedProduct = null;
+    $scope.selectedProject = null;
+    $scope.selectedRelease = null;
+    $scope.greenHopperCycleLink = [];
+    $scope.selectAllCycle=true;
+    $scope.cancel = function () {
+        $mdDialog.cancel();
+    }
+    $scope.isAdmin = false;
+    if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+        $scope.isAdmin = true;
+    }
+    $scope.init = function () {
+        var callBack = function (result) {
+            if(result.type ==null){
+                $scope.greenHopperProjectList = result;
+                $scope.$apply();
+            }else{
+                console.log(result);
+                showError(result.data);
+            }
+        }
+        var callBackProduct = function (result) {
+            if (result.type == SUCCESS) {
+                $scope.greenHopperProduct = result.data;
+                $scope.$apply();
+            }else{
+                console.log(result);
+                showError(result.data);
+            }
+
+        }
+        getGreenHopperProjectList(callBack);
+        getGreenHopperProduct(callBackProduct);
+        
+        var callback = function(result) {
+            if (result.type == null) {
+                $scope.greenHopperCycleLink = result;
+                $scope.$apply();
+            } else {
+                showError(result.data);
+            }
+        }
+        loadCycle(callback);
+    }
+
+    $scope.onCheckAllCycle = function () {
+        
+        var cycleCycle = $("#cycleCycle");
+        var cycleCheckAllCycle = $("#cycleCheckAllCycle").prop('checked');
+        if(cycleCheckAllCycle){
+            cycleCycle.css("display", "none");
+        }else{
+            $scope.onProjectReleaseProductChanged();
+            cycleCycle.css("display", "");
+        }
+    }
+
+    $scope.onProjectReleaseProductChanged = function () {
+    }
+    
+
+    $scope.isDisabled = false;
+    
+    $scope.saveGadget = function() {
+        var cycleProjectVal = $("#cycleProject").val();
+        var cycleProductVal = $("#cycleProduct").val();
+        var cycleReleaseVal = $("#cycleRelease").val();
+        var metricsVal = $("#cycleMetricMultiSelect").val();
+        var cycleCycle = $("#cycleCycle").val();
+        var isNotEmpty =true;
+        var cycleCheckAllCycleVal = $("#cycleCheckAllCycle").prop('checked');
+        isNotEmpty &= (metricsVal!=null && metricsVal.length > 0);
+        if (cycleCheckAllCycleVal) {
+            isNotEmpty &= verifyValue([ cycleProjectVal, cycleProductVal, cycleReleaseVal ]);
+        }else{
+            isNotEmpty &= (cycleCycle != null && cycleCycle.length > 0);
+        }
+
+        if (isNotEmpty && $rootScope.currentDashboard != null) {
+            var object = {};
+            // object['id'] = TEST_EPIC_ID;
+            var dashboardId = $rootScope.currentDashboard.id;
+            object['dashboardId'] = dashboardId;
+            object['release'] = cycleReleaseVal;
+            object['projectName'] = cycleProjectVal;
+            object['products'] = [ cycleProductVal ];
+            object['metrics'] = metricsVal;
+            if(cycleCheckAllCycleVal){
+                object['selectAllCycle'] = true;
+            }else{
+                object['cycles'] = cycleCycle;
+            }
+            if($rootScope.gadgetToEdit!=null){
+                object['id'] = $rootScope.gadgetToEdit.id;
+            }
+            var jsonObj = JSON.stringify(object);
+            var callback = function(result) {
+                if (result.type != SUCCESS) {
+                    console.log(result);
+                    showError(result.data);
+                } else {
+                    $scope.cancel();
+                    $rootScope.showGadget();
+                }
+            }
+            
+            saveGadgetSettings('TEST_CYCLE_TEST_EXECUTION', jsonObj, callback);
+        } else {
+            showError("Need to select settings");
+        }
+
+    }
+        
+    function loadCycle(callback){
+        $.ajax({
+            url: "/cycleExisting",
+            method : "GET",
+            dataType : "json",
+            success : function (result){ 
+                callback(result);
+            },
+            error : function (error){
+                console.log(error);
+                showError(error);
+            }
+        });
+    }
+    function showError(message){
+        $mdToast.show(
+                $mdToast.simple()
+                    .textContent(message)
+                    .hideDelay(5000)
+            );
+    }
+});
