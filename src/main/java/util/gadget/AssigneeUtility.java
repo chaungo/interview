@@ -120,7 +120,7 @@ public class AssigneeUtility {
             query.append(")");
         }
         if(cyclename != null){
-            if(assignees != null && !assignees.isEmpty()){
+            if((assignees != null && !assignees.isEmpty()) || project != null){
                 query.append(Constant.AND);
             }
             query.append(String.format("cycleName ~ \"%s\"", cyclename));
