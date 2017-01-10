@@ -37,7 +37,6 @@ public class Constant {
     public static final String RESOURCE_BUNLE_HOST_TYPE = "resourcebundle.host.type";
     public static final String RESOURCE_BUNLE_PROXY_IP = "resourcebundle.proxy.ip";
     public static final String RESOURCE_BUNLE_PROXY_PORT = "resourcebundle.proxy.port";
-    public static final String RESOURCE_BUNLE_PROXY_TYPE = "resourcebundle.proxy.type";
     public static final String RESOURCE_BUNLE_PROJECT_PATH = "resourcebundle.project.path";
     public static final String RESOURCE_BUNLE_LOGIN_PATH = "resourcebundle.login.path";
     public static final String RESOURCE_BUNLE_SEARCH_PATH = "resourcebundle.search.path";

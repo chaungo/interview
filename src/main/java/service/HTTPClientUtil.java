@@ -194,7 +194,6 @@ public class HTTPClientUtil {
         RequestConfig config = null;
         String proxyIP = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROXY_IP);
         String proxyPortStr = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROXY_PORT);
-        String proxyType = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROXY_TYPE);
         int proxyPort = 0;
         try {
             if (proxyPortStr != null) {
@@ -203,9 +202,9 @@ public class HTTPClientUtil {
         } catch (NumberFormatException e) {
             logger.fasttrace("Incorrect proxy port address %s", e, proxyPortStr);
         }
-        if (proxyIP != null && proxyType != null) {
+        if (proxyIP != null) {
             // logger.info("using proxy:" + proxyType + "://" + proxyIP + ":" + proxyPort);
-            HttpHost proxy = new HttpHost(proxyIP, proxyPort, proxyType);
+            HttpHost proxy = new HttpHost(proxyIP, proxyPort, "http");
             config = RequestConfig.custom().setProxy(proxy).build();
         }
         return config;
