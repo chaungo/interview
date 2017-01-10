@@ -1,7 +1,7 @@
 var app = angular.module('App', ['ngAnimate', 'ngMaterial', 'ngResource', 'ngMessages', 'ngCookies']);
 
 
-app.run(function ($rootScope, $resource, $location, $cookies) {
+app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     /////////////////////////////////////////////////////////////
     //console.log($location.absUrl());
 
