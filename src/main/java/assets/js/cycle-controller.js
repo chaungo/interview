@@ -132,14 +132,12 @@ function callAjaxToUpdateCycle(gadget, jsonString) {
     }
 }
 
-function drawCycleTable(dataTable, gadget) {
+function drawCycleTable(dataTable, gadget, callback) {
     var columnList = getColumnArray(gadget.metrics, true);
     resetTableColumns(dataTable, true);
     if (dataTable != null) {
-
         hideCycleTable(gadget);
         dataTable.ajax.reload(function () {
-            $("#" + gadget.id).find("#cycle-update-btn").prop("disabled", false);
             showCycleTable(gadget);
         });
         dataTable.columns(columnList).visible(false);
@@ -148,13 +146,10 @@ function drawCycleTable(dataTable, gadget) {
         dataTable = $("#" + gadget.id).find('#cycle-table').on(
             'error.dt',
             function (e, settings, techNote, message) {
-                console.log('An error has been reported by DataTables: ',
-                    message);
-                $("#" + gadget.id).find("#cycle-update-btn").prop("disabled", false);
+                callback('An error has been reported by DataTables: ' + message);
                 showCycleTable(gadget);
             }).DataTable({
             "fnDrawCallback": function (oSettings) {
-                $("#" + gadget.id).find("#cycle-update-btn").prop("disabled", false);
                 showCycleTable(gadget);
             },
             bAutoWidth: false,
@@ -165,7 +160,7 @@ function drawCycleTable(dataTable, gadget) {
                 },
                 dataSrc: function (responseJson) {
                     if (debugAjaxResponse(responseJson)) {
-                        $("#" + gadget.id).find("#cycle-update-btn").prop("disabled", false);
+                    	callback(responseJson);
                         showCycleTable(gadget);
                         return [];
                     }
@@ -175,7 +170,6 @@ function drawCycleTable(dataTable, gadget) {
                             tempArray.push(v2);
                         });
                     });
-
                     return tempArray;
                 }
             },

@@ -1376,12 +1376,20 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-        drawEpicTable($scope.dataTable, item);
+    	var errorHandling = function(res){
+    		if (res.type == "error") {
+    			console.log(res);
+                $rootScope.debugAjaxAngular(res);
+            } else {
+            	$rootScope.debugAjaxAngular(res);
+            	console.log(res);
+            	$mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
+            }
+    	}
+    	
+        drawEpicTable($scope.dataTable, item, errorHandling);
     }
 
-    $scope.onProjectReleaseProductChanged = function (item) {
-
-    }
 });
 
 
@@ -1392,7 +1400,18 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     };
     $scope.showView = true;
     $scope.init = function (item) {
-        drawUsTable($scope.dataTable, item);
+    	var errorHandling = function(res){
+    		if (res.type == "error") {
+    			console.log(res);
+                $rootScope.debugAjaxAngular(res);
+            } else {
+            	$rootScope.debugAjaxAngular(res);
+            	console.log(res);
+            	$mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
+            }
+    	}
+    	
+        drawUsTable($scope.dataTable, item, errorHandling);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1404,7 +1423,18 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
     $scope.dataTable = null;
     $scope.showView = true;
     $scope.init = function (item) {
-        drawCycleTable($scope.dataTable, item);
+    	var errorHandling = function(res){
+    		if (res.type == "error") {
+    			console.log(res);
+                $rootScope.debugAjaxAngular(res);
+            } else {
+            	$rootScope.debugAjaxAngular(res);
+            	console.log(res);
+            	$mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
+            }
+    	}
+    	
+        drawCycleTable($scope.dataTable, item, errorHandling);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1419,7 +1449,18 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     };
     $scope.showView = true;
     $scope.init = function (item) {
-        drawAssigneeTable($scope.dataTable, item);
+    	var errorHandling = function(res){
+    		if (res.type == "error") {
+    			console.log(res);
+                $rootScope.debugAjaxAngular(res);
+            } else {
+            	$rootScope.debugAjaxAngular(res);
+            	console.log(res);
+            	$mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
+            }
+    	}
+    	
+        drawAssigneeTable($scope.dataTable, item, errorHandling);
     }
 
     $scope.toggleView = function () {

@@ -2,6 +2,7 @@ var TEMPLATE_HEADER_FOOTER = "<thead><tr><th>User Story</th><th>SUMMARY</th><th>
 var TEMPLATE_HEADER_FOOTER_1 = "<thead><tr><th>Assignee</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th></tr></thead><tfoot><tr><th>Assignee</th><th>UNEXECUTED</th><th>FAILED</th><th>WIP</th><th>BLOCKED</th><th>PASSED</th></tr></tfoot>";
 var GREENHOPPER_ISSUE_API_LINK = 'https://greenhopper.app.alcatel-lucent.com/issues/?jql=';
 var GREENHOPPER_BROWSE_ISSUE_LINK = "https://greenhopper.app.alcatel-lucent.com/browse/";
+var GET_PROJECTS_URI = "/listproject";
 var SAVE_GADGET_URI = "/gadget/save";
 var GET_GADGETS_URI = "/gadget/gadgets";
 var GET_EPIC_URI = "/getEpicLinks";

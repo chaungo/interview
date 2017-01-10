@@ -183,7 +183,7 @@ function updateAssigneeGadget(gadget, jsonString) {
 }
 
 
-function drawAssigneeTable(dataTable, gadget) {
+function drawAssigneeTable(dataTable, gadget, callback) {
     var columnList = getColumnArray(gadget.metrics, true);
     var jsonObjectForAssigneeTable;
 
@@ -203,7 +203,7 @@ function drawAssigneeTable(dataTable, gadget) {
                 hideAssigneeTable(gadget);
             },
             error: function (xhr, textStatus, error) {
-                debugError(xhr, textStatus, error);
+                callback(error);
                 showAssigneeTable(gadget);
             },
             success: function (responseData) {
@@ -211,7 +211,7 @@ function drawAssigneeTable(dataTable, gadget) {
                 var index = 0;
                 $("#" + gadget.id).find("#assignee-table-container").html("");
                 if (debugAjaxResponse(responseData)) {
-                    $("#" + gadget.id).find("#assignee-update-btn").prop("disabled", false);
+                	callback(responseData);
                     showAssigneeTable(gadget);
                     return;
                 }
