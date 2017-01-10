@@ -32,9 +32,6 @@ public class Routes implements ApplicationRoutes {
 
 
         router.GET().route("/configuration").with(ConfigurationController.class, "configuration");
-        router.POST().route("/addNewMetric").with(ConfigurationController.class, "addNewMetric");
-        router.POST().route("/updateMetric").with(ConfigurationController.class, "updateMetric");
-        router.POST().route("/deleteMetric").with(ConfigurationController.class, "deleteMetric");
         router.POST().route("/addNewRelease").with(ConfigurationController.class, "addNewRelease");
         router.POST().route("/deleteRelease").with(ConfigurationController.class, "deleteRelease");
         router.POST().route("/updateRelease").with(ConfigurationController.class, "updateRelease");
