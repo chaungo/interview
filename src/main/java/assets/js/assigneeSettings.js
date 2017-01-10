@@ -18,29 +18,23 @@ function verifyValue(arrayArgument) {
 }
 
 app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.gadgetId = null;
-    $scope.greenHopperProjectList = [];
-    $scope.greenHopperProduct = [];
-    $scope.selectedProduct = null;
-    $scope.selectedProject = null;
-    $scope.selectedRelease = null;
-    $scope.selectedMetric = null;
-    $scope.greenHopperCycleLink = [];
-    $scope.selectAllCycle = true;
-    $scope.cancel = function () {
-        $mdDialog.cancel();
-    }
-    $scope.isAdmin = false;
-    <<<<<<<
-    HEAD
-    if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-        $scope.productPage = "product";
-    ======
-        =
+        $scope.gadgetId = null;
+        $scope.greenHopperProjectList = [];
+        $scope.greenHopperProduct = [];
+        $scope.selectedProduct = null;
+        $scope.selectedProject = null;
+        $scope.selectedRelease = null;
+        $scope.selectedMetric = null;
+        $scope.greenHopperCycleLink = [];
+        $scope.selectAllCycle = true;
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        }
+        $scope.isAdmin = false;
+
         if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-            $scope.productPage = "configuration";
-        >>>>>>>
-            bee80334ae5aa0140a42acaa771afa9a93977969
+            $scope.productPage = "product";
+
             $scope.isAdmin = true;
         }
         $scope.init = function () {
@@ -186,4 +180,4 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             );
         }
     }
-    );
+);
