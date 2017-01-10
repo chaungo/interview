@@ -81,23 +81,24 @@ public class GadgetHandlerImpl extends GadgetHandler {
             }
             gadget = storyGadget;
         }
-        if (gadget != null && toVerify) {
-
-            if (gadget.getDashboardId() == null) {
-                errorMessages.add("dashboardId cannot be null");
+        if (gadget != null) {
+            if(toVerify){
+                if(gadget.getDashboardId() == null){
+                    errorMessages.add("dashboardId");
+                }
+                if(gadget.getProducts() == null || gadget.getProducts().isEmpty()){
+                    errorMessages.add("Products");
+                }
+                if(gadget.getProjectName() == null || gadget.getProjectName().isEmpty()){
+                    errorMessages.add("Project");
+                }
+                if(gadget.getRelease() == null){
+                    errorMessages.add("Release");
+                }
             }
-            if (gadget.getProducts() == null || gadget.getProducts().isEmpty()) {
-                errorMessages.add("Products");
-            }
-            if (gadget.getProjectName() == null || gadget.getProjectName().isEmpty()) {
-                errorMessages.add("Project");
-            }
-            if (gadget.getRelease() == null) {
-                errorMessages.add("Release");
-            }
-            if (errorMessages.isEmpty()) {
+            if(errorMessages.isEmpty()){
                 gadgetId = gadgetService.insertOrUpdate(gadget);
-            } else {
+            } else{
                 StringBuffer error = new StringBuffer();
                 errorMessages.forEach(e -> error.append(e).append(", "));
                 error.append("cannot be null");

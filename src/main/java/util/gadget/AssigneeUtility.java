@@ -101,9 +101,13 @@ public class AssigneeUtility {
 
     public ExecutionsVO findExecution(String project, String cyclename, Set<String> assignees, Map<String, String> cookies) throws APIException {
         StringBuilder query = new StringBuilder();
-        query.append(String.format("project = \"%s\"", project));
+        if(project != null){
+            query.append(String.format("project = \"%s\"", project));
+        }
         if (assignees != null && !assignees.isEmpty()) {
-            query.append(Constant.AND);
+            if(project != null){
+                query.append(Constant.AND);
+            }
             query.append("(");
             boolean first = true;
             for (String assignee : assignees) {
@@ -115,8 +119,10 @@ public class AssigneeUtility {
             }
             query.append(")");
         }
-        if (cyclename != null) {
-            query.append(Constant.AND);
+        if(cyclename != null){
+            if(assignees != null && !assignees.isEmpty()){
+                query.append(Constant.AND);
+            }
             query.append(String.format("cycleName ~ \"%s\"", cyclename));
         }
         Map<String, String> parameters = new HashMap<String, String>();
