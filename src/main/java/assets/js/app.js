@@ -173,7 +173,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
-                        //console.log(respone);
+                        console.log(respone);
                         $rootScope.sonarStList = respone.AMSSONARStatisticsGadget;
                         $rootScope.greenHopperGadgets = respone.GreenHopperGadget;
                         $rootScope.reviewList = respone.AMSOverdueReviewsReportGadget;

@@ -2,65 +2,6 @@
     <@layout.myLayout "Configuration">
     <div ng-controller="ConfigCtrl" layout-padding ng-app="App" layout-xs="column" layout-gt-lg="row">
         <div>
-            <span class="md-headline">Metric</span>
-            <div layout="row" layout-align="start center">
-                <table layout-fill md-whiteframe="5" class="responstable">
-                    <th> Name</th>
-                    <th> Key</th>
-                    <th colspan="2">Action</th>
-                    <tbody>
-                    <tr ng-repeat="metric in MetricList">
-                        <td>
-                            <div ng-hide="a">{{metric.name}}</div>
-                            <md-input-container ng-hide="!a" class="md-block">
-                                <input aria-label={{metric.name}} required ng-model="metric.name">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <div ng-hide="a">{{metric.key}}</div>
-                            <md-input-container ng-hide="!a" class="md-block">
-                                <input aria-label={{metric.key}} required ng-hide="!a" ng-model="metric.key">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-button ng-hide="!a" class="md-icon-button"
-                                       ng-click="a=!a;editMetric(metric,$event);">
-                                <md-icon class="material-icons">save</md-icon>
-                            </md-button>
-                            <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
-                                <md-icon class="material-icons">edit</md-icon>
-                            </md-button>
-                        </td>
-                        <td>
-                            <md-button class="md-icon-button" ng-click="deleteMetric(metric,$event)">
-                                <md-icon class="material-icons">delete</md-icon>
-                            </md-button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <md-input-container class="md-block">
-                                <input required placeholder="New metric's name" ng-model="newMetricName">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-input-container class="md-block">
-                                <input required placeholder="New metric's key" ng-model="newMetricKey">
-                            </md-input-container>
-                        </td>
-                        <td colspan="2">
-                            <md-button class="md-raised md-warn"
-                                       ng-click="addNewMetric($event)">
-                                Add new
-                            </md-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div>
             <span class="md-headline">Release</span>
             <div layout="row" layout-align="start center">
                 <table layout-fill md-whiteframe="5" class="responstable">
@@ -83,15 +24,15 @@
                         </td>
                         <td>
                             <md-button ng-hide="!a" class="md-icon-button" ng-click="a=!a;editRelease(release,$event);">
-                                <md-icon class="material-icons">save</md-icon>
+                                <md-icon style="color: grey" class="material-icons">save</md-icon>
                             </md-button>
                             <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
-                                <md-icon class="material-icons">edit</md-icon>
+                                <md-icon style="color: grey" class="material-icons">edit</md-icon>
                             </md-button>
                         </td>
                         <td>
                             <md-button class="md-icon-button" ng-click="deleteRelease(release,$event)">
-                                <md-icon class="material-icons">delete</md-icon>
+                                <md-icon style="color: grey" class="material-icons">delete</md-icon>
                             </md-button>
                         </td>
                     </tr>
