@@ -95,7 +95,7 @@ public class HTTPClientUtil {
             }
             Response res = req.execute();
             sessionCookies = res.cookies();
-            logger.fasttrace("User: %s, cookies:%s", username, sessionCookies);
+            //logger.fasttrace("User: %s, cookies:%s", username, sessionCookies);
         } catch (IOException e) {
             logger.fastDebug("User: %s, cannot login to %s", e, username, loginURL);
             throw new APIException(String.format("User: %s, cannot login to %s", e, username));
