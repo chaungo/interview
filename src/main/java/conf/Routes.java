@@ -53,8 +53,7 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/gadget/gadgets").with(MyGadgetController.class, "getGadgetsInDashboardId");
         router.GET().route("/gadget/getStoryInEpic").with(MyGadgetController.class, "getStoryInEpic");
         router.GET().route("/gadget/delete").with(MyGadgetController.class, "deleteGadget");
-        
-        router.GET().route("/product").with(ProductController.class, "productPage");
+
         router.POST().route("/product/deleteProduct").with(ProductController.class, "deleteProduct");
         router.POST().route("/product/insertProduct").with(ProductController.class, "addProduct");
         router.POST().route("/product/deleteCycle").with(ProductController.class, "deleteCycle");
