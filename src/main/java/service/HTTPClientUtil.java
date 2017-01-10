@@ -18,6 +18,7 @@ import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import util.Constant;
 import util.PropertiesUtil;
+import util.SSLUtilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -85,6 +86,8 @@ public class HTTPClientUtil {
         try {
             Proxy proxy = getProxy();
             logger.fastDebug("Login to %s , proxy:%s", loginURL, proxy);
+            SSLUtilities.trustAllHostnames();
+            SSLUtilities.trustAllHttpsCertificates();
             Connection req = Jsoup.connect(loginURL).ignoreHttpErrors(true).ignoreContentType(true).data(Constant.USERNAME_LOGIN_KEY, username).data(Constant.PASSWORD_LOGIN_KEY, password)
                     .timeout(PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT, 10000)).method(Connection.Method.POST);
             if (proxy != null) {
