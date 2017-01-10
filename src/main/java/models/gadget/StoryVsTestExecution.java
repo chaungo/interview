@@ -9,10 +9,10 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoryVsTestExecution extends GadgetAPI {
     public static final String author = "";
-    public static final String name = "Assignee Test Execution Report";
+    public static final String name = "User Story Test Execution Report";
     public static final String pictureUrl = "";
-    public static final String addnewUIurl = "assets/html/xxx.html";
-    public static final String description = "Assignee Test Execution Report";
+    public static final String addnewUIurl = "assets/html/UserStorySettings.html";
+    public static final String description = "User Story Execution Report";
 
     private Type type = Type.STORY_TEST_EXECUTION;
     private Set<String> epic;
