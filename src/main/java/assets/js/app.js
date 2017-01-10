@@ -375,7 +375,34 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         });
     }
     
-
+    $scope.deleteGreenhopperGadget = function (item) {
+        var gadgetId = item.id;
+        $.ajax({
+           url: "/gadget/delete",
+           dataType:"json",
+           data: {
+               id: gadgetId
+           },
+           success : function (result){
+               if(result.type == SUCCESS){
+               $rootScope.showGadget();
+               }else{
+                   $mdToast.show(
+                           $mdToast.simple()
+                               .textContent(result.data)
+                               .hideDelay(5000)
+                       );
+               }
+           },
+           error : function(error){
+               $mdToast.show(
+                       $mdToast.simple()
+                           .textContent(error)
+                           .hideDelay(5000)
+                   );
+           }
+        });
+    }
 });
 
 /////////////////HeaderCtrl////////////////////////////////////////////////////////////////////////////////////////////////////////////////
