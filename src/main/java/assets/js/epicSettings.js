@@ -35,20 +35,27 @@ function saveGadgetSettings(gadgetType, settings, callback){
 }
 
 app.controller('EpicSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.greenHopperProjectList = [];
+    $scope.gadgetId = null;
+	$scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
+    $scope.hideEpic = true;
+    $scope.showEpicLoader = false;
+    $scope.selectedEpicLink = null;
+    $scope.selectedMetric = null;
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
     $scope.isAdmin = false;
     if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+    	$scope.productPage = "product";
         $scope.isAdmin = true;
     }
     
     $scope.init = function () {
+    	var item = $rootScope.gadgetToEdit;
         var callBack = function (result) {
             if(result.type ==null){
                 $scope.greenHopperProjectList = result;
@@ -66,39 +73,43 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                 console.log(result);
                 showError(result.data);
             }
-
         }
 
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
-    }
-
-    $scope.onCheckAllEpic = function () {
-        var epicMultiSelect = $("#epicLinkSelection");
-        var epicCheckAll = $("#epicCheckAll").prop('checked');
-        if(epicCheckAll){
-            epicMultiSelect.css("display", "none");
-        }else{
-            $scope.onProjectReleaseProductChanged();
-            epicMultiSelect.css("display", "");
+        
+        if(item != null){
+        	if(item.type == "EPIC_US_TEST_EXECUTION"){
+        		$scope.selectedProject = item.projectName;
+        		$scope.selectedRelease = item.release;
+        		$scope.selectedProduct = item.products[0];
+        		$scope.hideEpic = item.selectAll;
+        		$scope.onProjectReleaseProductChanged();
+        		$scope.selectedEpicLink = item.epic;
+        		$scope.selectedMetric = item.metrics;
+        		$scope.$apply();
+        	}
+        	$rootScope.gadgetToEdit = null;
         }
     }
 
+    $scope.onCheckAllEpic = function () {
+    		$scope.onProjectReleaseProductChanged();  
+    }
+
     $scope.onProjectReleaseProductChanged = function () {
-        var epicProjectVal = $("#epicProject").val();
-        var epicProductVal = $("#epicProduct").val();
-        var epicReleaseVal = $("#epicRelease").val();
+        var epicProjectVal = $scope.selectedProject;
+        var epicProductVal = $scope.selectedProduct;
+        var epicReleaseVal = $scope.selectedRelease;
         var isNotEmpty = verifyValue([epicProjectVal, epicProductVal, epicReleaseVal]);
         
-        var epicCheckAllVal = $("#epicCheckAll").prop('checked');
 
-        if(isNotEmpty && !epicCheckAllVal){
+        if(isNotEmpty){
             var requestData = {
                     project : epicProjectVal,
                     release : epicReleaseVal,
                     products : JSON.stringify([epicProductVal])
             }
-            var epicLoader = $("#epicLinkSelection");
             
             var callback = function(result) {
                 if (result.type == null) {
@@ -109,7 +120,7 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                 }
             }
             // load Epic Link
-            loadEpicLink(epicLoader,requestData, callback);
+            loadEpicLink(requestData, callback);
 
         }
     }
@@ -133,6 +144,7 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
             var object = {};
             // object['id'] = TEST_EPIC_ID;
             var dashboardId = $rootScope.currentDashboard.id;
+            object["id"] = $scope.gadgetId;
             object['dashboardId'] = dashboardId;
             object['release'] = epicReleaseVal;
             object['projectName'] = epicProjectVal;
@@ -148,6 +160,13 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
             }
             var jsonObj = JSON.stringify(object);
             var callback = function(result) {
+            	if(result.type == "SUCCESS"){
+            		$mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Gadget updated succesfully')
+                                .hideDelay(5000)
+                        );
+            	}
                 if (result.type != SUCCESS) {
                     console.log(result);
                     showError(result.data);
@@ -164,20 +183,25 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
 
     }
         
-    function loadEpicLink(loader, requestData,callback){
-        loader.addClass("loader");
+    function loadEpicLink(requestData,callback){
+        
         $.ajax({
             url: "/getEpicLinks",
             method : "GET",
             dataType : "json",
             data:requestData,
+            beforeSend: function(){
+            	$scope.showEpicLoader = true;
+            },
             success : function (result){
                 callback(result);
-                loader.removeClass("loader");
+                $scope.showEpicLoader = false;
+                $scope.$apply();
             },
             error : function (error){
                 console.log(error);
-                loader.removeClass("loader");
+                $scope.showEpicLoader = false;
+                $scope.$apply();
             }
         });
     }

@@ -57,9 +57,6 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                                     .append(
                                         TEMPLATE_HEADER_FOOTER_1);
 
-                                console
-                                    .log("Pass each function");
-
                                 for (var i = 0; i < assigneeArray["issueData"].length; i++) {
                                     var anAssigneeDataSet = [];
                                     anAssigneeDataSet

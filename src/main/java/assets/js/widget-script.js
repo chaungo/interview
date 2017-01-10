@@ -83,7 +83,7 @@ function getColumnArray(metricArray, isCycleOrAssignee) {
 function resetTableColumns(table, isCycleOrAssignee) {
     var list;
     if (table == null) {
-        return
+        return;
     }
     else if (!isCycleOrAssignee) {
         list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -144,11 +144,4 @@ function createIssueLinkForTitle(data) {
     var htmlString = [];
     htmlString.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, data["key"], '">', data["key"], '</a>');
     return htmlString.join("");
-}
-
-
-function setUpMinorSetting() {
-    var productPage;
-    var gadgetType;
-    productPage = location.protocol + "//" + location.host + "/product";
 }

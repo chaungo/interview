@@ -18,7 +18,8 @@ function verifyValue(arrayArgument){
 }
 
 app.controller('CycleSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
-    $scope.greenHopperProjectList = [];
+	$scope.gadgetId = null;
+	$scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
@@ -30,9 +31,11 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
     }
     $scope.isAdmin = false;
     if($rootScope.userInfo !=null && $rootScope.userInfo.role =="jira-administrators"){
+    	$scope.productPage = "product";
         $scope.isAdmin = true;
     }
     $scope.init = function () {
+    	var item;
         var callBack = function (result) {
             if(result.type ==null){
                 $scope.greenHopperProjectList = result;
@@ -64,6 +67,19 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             }
         }
         loadCycle(callback);
+        item = $rootScope.gadgetToEdit;
+        if(item != null){
+        	if(item.type == "TEST_CYCLE_TEST_EXECUTION"){
+        		$scope.gadgetId = item.id;
+            	$scope.selectedProject = item.projectName;
+            	$scope.selectedRelease = item.release;
+            	$scope.selectedProject = item.products[0];
+            	$scope.selectAllCycle = item.selectAllCycle;
+            	$scope.selectedCycleLink = item.cycles;
+            	$scope.selectedMetric = item.metrics;
+        	}
+        	$rootScope.gadgetToEdit = null;
+        }
     }
 
     $scope.onCheckAllCycle = function () {
@@ -118,10 +134,18 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             }
             var jsonObj = JSON.stringify(object);
             var callback = function(result) {
+            	if(result.type == "SUCCESS"){
+            		$mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Gadget updated succesfully')
+                                .hideDelay(5000)
+                        );
+            	}
                 if (result.type != SUCCESS) {
                     console.log(result);
                     showError(result.data);
                 } else {
+                	
                     $scope.cancel();
                     $rootScope.showGadget();
                 }
