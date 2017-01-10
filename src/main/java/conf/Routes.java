@@ -66,6 +66,8 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/cycleExisting").with(AssigneeController.class, "getListExistingCycle");
 
         router.GET().route("/listproject").with(MyGadgetController.class, "getProjectList");
+        router.GET().route("/clearCache").with(ProductController.class, "clearCache");
+        
         router.GET().route("/.*").with(ApplicationController.class, "index");
     }
 

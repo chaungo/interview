@@ -359,5 +359,7 @@ public class GadgetUtility extends DatabaseUtility {
 
     public void clearCache() {
         projectsCache.clear();
+        StoryUtility.getInstance().clearCache();
+        AssigneeUtility.getInstance().clearCache();
     }
 }
