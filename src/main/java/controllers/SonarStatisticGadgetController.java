@@ -30,10 +30,10 @@ public class SonarStatisticGadgetController {
     final static Logger logger = Logger.getLogger(SonarStatisticGadgetController.class);
 
     static class GetSonarStatisticThread extends Thread {
-        Session session;
-        JSONObject data;
-        String GadgetId;
-        JSONObject result;
+        private Session session;
+        private JSONObject data;
+        private String GadgetId;
+        private JSONObject result;
 
         public GetSonarStatisticThread(Session session, JSONObject data, String GadgetId, JSONObject result) {
             this.session = session;
