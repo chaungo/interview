@@ -39,5 +39,10 @@ public class ProductController {
         return Results.json().render("type", "success").render("data", result);
     }
 
+    @FilterWith(AdminSecureFilter.class)
+    public Result getAllProduct() {
+        Set<String> products = AdminUtility.getInstance().getAllProduct();
+        return ResultsUtil.convertToResult(ResultCode.SUCCESS, products);
+    }
 
 }
