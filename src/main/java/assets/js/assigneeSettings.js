@@ -24,6 +24,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
     $scope.greenHopperCycleLink = [];
+    $scope.selectAllCycle=true;
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
@@ -63,6 +64,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     }
 
     $scope.onCheckAllCycle = function () {
+        
         var assigneeCycle = $("#assigneeCycle");
         var assigneeCheckAllCycle = $("#assigneeCheckAllCycle").prop('checked');
         if(assigneeCheckAllCycle){

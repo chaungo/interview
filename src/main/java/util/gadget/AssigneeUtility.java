@@ -42,7 +42,7 @@ public class AssigneeUtility {
         Set<String> cycles = assigneeGadget.getCycles();
 
         if (assigneeGadget.isSelectAllTestCycle()) {
-            cycles = AdminUtility.getInstance().getAllCycle();
+            cycles = getListCycleName(projectName, assigneeGadget.getRelease(), assigneeGadget.getProducts(), cookies);
         }
         if (cycles != null && !cycles.isEmpty()) {
             for (String cycle : cycles) {

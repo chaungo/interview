@@ -41,6 +41,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
         }
         String username = (String) context.getSession().get(Constant.USERNAME);
         // String friendlyname = (String) context.getAttribute("alias");
+        boolean toVerify = true;
         List<String> errorMessages = new ArrayList<>();
         if (Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadgetType)) {
             EpicVsTestExecution epicGadget = JSONUtil.getInstance().convertJSONtoObject(data, EpicVsTestExecution.class);
@@ -52,8 +53,11 @@ public class GadgetHandlerImpl extends GadgetHandler {
         } else if (Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadgetType)) {
             AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance().convertJSONtoObject(data, AssigneeVsTestExecution.class);
             assigneeGadget.setUser(username);
-            if (!assigneeGadget.isSelectAllTestCycle() && (assigneeGadget.getCycles() == null || assigneeGadget.getCycles().isEmpty())) {
-                errorMessages.add("Cycle name");
+            if (!assigneeGadget.isSelectAllTestCycle()){
+                toVerify = false;
+                if(assigneeGadget.getCycles() == null || assigneeGadget.getCycles().isEmpty()) {
+                    errorMessages.add("Cycle name");
+                }
             }
             gadget = assigneeGadget;
         } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadgetType)) {
@@ -74,7 +78,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
             }
             gadget = storyGadget;
         }
-        if (gadget != null) {
+        if (gadget != null && toVerify) {
 
             if (gadget.getDashboardId() == null) {
                 errorMessages.add("dashboardId cannot be null");

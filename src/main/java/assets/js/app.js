@@ -385,7 +385,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
            },
            success : function (result){
                if(result.type == SUCCESS){
-               $rootScope.showGadget();
+                   $rootScope.showGadget();
                }else{
                    $mdToast.show(
                            $mdToast.simple()
