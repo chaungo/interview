@@ -70,7 +70,7 @@ public class OverdueReviewReportController {
         JSONObject cache = new JSONObject(document.getString("cache"));
 
         try {
-            if (isCacheExpired(document, 24)) {
+            if (isCacheExpired(document, 2)) {
                 String rs = "";
                 BufferedReader br = getHttpURLConnection(LINK_GET_CRU_USERS, session);
                 String inputLine;

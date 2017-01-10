@@ -37,7 +37,7 @@ public class SonarStatisticGadgetController {
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
 
-        if (isCacheExpired(document, 3)) {
+        if (isCacheExpired(document, 2)) {
             result.put("id", GadgetId);
             result.put("release", data.getString("Release"));
             result.put("period", data.getString("Period"));
