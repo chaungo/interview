@@ -47,7 +47,7 @@ app.run(function ($rootScope, $resource, $location, $cookies) {
 
         return false;
     }
-
+    $rootScope.isDisabled = false;
     //////////////////////////////////////////////////////
 
 
@@ -278,7 +278,8 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
         $scope.addGadget = function (item) {
             $mdDialog.cancel();
-
+            //clear cache 
+            $rootScope.gadgetToEdit = null;
             //console.log(item.name);
             $rootScope.gadgetType = item.type;
 
