@@ -40,6 +40,8 @@ public class HTTPClientUtil {
     private String loginURL;
 
     private HTTPClientUtil() {
+        SSLUtilities.trustAllHostnames();
+        SSLUtilities.trustAllHttpsCertificates();
         loginURL = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_HOST_TYPE) + "://"
                 + (PropertiesUtil.getString(Constant.RESOURCE_BUNLE_HOST) + PropertiesUtil.getString(Constant.RESOURCE_BUNLE_LOGIN_PATH));
     }
