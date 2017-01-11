@@ -46,20 +46,22 @@ public class DashboardController {
 
             int sonarGadget = 0;
             int reviewGadget = 0;
-
+            int greenHopper = 0;
             for (Gadget gadget : dashboardGadgets) {
                 Type type = gadget.getType();
                 if (Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
                     sonarGadget++;
-                }
-                if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+                }else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
                     reviewGadget++;
+                }else{
+                    greenHopper++;
                 }
+                
             }
             //todo
             info.put("SonarGadget", sonarGadget);
             info.put("ReviewGadget", reviewGadget);
-
+            info.put("GreenHopperGadget", greenHopper);
         } catch (Exception e) {
             logger.error("getDashboardInfo ", e);
             return Results.internalServerError();

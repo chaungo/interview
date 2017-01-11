@@ -11,6 +11,9 @@ import ninja.Result;
 import ninja.Results;
 import ninja.params.Param;
 import ninja.session.Session;
+import util.Constant;
+import util.PropertiesUtil;
+
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.json.JSONArray;
@@ -33,7 +36,7 @@ public class SonarStatisticGadgetController {
 
         JSONObject result = new JSONObject();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase("Interview").getCollection("DashboardGadget");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
 
@@ -101,7 +104,7 @@ public class SonarStatisticGadgetController {
     public static JSONArray getMetricsFromDB() throws Exception {
 
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> metricCollection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
+        MongoCollection<org.bson.Document> metricCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Sonar_Metric");
         FindIterable<Document> metricIterable = metricCollection.find();
         JSONArray metrics = new JSONArray();
         metricIterable.forEach(new Block<Document>() {
@@ -122,7 +125,7 @@ public class SonarStatisticGadgetController {
     public static JSONArray getReleasesFromDB(String name) throws Exception {
 
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("Interview");
+        MongoDatabase database = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA));
         MongoCollection<org.bson.Document> releaseCollection = database.getCollection("Release");
         FindIterable<org.bson.Document> releaseIterable;
         if (name != null) {
@@ -151,7 +154,7 @@ public class SonarStatisticGadgetController {
 
         JSONArray PeriodArray = new JSONArray();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("Sonar_Metric");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Sonar_Metric");
         org.bson.Document document = collection.find(new org.bson.Document("code", "new_coverage")).first();
 
         if (isCacheExpired(document, 24)) {
@@ -217,7 +220,7 @@ public class SonarStatisticGadgetController {
         JSONArray IAArray = new JSONArray();
 
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase("Interview").getCollection("Release");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
         org.bson.Document document = collection.find(new org.bson.Document("url", url)).first();
 
         if (isCacheExpired(document, 24)) {
