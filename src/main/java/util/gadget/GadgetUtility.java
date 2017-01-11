@@ -6,6 +6,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
+
+import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
 import models.APIIssueVO;
 import models.ExecutionIssueVO;
@@ -361,5 +363,6 @@ public class GadgetUtility extends DatabaseUtility {
         projectsCache.clear();
         StoryUtility.getInstance().clearCache();
         AssigneeUtility.getInstance().clearCache();
+        GadgetCacheMap.getInstance().cleanAll();
     }
 }

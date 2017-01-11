@@ -10,7 +10,6 @@ public class CleanGadgetDataCacheJob implements Job {
     final static LoggerWapper logger = LoggerWapper.getLogger(CleanGadgetDataCacheJob.class);
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        logger.fasttrace("Clean data cache");
         GadgetCacheMap.getInstance().cleanup();
     }
 
