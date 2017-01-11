@@ -25,10 +25,9 @@
 html,
 body {
     background: #E0E0E0;
-    overflow: scroll;
-    overflow-x: hidden;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 
 }
 
@@ -39,12 +38,12 @@ body {
     padding: 5px
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     width: 0;
-}
-
+} */
+ 
 #gadgetContainer {
-    overflow: scroll;
+    overflow: auto;
     height: 100%;
     width: 100%;
 }
