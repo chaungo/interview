@@ -74,6 +74,17 @@ public class Constant {
 
     public static String DisplayName = "displayName";
     public static String alias = "alias";
+
+    public static String gadget = "Gadget";
+    public static String sonarGadget = "SonarGadget";
+    public static String reviewGadget = "ReviewGadget";
+    public static String greenHopperGadget = "GreenHopperGadget";
+
+    public static String owner = "owner";
+    public static String privacy = "privacy";
+    public static  String mongoId = "_id";
+    public static String share = "share";
+    public static String Groups = "groups";
     public static String GroupsItems = "items";
 
 
