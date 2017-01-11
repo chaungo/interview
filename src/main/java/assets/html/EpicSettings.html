@@ -91,6 +91,7 @@
                 </tbody>
             </table>
         </div>
+        <md-progress-linear ng-show="greenHopperProjectList.length == 0"></md-progress-linear>
         <button type="button" ng-disabled="isDisabled" ng-click="saveGadget()" class="btn btn-success">Save</button>
     </form>
 </md-dialog>
