@@ -37,7 +37,8 @@ public class ApplicationController {
         }
         Document response = req.get();
         JSONObject userInfo = new JSONObject(response.body().text());
-        userInfoRS.put("alias", userInfo.getString(DisplayName));
+
+        userInfoRS.put(alias, userInfo.getString(DisplayName));
 
         JSONArray groups = userInfo.getJSONObject(Groups).getJSONArray(GroupsItems);
 
@@ -82,7 +83,7 @@ public class ApplicationController {
         try {
             JSONObject info = getUserInformation(session);
             JSONObject userInfo = new JSONObject();
-            userInfo.put("displayName", info.getString("alias"));
+            userInfo.put("displayName", info.getString(alias));
             userInfo.put(Constant.GROUPS, new JSONArray(info.getString("groups")));
             userInfo.put(Constant.ROLE, info.getString("role"));
             userInfo.put(Constant.NAME, session.get("username"));

@@ -73,9 +73,11 @@ public class Constant {
     public static final String NAME = "name";
 
     public static String DisplayName = "displayName";
+    public static String alias = "alias";
 
     public static String Groups = "groups";
     public static String GroupsItems = "items";
+
 
     public static String MetricKey[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
             "test_execution_time", "test_failures"};
