@@ -98,7 +98,7 @@ public class OverdueReviewReportController {
             JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
             result.put("ReviewDataArray", ReviewDataArray);
 
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.mongoSet, new org.bson.Document("cache", result.toString()).append(Constant.updateDate, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
         } else {
             result = new JSONObject(document.getString("cache"));
         }
@@ -124,7 +124,7 @@ public class OverdueReviewReportController {
         ArrayList<String> nameList = new ArrayList<>();
 
         for (int i = 0; i < array.length(); i++) {
-            String name = array.getJSONObject(i).getJSONObject("creator").getString(Constant.DisplayName);
+            String name = array.getJSONObject(i).getJSONObject("creator").getString(Constant.DISPLAY_NAME);
             if (!nameList.contains(name)) {
                 nameList.add(name);
             }
@@ -137,7 +137,7 @@ public class OverdueReviewReportController {
             int moreThan10 = 0;
             for (int j = 0; j < array.length(); j++) {
                 JSONObject detailedReviewData = array.getJSONObject(j);
-                String name = detailedReviewData.getJSONObject("creator").getString(Constant.DisplayName);
+                String name = detailedReviewData.getJSONObject("creator").getString(Constant.DISPLAY_NAME);
                 if (nameList.get(i).equals(name)) {
                     String createDate = detailedReviewData.getString("createDate").substring(0, 10);
                     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

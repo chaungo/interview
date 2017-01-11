@@ -40,17 +40,17 @@ public class ApplicationController {
         Document response = req.get();
         JSONObject userInfo = new JSONObject(response.body().text());
 
-        userInfoRS.put(Constant.alias, userInfo.getString(Constant.DisplayName));
+        userInfoRS.put(Constant.ALIAS, userInfo.getString(Constant.DISPLAY_NAME));
 
-        JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GroupsItems);
+        JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GROUP_ITEMS);
 
         JSONArray groupNames = new JSONArray();
         userInfoRS.put(ROLE, "");
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
-            if (group.getString(Constant.NAME).contains(adminRole)) {
-                session.put(ROLE, adminRole);
-                userInfoRS.put(ROLE, adminRole);
+            if (group.getString(Constant.NAME).contains(ADMIN_ROLE)) {
+                session.put(ROLE, ADMIN_ROLE);
+                userInfoRS.put(ROLE, ADMIN_ROLE);
             }
 
             groupNames.put(group.getString(Constant.NAME));
@@ -85,11 +85,11 @@ public class ApplicationController {
         try {
             JSONObject info = getUserInformation(session);
             JSONObject userInfo = new JSONObject();
-            userInfo.put(DisplayName, info.getString(Constant.alias));
-            userInfo.put(Constant.GROUPS, new JSONArray(info.getString(Groups)));
+            userInfo.put(DISPLAY_NAME, info.getString(Constant.ALIAS));
+            userInfo.put(Constant.GROUPS, new JSONArray(info.getString(USER_GROUPS)));
             userInfo.put(ROLE, info.getString(ROLE));
             userInfo.put(Constant.NAME, session.get(USERNAME));
-            userInfo.put(Projects, getJiraProjectofUserfromServer(session));
+            userInfo.put(USER_PROJECTS, getJiraProjectofUserfromServer(session));
             return Results.text().render(userInfo);
         } catch (Exception e) {
             logger.error(e);

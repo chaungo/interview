@@ -15,7 +15,7 @@ public class DatabaseUtility {
     protected ObjectMapper mapper = new ObjectMapper();
 
     public String getObjectId(Document dbObj) {
-        ObjectId id = (ObjectId) dbObj.get(Constant.mongoId);
+        ObjectId id = (ObjectId) dbObj.get(Constant.MONGODB_ID);
         return id.toString();
     }
 

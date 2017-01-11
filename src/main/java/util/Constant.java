@@ -74,36 +74,36 @@ public class Constant {
     public static final String CLEAN_DATA_CACHE_TIME = "internal.conf.cleardatacache.time";
     public static final String DATA_CACHE_TIME_TO_LIVE = "internal.conf.gadgetdata.timetolive";
     
-    public static String DisplayName = "displayName";
-    public static String alias = "alias";
-    public static String adminRole = "jira-administrators";
+    public static String DISPLAY_NAME = "displayName";
+    public static String ALIAS = "ALIAS";
+    public static String ADMIN_ROLE = "jira-administrators";
 
-    public static String gadget = "Gadget";
-    public static String sonarGadget = "SonarGadget";
-    public static String reviewGadget = "ReviewGadget";
-    public static String greenHopperGadget = "GreenHopperGadget";
+    public static String GADGET = "Gadget";
+    public static String SONAR_GADGET = "SonarGadget";
+    public static String REVIEW_GADGET = "ReviewGadget";
+    public static String GREENHOPPER_GADGET = "GreenHopperGadget";
 
-    public static String owner = "owner";
-    public static String privacy = "privacy";
-    public static String privacyStatus = "status";
-    public static String privacyStatusPublic = "public";
-    public static String privacyStatusPrivate = "private";
-    public static String mongoId = "_id";
-    public static String mongoSet = "$set";
-    public static String share = "share";
-    public static String Groups = "groups";
-    public static String Projects = "projects";
-    public static String GroupsItems = "items";
+    public static String OWNER = "owner";
+    public static String PRIVACY = "privacy";
+    public static String PRIVACY_STATUS = "status";
+    public static String PRIVACY_STATUS_PUBLIC = "public";
+    public static String PRIVACY_STATUS_PRIVATE = "private";
+    public static String MONGODB_ID = "_id";
+    public static String MONGODB_SET = "$set";
+    public static String SHARE_OPTION = "share";
+    public static String USER_GROUPS = "groups";
+    public static String USER_PROJECTS = "projects";
+    public static String GROUP_ITEMS = "items";
 
-    public static String dashboardNameCol = "dashboard_name";
-    public static String dashboardTable = "Dashboard";
-    public static String releaseTable = "Release";
-    public static String sonarMetricTable = "Sonar_Metric";
-    public static String updateDate = "updateDate";
-    public static String releaseUrl = "url";
+    public static String DASHBOARD_NAME_COL = "dashboard_name";
+    public static String DASHBOARD_TABLE = "Dashboard";
+    public static String RELEASE_TABLE = "Release";
+    public static String METRIC_TABLE = "Sonar_Metric";
+    public static String UPDATE_DATE = "updateDate";
+    public static String RELEASE_URL = "url";
 
 
-    public static String MetricKey[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
+    public static String METRIC_KEY[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
             "test_execution_time", "test_failures"};
 
 }
