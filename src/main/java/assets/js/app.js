@@ -78,8 +78,10 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
 
     $rootScope.getDashboardList = function () {
-        $rootScope.reviewList = [];
         $rootScope.sonarStList = [];
+        $rootScope.reviewList = [];
+        $rootScope.greenHopperGadgets = [];
+
         $resource('/getDashboardList', {
             groups: JSON.stringify($rootScope.userInfo.groups),
             projects: JSON.stringify($rootScope.userInfo.projects)
@@ -93,6 +95,9 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.currentDashboard = respone[0];
             $rootScope.getting = false;
             //console.log(respone);
+            if($rootScope.dashboardNameList.length==0){
+                $rootScope.pageName = "Home";
+            }
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
