@@ -51,7 +51,7 @@ app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     $rootScope.tableErrorHandling = function (res) {
         if (res.type == "error") {
         	if(res.errorCode == "COOKIES_EXPIRED"){
-        		window.location = "/login";
+        		window.location = "/logout";
         	}
         	else{
                 $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
