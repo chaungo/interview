@@ -26,7 +26,7 @@ public class ConfigurationController {
 
     final static Logger logger = Logger.getLogger(ConfigurationController.class);
 
-    @FilterWith(AdminSecureFilter.class)
+//    @FilterWith(AdminSecureFilter.class)
     public Result configuration() {
         Set<String> products = AdminUtility.getInstance().getAllProduct();
         Set<String> cycles = AdminUtility.getInstance().getAllCycle();
