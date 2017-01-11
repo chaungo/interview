@@ -192,7 +192,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                         $rootScope.getting = false;
                         $mdToast.show(
                             $mdToast.simple()
-                                .textContent('Server error')
+                                .textContent('Server error! Please logout then login and try again')
                                 .hideDelay(5000)
                         );
                     });
