@@ -117,7 +117,7 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
 
         if (isNotEmpty && $rootScope.currentDashboard != null) {
             var object = {};
-            // object['id'] = TEST_EPIC_ID;
+            object['id'] = $scope.gadgetId;
             var dashboardId = $rootScope.currentDashboard.id;
             object['dashboardId'] = dashboardId;
             object['release'] = cycleReleaseVal;
@@ -128,9 +128,6 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
                 object['selectAllCycle'] = true;
             }else{
                 object['cycles'] = cycleCycle;
-            }
-            if($rootScope.gadgetToEdit!=null){
-                object['id'] = $rootScope.gadgetToEdit.id;
             }
             var jsonObj = JSON.stringify(object);
             var callback = function(result) {
