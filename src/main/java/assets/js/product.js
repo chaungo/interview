@@ -45,7 +45,7 @@ function deleteProduct(product, callback) {
         },
         dataContext: "json",
         success: function (data) {
-            if (productTable != null && data.type == "success" && data.data > 0) {
+            if (productTable != null && data.type == "SUCCESS" && data.data > 0) {
                 callback();
             }
         },
@@ -65,7 +65,7 @@ function deleteCycle(cycle, callback) {
         },
         dataContext: "json",
         success: function (data) {
-            if (productTable != null && data.type == "success" && data.data > 0) {
+            if (productTable != null && data.type == "SUCCESS" && data.data > 0) {
                 callback();
             }
         },
@@ -88,7 +88,7 @@ function createEvent() {
                 },
                 dataContext: "json",
                 success: function (data) {
-                    if (productTable != null && data.type == "success" && data.data == true) {
+                    if (productTable != null && data.type == "SUCCESS" && data.data == true) {
                         productTable.row.add([newProduct, ""]).draw(false);
                         addEventTablesAction();
                         $("#productInput").val("");
@@ -113,7 +113,7 @@ function createEvent() {
                 },
                 dataContext: "json",
                 success: function (data) {
-                    if (cycleTable != null && data.type == "success" && data.data == true) {
+                    if (cycleTable != null && data.type == "SUCCESS" && data.data == true) {
                         cycleTable.row.add([newCycle, ""]).draw(false);
                         addEventTablesAction();
                         $("#cycleInput").val("");
