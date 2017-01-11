@@ -62,21 +62,50 @@
                     <div ng-if="dashboardGadgetInfo.Gadget>1">s</div>
                 </div>
 
-                <div id="{{item.id}}" ng-repeat="item in sonarStList"
+                <div id="{{item.id}}" ng-init="hide=flase" ng-repeat="item in sonarStList"
                      style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
                             <b>AMS SONAR Statistics {{item.release}}</b>
                             <div flex></div>
-                            <b ng-if="currentDashboard.owner == name"
-                               style="color: yellow; margin-right: 10px"
-                               ng-click="editSonarGagdget(item)">Edit</b> <b
-                                ng-if="currentDashboard.owner == name"
-                                style="color: orange; margin-right: 10px"
-                                ng-click="deleteGagdget(item)">Delete</b> <b
-                                ng-click="clearCacheGagdget(item)">Clear cache</b>
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                       style="color: yellow;"
+                                       ng-click="editSonarGagdget(item)">
+                                <md-icon class="material-icons">edit</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Edit
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                       style="color: orange; margin-right: 10px"
+                                       ng-click="deleteGagdget(item)">
+                                <md-icon class="material-icons">delete</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Delete
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-click="clearCacheGagdget(item)">
+                                <md-icon class="material-icons">refresh</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Update
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-click="hide=!hide">
+                                <md-icon ng-if="hide" class="material-icons">expand_more</md-icon>
+                                <md-tooltip ng-if="hide" md-direction="bottom">
+                                    Toggle View
+                                </md-tooltip>
+
+                                <md-icon ng-if="!hide" class="material-icons">expand_less</md-icon>
+                                <md-tooltip ng-if="!hide" md-direction="bottom">
+                                    Toggle View
+                                </md-tooltip>
+                            </md-button>
                         </div>
-                        <table class="responstable" style="width: 100%">
+                        <table ng-if="!hide" class="responstable" style="width: 100%">
                             <tr>
                                 <th>Index</th>
                                 <th>Component</th>
@@ -124,17 +153,41 @@
                 </div>
 
 
-                <div id="{{re.id}}" ng-repeat="re in reviewList" style="width: 100%">
+                <div id="{{re.id}}" ng-init="hide=flase" ng-repeat="re in reviewList" style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
                             <b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
                             <div flex></div>
-                            <b ng-if="currentDashboard.owner == name"
-                               style="color: orange; margin-right: 10px"
-                               ng-click="deleteGagdget(re)">Delete</b> <b
-                                ng-click="clearCacheGagdget(re)">Clear cache</b>
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                       style="color: orange; margin-right: 10px"
+                                       ng-click="deleteGagdget(re)">
+                                <md-icon class="material-icons">delete</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Delete
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button"
+                                       ng-click="clearCacheGagdget(re)">
+                                <md-icon class="material-icons">refresh</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Update
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-click="hide=!hide">
+                                <md-icon ng-if="hide" class="material-icons">expand_more</md-icon>
+                                <md-tooltip ng-if="hide" md-direction="bottom">
+                                    Toggle View
+                                </md-tooltip>
+
+                                <md-icon ng-if="!hide" class="material-icons">expand_less</md-icon>
+                                <md-tooltip ng-if="!hide" md-direction="bottom">
+                                    Toggle View
+                                </md-tooltip>
+                            </md-button>
                         </div>
-                        <table class="responstable" style="width: 100%">
+                        <table ng-if="!hide" class="responstable" style="width: 100%">
                             <tr>
                                 <th>Index</th>
                                 <th>IA</th>
