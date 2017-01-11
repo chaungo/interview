@@ -101,9 +101,9 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.isDisabled = false;
     
     $scope.saveGadget = function() {
-        var assigneeProjectVal = $scope.selectedProject;
-        var assigneeProductVal = $scope.selectedProduct;
-        var assigneeReleaseVal = $scope.selectedRelease;
+        var assigneeProjectVal = $("#assigneeProject").val();
+        var assigneeProductVal = $("#assigneeProduct").val();
+        var assigneeReleaseVal = $("#assigneeRelease").val();
         var metricsVal = $("#assigneeMetricMultiSelect").val();
         var assigneeCycle = $("#assigneeCycle").val();
         var isNotEmpty =true;

@@ -135,9 +135,11 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
         var epicCheckAllVal = $("#epicCheckAll").prop('checked');
         if (epicCheckAllVal) {
             isNotEmpty = verifyValue([ epicProjectVal, epicProductVal, epicReleaseVal ]);
+            isNotEmpty &= (metricsVal != null);
         } else {
             isNotEmpty = verifyValue([ epicProjectVal, epicProductVal, epicReleaseVal ]);
             isNotEmpty &= (epicLink != null && epicLink.length > 0);
+            isNotEmpty &= (metricsVal != null);
         }
 
         if (isNotEmpty && $rootScope.currentDashboard != null) {
