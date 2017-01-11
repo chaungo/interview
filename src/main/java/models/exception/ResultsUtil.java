@@ -11,12 +11,13 @@ import util.PropertiesUtil;
 
 public class ResultsUtil {
     public static Result convertException(APIException e, Context context) {
-        if (APIErrorCode.COKKIES_EXPIRED.equals(e.getErrorCode())) {
+        if (APIErrorCode.COOKIES_EXPIRED.equals(e.getErrorCode())) {
             context.getSession().clear();
         }
         Result result = Results.json();
         result.render("type", "error");
         result.render("data", e.getMessage());
+        result.render("errorCode", e.getErrorCode().toString());
         return result;
     }
 
