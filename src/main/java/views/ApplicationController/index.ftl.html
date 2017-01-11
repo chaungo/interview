@@ -221,14 +221,34 @@
                                     <b>Epic Test Execution Gadget {{item.projectName}}</b>
                                     <div flex></div>
 
-                                    <b style="color: white; margin-right: 10px"
-                                       data-ng-click="toggleView()">Toggle View</b>
+
+
+
+
                                     <div data-ng-if="currentDashboard.owner == name">
-                                        <b style="color: yellow; margin-right: 10px"
-                                           data-ng-click="editGreenhopperGadget(item, $event)">Edit</b> <b
-                                            style="color: orange; margin-right: 10px"
-                                            data-ng-click="deleteGreenhopperGadget(item)">Delete</b>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   ng-click="editGreenhopperGadget(item, $event)">
+                                            <md-icon class="material-icons">edit</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Edit
+                                            </md-tooltip>
+                                        </md-button>
+
+                                        <md-button class="md-icon-button" ng-click="deleteGreenhopperGadget(item)">
+                                            <md-icon class="material-icons">delete</md-icon>
+                                            <md-tooltip md-direction="bottom">
+                                                Delete
+                                            </md-tooltip>
+                                        </md-button>
                                     </div>
+                                    <md-button class="md-icon-button" ng-click="toggleView()">
+                                        <md-icon class="material-icons">keyboard_capslock</md-icon>
+                                        <md-tooltip md-direction="bottom">
+                                            Toggle View
+                                        </md-tooltip>
+                                    </md-button>
                                 </div>
                                 <div data-ng-show="showView" id="epic-table-container"
                                      class="col-md-12" align="center" style="display: none">
@@ -277,14 +297,36 @@
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
                                     <b>User Story Test Execution Gadget {{item.projectName}}</b>
                                     <div flex></div>
-                                    <b style="color: white; margin-right: 10px"
-                                       data-ng-click="toggleView()">Toggle View</b>
+
                                     <div data-ng-if="currentDashboard.owner == name">
-                                        <b style="color: yellow; margin-right: 10px"
-                                           data-ng-click="editGreenhopperGadget(item, $event)">Edit</b> <b
-                                            style="color: orange; margin-right: 10px"
-                                            data-ng-click="deleteGreenhopperGadget(item)">Delete</b>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   ng-click="editGreenhopperGadget(item, $event)">
+                                            <md-icon class="material-icons">edit</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Edit
+                                            </md-tooltip>
+                                        </md-button>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   style="color: orange; margin-right: 10px"
+                                                   ng-click="deleteGreenhopperGadget(item)">
+                                            <md-icon class="material-icons">delete</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Delete
+                                            </md-tooltip>
+                                        </md-button>
+
                                     </div>
+
+                                    <md-button class="md-icon-button" ng-click="toggleView()">
+                                        <md-icon class="material-icons">keyboard_capslock</md-icon>
+                                        <md-tooltip md-direction="bottom">
+                                            Toggle View
+                                        </md-tooltip>
+                                    </md-button>
                                 </div>
                                 <div data-ng-show="showView" id="us-table-container"
                                      class="col-md-12" align="center" style="display: none"></div>
@@ -302,14 +344,34 @@
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
                                     <b>Cycle Test Execution Gadget {{item.projectName}}</b>
                                     <div flex></div>
-                                    <b style="color: white; margin-right: 10px"
-                                       data-ng-click="toggleView()">Toggle View</b>
+
                                     <div data-ng-if="currentDashboard.owner == name">
-                                        <b style="color: yellow; margin-right: 10px"
-                                           data-ng-click="editGreenhopperGadget(item, $event)">Edit</b> <b
-                                            style="color: orange; margin-right: 10px"
-                                            data-ng-click="deleteGreenhopperGadget(item)">Delete</b>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   ng-click="editGreenhopperGadget(item, $event)">
+                                            <md-icon class="material-icons">edit</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Edit
+                                            </md-tooltip>
+                                        </md-button>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   style="color: orange; margin-right: 10px"
+                                                   ng-click="deleteGreenhopperGadget(item)">
+                                            <md-icon class="material-icons">delete</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Delete
+                                            </md-tooltip>
+                                        </md-button>
                                     </div>
+                                    <md-button class="md-icon-button" ng-click="toggleView()">
+                                        <md-icon class="material-icons">keyboard_capslock</md-icon>
+                                        <md-tooltip md-direction="bottom">
+                                            Toggle View
+                                        </md-tooltip>
+                                    </md-button>
                                 </div>
                                 <div data-ng-show="showView" id="cycle-table-container"
                                      align="center" class="col-md-12" style="display: none">
@@ -350,14 +412,35 @@
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
                                     <b>Assignee Test Execution Gadget {{item.projectName}}</b>
                                     <div flex></div>
-                                    <b style="color: white; margin-right: 10px"
-                                       data-ng-click="toggleView()">Toggle View</b>
+
                                     <div data-ng-if="currentDashboard.owner == name">
-                                        <b style="color: yellow; margin-right: 10px"
-                                           data-ng-click="editGreenhopperGadget(item, $event)">Edit</b> <b
-                                            style="color: orange; margin-right: 10px"
-                                            data-ng-click="deleteGreenhopperGadget(item)">Delete</b>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   ng-click="editGreenhopperGadget(item, $event)">
+                                            <md-icon class="material-icons">edit</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Edit
+                                            </md-tooltip>
+                                        </md-button>
+
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                                   style="color: orange; margin-right: 10px"
+                                                   ng-click="deleteGreenhopperGadget(item)">
+                                            <md-icon class="material-icons">delete</md-icon>
+
+                                            <md-tooltip md-direction="bottom">
+                                                Delete
+                                            </md-tooltip>
+                                        </md-button>
                                     </div>
+
+                                    <md-button class="md-icon-button" ng-click="toggleView()">
+                                        <md-icon class="material-icons">keyboard_capslock</md-icon>
+                                        <md-tooltip md-direction="bottom">
+                                            Toggle View
+                                        </md-tooltip>
+                                    </md-button>
                                 </div>
                                 <div data-ng-show="showView" id="assignee-table-container"
                                      class="col-md-12" align="center" style="display: none"></div>
