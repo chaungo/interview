@@ -48,6 +48,20 @@ app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
         return false;
     }
     $rootScope.isDisabled = false;
+    $rootScope.tableErrorHandling = function (res) {
+        if (res.type == "error") {
+        	if(res.errorCode == "COOKIES_EXPIRED"){
+        		window.location = "/login";
+        	}
+        	else{
+                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
+        	}
+            
+        } else {
+            $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
+        }
+        console.log(res);
+    }
     //////////////////////////////////////////////////////
 
 
@@ -1232,18 +1246,8 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-        var errorHandling = function (res) {
-            if (res.type == "error") {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
-            } else {
-                $rootScope.debugAjaxAngular(res);
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
-            }
-        }
 
-        drawEpicTable($scope.dataTable, item, errorHandling);
+        drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling);
     }
 
 });
@@ -1256,17 +1260,8 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     };
     $scope.showView = true;
     $scope.init = function (item) {
-        var errorHandling = function (res) {
-            if (res.type == "error") {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
-            } else {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
-            }
-        }
 
-        drawUsTable($scope.dataTable, item, errorHandling);
+        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1278,17 +1273,8 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
     $scope.dataTable = null;
     $scope.showView = true;
     $scope.init = function (item) {
-        var errorHandling = function (res) {
-            if (res.type == "error") {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
-            } else {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
-            }
-        }
 
-        drawCycleTable($scope.dataTable, item, errorHandling);
+        drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1303,17 +1289,7 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     };
     $scope.showView = true;
     $scope.init = function (item) {
-        var errorHandling = function (res) {
-            if (res.type == "error") {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
-            } else {
-                console.log(res);
-                $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
-            }
-        }
-
-        drawAssigneeTable($scope.dataTable, item, errorHandling);
+        drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling);
     }
 
     $scope.toggleView = function () {
