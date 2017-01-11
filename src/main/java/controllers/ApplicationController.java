@@ -18,8 +18,6 @@ import util.MyUtill;
 import java.io.BufferedReader;
 import java.net.Proxy;
 
-import static util.Constant.*;
-
 
 public class ApplicationController {
 
@@ -29,8 +27,8 @@ public class ApplicationController {
         JSONObject userInfoRS = new JSONObject();
         Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         Connection req = Jsoup
-                .connect(String.format(LINK_GET_JIRA_USER_INFO, session.get(Constant.USERNAME)))
-                .cookies(MyUtill.getCookies(session)).timeout(CONNECTION_TIMEOUT).ignoreContentType(true)
+                .connect(String.format(Constant.LINK_GET_JIRA_USER_INFO, session.get(Constant.USERNAME)))
+                .cookies(MyUtill.getCookies(session)).timeout(Constant.CONNECTION_TIMEOUT).ignoreContentType(true)
                 .ignoreHttpErrors(true);
         if (proxy != null) {
             req.proxy(proxy);
@@ -38,9 +36,9 @@ public class ApplicationController {
         Document response = req.get();
         JSONObject userInfo = new JSONObject(response.body().text());
 
-        userInfoRS.put(alias, userInfo.getString(DisplayName));
+        userInfoRS.put(Constant.alias, userInfo.getString(Constant.DisplayName));
 
-        JSONArray groups = userInfo.getJSONObject(Groups).getJSONArray(GroupsItems);
+        JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GroupsItems);
 
         JSONArray groupNames = new JSONArray();
         userInfoRS.put(Constant.ROLE, "");
@@ -61,7 +59,7 @@ public class ApplicationController {
     public static JSONArray getJiraProjectofUserfromServer(Session session) throws Exception {
         JSONArray projectDataArray = new JSONArray();
         String rs = "";
-        BufferedReader br = MyUtill.getHttpURLConnection(LINK_GET_JIRA_PROJECTS, session);
+        BufferedReader br = MyUtill.getHttpURLConnection(Constant.LINK_GET_JIRA_PROJECTS, session);
         String inputLine;
         while ((inputLine = br.readLine()) != null) {
             rs = rs + inputLine;
@@ -83,7 +81,7 @@ public class ApplicationController {
         try {
             JSONObject info = getUserInformation(session);
             JSONObject userInfo = new JSONObject();
-            userInfo.put("displayName", info.getString(alias));
+            userInfo.put("displayName", info.getString(Constant.alias));
             userInfo.put(Constant.GROUPS, new JSONArray(info.getString("groups")));
             userInfo.put(Constant.ROLE, info.getString("role"));
             userInfo.put(Constant.NAME, session.get("username"));

@@ -74,8 +74,6 @@ public class Constant {
 
     public static String DisplayName = "displayName";
     public static String alias = "alias";
-
-    public static String Groups = "groups";
     public static String GroupsItems = "items";
 
 
