@@ -111,7 +111,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
             }
             if (errorMessages.isEmpty()) {
                 gadgetId = gadgetService.insertOrUpdate(gadget);
-                if(gadgetId.endsWith(gadget.getId())){
+                if(gadgetId.equals(gadget.getId())){
                     //The case is update. Clean gadget data cache
                     dataGadgetCache.remove(gadgetId);
                 }
