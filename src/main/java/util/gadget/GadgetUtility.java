@@ -98,16 +98,16 @@ public class GadgetUtility extends DatabaseUtility {
             dbObject.remove("id");
             if (existingGadget != null) {
                 BasicDBObject updateQuery = new BasicDBObject();
-                updateQuery.append(Constant.mongoSet, dbObject);
+                updateQuery.append(Constant.MONGODB_SET, dbObject);
                 BasicDBObject searchQuery = new BasicDBObject();
-                searchQuery.append(Constant.mongoId, new ObjectId(id));
+                searchQuery.append(Constant.MONGODB_ID, new ObjectId(id));
                 logger.fasttrace("update gadget id %s by user:%s", id, gadget.getUser());
                 collection.updateOne(searchQuery, updateQuery);
                 return id;
             } else {
                 logger.fasttrace("insert gadget:%s by user:%s", gadget.getType(), gadget.getUser());
                 ObjectId idObj = new ObjectId();
-                dbObject.append(Constant.mongoId, idObj);
+                dbObject.append(Constant.MONGODB_ID, idObj);
                 collection.insertOne(dbObject);
                 return idObj.toString();
             }
@@ -162,7 +162,7 @@ public class GadgetUtility extends DatabaseUtility {
     private BasicDBObject getQueryById(String id) throws APIException {
         BasicDBObject query = new BasicDBObject();
         try {
-            query.put(Constant.mongoId, new ObjectId(id));
+            query.put(Constant.MONGODB_ID, new ObjectId(id));
         } catch (java.lang.IllegalArgumentException e) {
             logger.fasttrace("gadget id %s not found", id);
             throw new APIException("gadget id=" + id + " not found", e);
