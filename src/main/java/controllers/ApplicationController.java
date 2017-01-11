@@ -18,6 +18,10 @@ import util.MyUtill;
 import java.io.BufferedReader;
 import java.net.Proxy;
 
+import static util.Constant.*;
+import static util.Constant.ROLE;
+import static util.Constant.USERNAME;
+
 
 public class ApplicationController {
 
@@ -27,7 +31,7 @@ public class ApplicationController {
         JSONObject userInfoRS = new JSONObject();
         Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         Connection req = Jsoup
-                .connect(String.format(Constant.LINK_GET_JIRA_USER_INFO, session.get(Constant.USERNAME)))
+                .connect(String.format(Constant.LINK_GET_JIRA_USER_INFO, session.get(USERNAME)))
                 .cookies(MyUtill.getCookies(session)).timeout(Constant.CONNECTION_TIMEOUT).ignoreContentType(true)
                 .ignoreHttpErrors(true);
         if (proxy != null) {
@@ -41,12 +45,12 @@ public class ApplicationController {
         JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GroupsItems);
 
         JSONArray groupNames = new JSONArray();
-        userInfoRS.put(Constant.ROLE, "");
+        userInfoRS.put(ROLE, "");
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
-            if (group.getString(Constant.NAME).contains("jira-administrators")) {
-                session.put(Constant.ROLE, "jira-administrators");
-                userInfoRS.put(Constant.ROLE, "jira-administrators");
+            if (group.getString(Constant.NAME).contains(adminRole)) {
+                session.put(ROLE, adminRole);
+                userInfoRS.put(ROLE, adminRole);
             }
 
             groupNames.put(group.getString(Constant.NAME));
@@ -81,11 +85,11 @@ public class ApplicationController {
         try {
             JSONObject info = getUserInformation(session);
             JSONObject userInfo = new JSONObject();
-            userInfo.put("displayName", info.getString(Constant.alias));
-            userInfo.put(Constant.GROUPS, new JSONArray(info.getString("groups")));
-            userInfo.put(Constant.ROLE, info.getString("role"));
-            userInfo.put(Constant.NAME, session.get("username"));
-            userInfo.put("projects", getJiraProjectofUserfromServer(session));
+            userInfo.put(DisplayName, info.getString(Constant.alias));
+            userInfo.put(Constant.GROUPS, new JSONArray(info.getString(Groups)));
+            userInfo.put(ROLE, info.getString(ROLE));
+            userInfo.put(Constant.NAME, session.get(USERNAME));
+            userInfo.put(Projects, getJiraProjectofUserfromServer(session));
             return Results.text().render(userInfo);
         } catch (Exception e) {
             logger.error(e);

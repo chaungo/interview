@@ -74,6 +74,7 @@ public class Constant {
 
     public static String DisplayName = "displayName";
     public static String alias = "alias";
+    public static String adminRole = "jira-administrators";
 
     public static String gadget = "Gadget";
     public static String sonarGadget = "SonarGadget";
@@ -82,10 +83,22 @@ public class Constant {
 
     public static String owner = "owner";
     public static String privacy = "privacy";
-    public static  String mongoId = "_id";
+    public static String privacyStatus = "status";
+    public static String privacyStatusPublic = "public";
+    public static String privacyStatusPrivate = "private";
+    public static String mongoId = "_id";
+    public static String mongoSet = "$set";
     public static String share = "share";
     public static String Groups = "groups";
+    public static String Projects = "projects";
     public static String GroupsItems = "items";
+
+    public static String dashboardNameCol = "dashboard_name";
+    public static String dashboardTable = "Dashboard";
+    public static String releaseTable = "Release";
+    public static String sonarMetricTable = "Sonar_Metric";
+    public static String updateDate = "updateDate";
+    public static String releaseUrl = "url";
 
 
     public static String MetricKey[] = {"coverage", "critical_violations", "new_coverage", "test_errors",

@@ -36,7 +36,7 @@ public class SonarStatisticGadgetController {
 
         JSONObject result = new JSONObject();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOAR_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
 
@@ -58,8 +58,8 @@ public class SonarStatisticGadgetController {
 
             result.put("metricList", metricList);
 
-            JSONArray releases = getReleasesFromDB(data.getString("Release"));
-            String releaseUrl = releases.getJSONObject(0).getString("url");
+            JSONArray releases = getReleasesFromDB(data.getString(releaseTable));
+            String releaseUrl = releases.getJSONObject(0).getString(Constant.releaseUrl);
 
             JSONArray IAComponent = new JSONArray();
 
@@ -90,7 +90,7 @@ public class SonarStatisticGadgetController {
 
             result.put("RsIAArray", RsIAArray);
 
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.mongoSet, new org.bson.Document("cache", result.toString()).append(Constant.updateDate, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
 
         } else {
             result = new JSONObject(document.getString("cache"));
@@ -104,14 +104,14 @@ public class SonarStatisticGadgetController {
     public static JSONArray getMetricsFromDB() throws Exception {
 
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> metricCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Sonar_Metric");
+        MongoCollection<org.bson.Document> metricCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.sonarMetricTable);
         FindIterable<Document> metricIterable = metricCollection.find();
         JSONArray metrics = new JSONArray();
         metricIterable.forEach(new Block<Document>() {
             @Override
             public void apply(final org.bson.Document document) {
                 JSONObject metric = new JSONObject();
-                metric.put("id", document.getObjectId("_id"));
+                metric.put("id", document.getObjectId(Constant.mongoId));
                 metric.put("name", document.get("name"));
                 metric.put("key", document.get("code"));
                 metrics.put(metric);
@@ -126,7 +126,7 @@ public class SonarStatisticGadgetController {
 
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA));
-        MongoCollection<org.bson.Document> releaseCollection = database.getCollection("Release");
+        MongoCollection<org.bson.Document> releaseCollection = database.getCollection(releaseTable);
         FindIterable<org.bson.Document> releaseIterable;
         if (name != null) {
             releaseIterable = releaseCollection.find(new org.bson.Document("name", name));
@@ -139,9 +139,9 @@ public class SonarStatisticGadgetController {
             @Override
             public void apply(final org.bson.Document document) {
                 JSONObject release = new JSONObject();
-                release.put("id", document.getObjectId("_id"));
+                release.put("id", document.getObjectId(Constant.mongoId));
                 release.put("name", document.getString("name"));
-                release.put("url", document.getString("url"));
+                release.put(Constant.releaseUrl, document.getString(Constant.releaseUrl));
                 releases.put(release);
             }
         });
@@ -154,7 +154,7 @@ public class SonarStatisticGadgetController {
 
         JSONArray PeriodArray = new JSONArray();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Sonar_Metric");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(sonarMetricTable);
         org.bson.Document document = collection.find(new org.bson.Document("code", "new_coverage")).first();
 
         if (isCacheExpired(document, 24)) {
@@ -183,7 +183,7 @@ public class SonarStatisticGadgetController {
             }
 
 
-            collection.updateMany(new org.bson.Document(new org.bson.Document("code", "new_coverage")), new org.bson.Document("$set", new org.bson.Document("cache", PeriodArray.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateMany(new org.bson.Document(new org.bson.Document("code", "new_coverage")), new org.bson.Document(Constant.mongoSet, new org.bson.Document("cache", PeriodArray.toString()).append(Constant.updateDate, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
 
 
         } else {
@@ -221,7 +221,7 @@ public class SonarStatisticGadgetController {
 
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
-        org.bson.Document document = collection.find(new org.bson.Document("url", url)).first();
+        org.bson.Document document = collection.find(new org.bson.Document(Constant.releaseUrl, url)).first();
 
         if (isCacheExpired(document, 24)) {
 
@@ -250,7 +250,7 @@ public class SonarStatisticGadgetController {
 
             br.close();
 
-            collection.updateOne(new org.bson.Document("url", url), new org.bson.Document("$set", new org.bson.Document("cache", IAArray.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateOne(new org.bson.Document(Constant.releaseUrl, url), new org.bson.Document(Constant.mongoSet, new org.bson.Document("cache", IAArray.toString()).append(Constant.updateDate, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
 
         } else {
             IAArray = new JSONArray(document.getString("cache"));
@@ -286,7 +286,7 @@ public class SonarStatisticGadgetController {
     @FilterWith(SecureFilter.class)
     public Result getIAComponents(Session session, @Param("data") String data) {
         try {
-            return Results.text().render(getIAComponentsRespond(session, (new JSONObject(data)).getString("url"), null));
+            return Results.text().render(getIAComponentsRespond(session, (new JSONObject(data)).getString(Constant.releaseUrl), null));
         } catch (Exception e) {
             logger.error(e);
             return Results.internalServerError();

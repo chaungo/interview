@@ -25,7 +25,7 @@ import util.PropertiesUtil;
 import java.util.List;
 
 import static service.GadgetService.getDashboardGadgetbyDashboardId;
-import static util.Constant.gadget;
+import static util.Constant.*;
 
 @Singleton
 public class DashboardController {
@@ -53,12 +53,12 @@ public class DashboardController {
                 Type type = gadget.getType();
                 if (Type.AMS_SONAR_STATISTICS_GADGET.equals(type)) {
                     sonarGadget++;
-                }else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+                } else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
                     reviewGadget++;
-                }else{
+                } else {
                     greenHopper++;
                 }
-                
+
             }
             //todo
 
@@ -87,7 +87,8 @@ public class DashboardController {
 
             JSONArray dashboardList = new JSONArray();
             MongoClient mongoClient = new MongoClient();
-            MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Dashboard");
+
+            MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(dashboardTable);
             FindIterable<Document> iterable = collection.find();
 
             iterable.forEach(new Block<Document>() {
@@ -95,16 +96,10 @@ public class DashboardController {
                 public void apply(final Document document) {
                     try {
                         JSONObject dashboard = new JSONObject();
-
-
                         String owner = document.getString(Constant.owner);
-
                         JSONObject privacy = new JSONObject(document.getString(Constant.privacy));
-
-
                         Boolean contain = false;
                         try {
-
                             List<Object> share = privacy.getJSONArray(Constant.share).toList();
                             for (Object o : share) {
                                 if (groupsNprojects.contains(o)) {
@@ -117,17 +112,13 @@ public class DashboardController {
                             logger.warn(e);
                         }
 
-
-                        if (contain || owner.equals(session.get("username")) || privacy.getString("status").equals("public")) {
-
+                        if (contain || owner.equals(session.get(USERNAME)) || privacy.getString(privacyStatus).equals(privacyStatusPublic)) {
                             dashboard.put("id", document.getObjectId(Constant.mongoId).toHexString());
                             dashboard.put(Constant.owner, owner);
-                            dashboard.put("name", document.get("dashboard_name"));
+                            dashboard.put(NAME, document.get(dashboardNameCol));
                             dashboard.put(Constant.privacy, privacy);
                             dashboardList.put(dashboard);
                         }
-
-
                     } catch (Exception exception) {
                         logger.error(exception);
                     }
@@ -149,9 +140,10 @@ public class DashboardController {
     public Result updateDashboardOption(@Param("id") String dashboardId, @Param("name") String dashboardName, @Param("privacy") String privacy) {
         try {
             MongoClient mongoClient = new MongoClient();
-            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Dashboard");
-            org.bson.Document doc = new org.bson.Document("dashboard_name", dashboardName).append(Constant.privacy, privacy);
-            collection.updateOne(new org.bson.Document(Constant.mongoId, new ObjectId(dashboardId)), new org.bson.Document("$set", doc));
+            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(dashboardTable);
+
+            org.bson.Document doc = new org.bson.Document(dashboardNameCol, dashboardName).append(Constant.privacy, privacy);
+            collection.updateOne(new org.bson.Document(Constant.mongoId, new ObjectId(dashboardId)), new org.bson.Document(Constant.mongoSet, doc));
             mongoClient.close();
 
             return Results.ok();
@@ -166,12 +158,14 @@ public class DashboardController {
     public Result deleteDashboard(@Param("id") String dashboardId, Session session) {
         try {
             MongoClient mongoClient = new MongoClient();
-            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Dashboard");
+            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(dashboardTable);
             Document document = collection.find(new org.bson.Document(Constant.mongoId, new ObjectId(dashboardId))).first();
 
-            if (document.getString("owner").equals(session.get("username"))) {
+            if (document.getString(Constant.owner).equals(session.get(USERNAME))) {
                 collection.deleteOne(new org.bson.Document(Constant.mongoId, new ObjectId(dashboardId)));
-                mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget").deleteMany(new org.bson.Document("dashboardId", dashboardId));
+
+
+                mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOAR_GADGET_COLECCTION).deleteMany(new org.bson.Document(Constant.DASHBOAR_ID, dashboardId));
             }
 
             mongoClient.close();
@@ -194,13 +188,14 @@ public class DashboardController {
                                      @Param("name") String name) {
         try {
             MongoClient mongoClient = new MongoClient();
-            MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Dashboard");
+            MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(dashboardTable);
 
             JSONObject privacy = new JSONObject();
-            privacy.put("status", "private");
-            privacy.put("share", new JSONArray());
 
-            collection.insertOne(new org.bson.Document(Constant.mongoId, new ObjectId()).append(Constant.owner, username).append("dashboard_name", name).append("privacy", privacy.toString()));
+            privacy.put(privacyStatus, privacyStatusPrivate);
+            privacy.put(share, new JSONArray());
+
+            collection.insertOne(new org.bson.Document(Constant.mongoId, new ObjectId()).append(Constant.owner, username).append(dashboardNameCol, name).append(Constant.privacy, privacy.toString()));
             mongoClient.close();
 
             return Results.redirect("/");
