@@ -64,42 +64,23 @@ public class OverdueReviewReportController {
 
         JSONArray userArray = new JSONArray();
 
-        MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Gadget");
-        org.bson.Document document = collection.find(new org.bson.Document("Name", "AMS Overdue Reviews Report Gadget")).first();
-        JSONObject cache = new JSONObject(document.getString("cache"));
 
-        try {
-            if (isCacheExpired(document, 2)) {
-                String rs = "";
-                BufferedReader br = getHttpURLConnection(LINK_GET_CRU_USERS, session);
-                String inputLine;
-                while ((inputLine = br.readLine()) != null) {
-                    rs = rs + inputLine;
-                }
-                br.close();
-                JSONArray dataArray = new JSONArray(rs);
-                if (dataArray.length() != 0) {
-                    for (int i = 0; i < dataArray.length(); i++) {
-                        JSONObject user = dataArray.getJSONObject(i);
-                        JSONObject userInfo = new JSONObject();
-                        userInfo.put("id", user.getString("id"));
-                        userInfo.put(Constant.NAME, user.getString("displayPrimary"));
-                        userArray.put(userInfo);
-                    }
-                    cache.remove("user");
-                    cache.put("user", userArray);
-                    collection.updateOne(new org.bson.Document("Name", "AMS Overdue Reviews Report Gadget"), new org.bson.Document("$set", new org.bson.Document("cache", cache.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
-                } else {
-                    userArray = cache.getJSONArray("user");
-                }
-            } else {
-                userArray = cache.getJSONArray("user");
+        String rs = "";
+        BufferedReader br = getHttpURLConnection(LINK_GET_CRU_USERS, session);
+        String inputLine;
+        while ((inputLine = br.readLine()) != null) {
+            rs = rs + inputLine;
+        }
+        br.close();
+        JSONArray dataArray = new JSONArray(rs);
+        if (dataArray.length() != 0) {
+            for (int i = 0; i < dataArray.length(); i++) {
+                JSONObject user = dataArray.getJSONObject(i);
+                JSONObject userInfo = new JSONObject();
+                userInfo.put("id", user.getString("id"));
+                userInfo.put(Constant.NAME, user.getString("displayPrimary"));
+                userArray.put(userInfo);
             }
-        } catch (Exception e) {
-            userArray = cache.getJSONArray("user");
-        } finally {
-            mongoClient.close();
         }
 
         return userArray;
@@ -110,14 +91,14 @@ public class OverdueReviewReportController {
         result.put("id", GadgetId);
         result.put("project", data.getString("Project"));
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
         if (isCacheExpired(document, 3)) {
             JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
             result.put("ReviewDataArray", ReviewDataArray);
 
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document("$set", new org.bson.Document("cache", result.toString()).append("updateDate", new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.mongoSet, new org.bson.Document("cache", result.toString()).append(Constant.updateDate, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
         } else {
             result = new JSONObject(document.getString("cache"));
         }
@@ -143,7 +124,7 @@ public class OverdueReviewReportController {
         ArrayList<String> nameList = new ArrayList<>();
 
         for (int i = 0; i < array.length(); i++) {
-            String name = array.getJSONObject(i).getJSONObject("creator").getString("displayName");
+            String name = array.getJSONObject(i).getJSONObject("creator").getString(Constant.DisplayName);
             if (!nameList.contains(name)) {
                 nameList.add(name);
             }
@@ -156,7 +137,7 @@ public class OverdueReviewReportController {
             int moreThan10 = 0;
             for (int j = 0; j < array.length(); j++) {
                 JSONObject detailedReviewData = array.getJSONObject(j);
-                String name = detailedReviewData.getJSONObject("creator").getString("displayName");
+                String name = detailedReviewData.getJSONObject("creator").getString(Constant.DisplayName);
                 if (nameList.get(i).equals(name)) {
                     String createDate = detailedReviewData.getString("createDate").substring(0, 10);
                     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

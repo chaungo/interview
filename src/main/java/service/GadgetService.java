@@ -31,8 +31,8 @@ public class GadgetService {
     public static void updateDashboardGadgettoDB(String GadgetId, String data) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
-        org.bson.Document doc = new org.bson.Document("data", data).append("cache", "").append("updateDate", 0);
-        collection.updateOne(new org.bson.Document("_id", new ObjectId(GadgetId)), new org.bson.Document("$set", doc));
+        org.bson.Document doc = new org.bson.Document("data", data).append("cache", "").append(Constant.updateDate, 0);
+        collection.updateOne(new org.bson.Document(Constant.mongoId, new ObjectId(GadgetId)), new org.bson.Document(Constant.mongoSet, doc));
         mongoClient.close();
     }
 
@@ -40,7 +40,7 @@ public class GadgetService {
         ////System.out.println(gadgetId);
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
-        FindIterable<Document> gadgetIterable = gadgetCollection.find(new org.bson.Document("_id", new ObjectId(gadgetId)));
+        FindIterable<Document> gadgetIterable = gadgetCollection.find(new org.bson.Document(Constant.mongoId, new ObjectId(gadgetId)));
         gadgetCollection.deleteOne(gadgetIterable.first());
 
         mongoClient.close();
@@ -48,9 +48,9 @@ public class GadgetService {
 
     public static void clearCacheGadgetfromDB(String gadgetId) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("DashboardGadget");
-        org.bson.Document doc = new org.bson.Document("cache", "").append("updateDate", 0);
-        collection.updateOne(new org.bson.Document("_id", new ObjectId(gadgetId)), new org.bson.Document("$set", doc));
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
+        org.bson.Document doc = new org.bson.Document("cache", "").append(Constant.updateDate, 0);
+        collection.updateOne(new org.bson.Document(Constant.mongoId, new ObjectId(gadgetId)), new org.bson.Document(Constant.mongoSet, doc));
         mongoClient.close();
     }
 

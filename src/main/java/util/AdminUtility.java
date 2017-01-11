@@ -10,10 +10,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import static util.Constant.NAME;
+
 public class AdminUtility extends DatabaseUtility {
     private static final String PRODUCT_COLLECTION = "Product";
     private static final String CYCLE_COLLECTION = "Cycle";
-    private static final String NAME = "name";
     private static AdminUtility INSTANCE = new AdminUtility();
     private MongoCollection<Document> productCollection;
     private MongoCollection<Document> cycleCollection;

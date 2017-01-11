@@ -17,6 +17,10 @@ import util.PropertiesUtil;
 
 import java.util.Set;
 
+import static util.Constant.NAME;
+import static util.Constant.mongoId;
+import static util.Constant.releaseTable;
+
 @Singleton
 public class ConfigurationController {
 
@@ -31,10 +35,11 @@ public class ConfigurationController {
 
 
     @FilterWith(AdminSecureFilter.class)
-    public Result addNewRelease(@Param("name") String name, @Param("url") String url) {
+    public Result addNewRelease(@Param(NAME) String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
-        collection.insertOne(new Document("name", name).append("url", url));
+
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(releaseTable);
+        collection.insertOne(new Document(NAME, name).append(Constant.releaseUrl, url));
         mongoClient.close();
         return Results.ok();
     }
@@ -42,8 +47,8 @@ public class ConfigurationController {
     @FilterWith(AdminSecureFilter.class)
     public Result updateRelease(@Param("id") String id, @Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
-        collection.updateOne(new Document("_id", new ObjectId(id)), new Document("$set", new Document("name", name).append("url", url)));
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(releaseTable);
+        collection.updateOne(new Document(mongoId, new ObjectId(id)), new Document(Constant.mongoSet, new Document("name", name).append(Constant.releaseUrl, url)));
         mongoClient.close();
         return Results.ok();
     }
@@ -51,8 +56,8 @@ public class ConfigurationController {
     @FilterWith(AdminSecureFilter.class)
     public Result deleteRelease(@Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection("Release");
-        collection.deleteOne(new Document("url", url));
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(releaseTable);
+        collection.deleteOne(new Document(Constant.releaseUrl, url));
         mongoClient.close();
         return Results.ok();
     }
