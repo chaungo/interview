@@ -15,10 +15,12 @@ public class SchedulerManagement {
     private Scheduler scheduler;
 
     private SchedulerManagement() {
-        try {
+        try{
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             startClearJob();
-        } catch (SchedulerException e) {
+            startClearDataJob();
+            scheduler.start();
+        } catch (SchedulerException e){
             logger.fastDebug("Cannot init scheduler", e, new Object());
         }
     }
@@ -28,22 +30,37 @@ public class SchedulerManagement {
     }
 
     public void startClearJob() {
-        int intervalInHours = PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 1);
-        JobDetail clearCache = JobBuilder.newJob(ClearCacheJob.class).withIdentity("CLEAN_CACHE", "API").build();
+        int intervalInHours = PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24);
+        JobDetail clearCache = JobBuilder.newJob(CleanCacheJob.class).withIdentity("CLEAN_CACHE", "API").build();
         Date triggerStartTime = DateUtils.addHours(new Date(), intervalInHours);
-        Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity("CLEAN_CACHE_TRIGGER", "API")
-                .startAt(triggerStartTime)
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInHours(intervalInHours)
-                        .repeatForever())
-                .build();
-        try {
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_CACHE_TRIGGER", "API").startAt(triggerStartTime)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(intervalInHours).repeatForever()).build();
+        try{
             scheduler.scheduleJob(clearCache, trigger);
             logger.fastInfo("started clear cache job");
-        } catch (SchedulerException e) {
+        } catch (SchedulerException e){
             logger.fastDebug("Cannot schedule job", e, new Object());
         }
+    }
+
+    public void startClearDataJob() {
+        int intervalInMinute = PropertiesUtil.getInt(Constant.CLEAN_DATA_CACHE_TIME, 1);
+        JobDetail clearCache = JobBuilder.newJob(CleanGadgetDataCacheJob.class).withIdentity("CLEAN_GADGET_DATA_CACHE", "API_DATA").build();
+
+        Date triggerStartTime = DateUtils.addMinutes(new Date(), intervalInMinute);
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_GADGET_DATA_CACHE_TRIGGER", "API_DATA").startAt(triggerStartTime)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(intervalInMinute).repeatForever()).build();
+        try{
+            scheduler.scheduleJob(clearCache, trigger);
+            logger.fastInfo("started clear data cache job");
+        } catch (SchedulerException e){
+            logger.fastDebug("Cannot schedule clear data job", e, new Object());
+        }
+
+    }
+
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 
 }

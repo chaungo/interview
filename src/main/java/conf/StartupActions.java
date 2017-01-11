@@ -1,5 +1,6 @@
 package conf;
 
+import handle.scheduler.GadgetCacheMap;
 import handle.scheduler.SchedulerManagement;
 
 import javax.inject.Singleton;
@@ -8,5 +9,6 @@ import javax.inject.Singleton;
 public class StartupActions {
     public StartupActions() {
         SchedulerManagement.getInstance();
+        GadgetCacheMap.getInstance();
     }
 }

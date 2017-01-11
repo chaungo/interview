@@ -71,7 +71,9 @@ public class Constant {
     public static final String ROLE = "role";
     public static final String GROUPS = "groups";
     public static final String NAME = "name";
-
+    public static final String CLEAN_DATA_CACHE_TIME = "internal.conf.cleardatacache.time";
+    public static final String DATA_CACHE_TIME_TO_LIVE = "internal.conf.gadgetdata.timetolive";
+    
     public static String DisplayName = "displayName";
     public static String alias = "alias";
     public static String adminRole = "jira-administrators";
