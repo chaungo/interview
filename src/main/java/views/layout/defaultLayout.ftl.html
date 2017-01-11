@@ -50,7 +50,7 @@
     <body ng-app="App" id="body">
 
     <div style="background-color: #205081; color: white">
-        <div ng-controller="HomePageCtrl" layout="row" layout-wrap layout-align="start center">
+        <div ng-controller="HeaderCtrl" layout="row" layout-wrap layout-align="start center">
 
             <div>
                 <h2 style="margin-left: 10px; margin-right: 10px" layout-fill>{{pageName}}</h2>
@@ -61,8 +61,11 @@
                 <div flex></div>
                 <div>Hi {{userfullname}}</div>
 
-                <md-button  style="margin-right: 0px;margin-left: 10px" ng-click="showAddNewDialog($event)" class="md-icon-button">
-                    <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
+                <md-button ng-if="!configPage" style="margin-right: 0px;margin-left: 10px"
+                           ng-click="showAddNewDialog($event)"
+                           class="md-icon-button">
+                    <md-icon style="color: white;" class="material-icons">add_circle_outline
+                    </md-icon>
                     <md-tooltip md-direction="bottom">
                         Create new dashboard
                     </md-tooltip>

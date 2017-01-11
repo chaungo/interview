@@ -150,25 +150,10 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     }
 
 
-    $scope.showAddNewDialog = function (ev) {
-        $mdDialog.show({
-            controller: DialogController,
-            templateUrl: 'assets/html/addNewDashboard.html',
-            parent: angular.element(document.html),
-            targetEvent: ev,
-            clickOutsideToClose: true
-        })
-            .then(function (answer) {
-            }, function () {
-            });
-    };
 
 
-    function DialogController($scope, $mdDialog) {
-        $scope.cancel = function () {
-            $mdDialog.cancel();
-        };
-    }
+
+
 
 
     $rootScope.showGadget = function () {
@@ -299,7 +284,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
         $scope.addGadget = function (item) {
             $mdDialog.cancel();
-            //clear cache 
+            //clear cache
             $rootScope.gadgetToEdit = null;
             //console.log(item.name);
             $rootScope.gadgetType = item.type;
@@ -432,6 +417,23 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
 app.controller('HeaderCtrl', function ($rootScope, $scope, $resource, $mdDialog, $mdToast, $cookies) {
 
+    function DialogController($scope, $mdDialog) {
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+    }
+    $scope.showAddNewDialog = function (ev) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'assets/html/addNewDashboard.html',
+            parent: angular.element(document.html),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        })
+            .then(function (answer) {
+            }, function () {
+            });
+    };
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
