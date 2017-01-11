@@ -50,7 +50,7 @@
     <body ng-app="App" id="body">
 
     <div style="background-color: #205081; color: white">
-        <div ng-controller="HeaderCtrl" layout="row" layout-wrap layout-align="start center">
+        <div ng-controller="HomePageCtrl" layout="row" layout-wrap layout-align="start center">
 
             <div>
                 <h2 style="margin-left: 10px; margin-right: 10px" layout-fill>{{pageName}}</h2>
@@ -58,29 +58,16 @@
             <!--<div flex></div>-->
 
             <#if (session.username)??>
-                <md-button ng-if="currentDashboard.owner == name && !configPage"
-                           style="margin-right: 10px;margin-left: 0"
-                           class="md-icon-button"
-                           ng-click="showAddWidgetDialog($event)">
-                    <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
-                    <md-tooltip md-direction="bottom">
-                        Add new gadget
-                    </md-tooltip>
-                </md-button>
-
-                <div ng-if="dashboardGadgetInfo.Gadget==0">
-                    No gadget found
-                </div>
-                <div layout="row" ng-if="hasInfo">Loading {{dashboardGadgetInfo.Gadget}} gadget
-                    <div ng-if="dashboardGadgetInfo.Gadget>1">s</div>
-                </div>
-                <md-progress-circular ng-if="getting" style="margin-right: 10px;margin-left: 10px;"
-                                      md-mode="indeterminate"
-                                      class="md-warn" md-diameter="20"></md-progress-circular>
                 <div flex></div>
                 <div>Hi {{userfullname}}</div>
 
+                <md-button  style="margin-right: 0px;margin-left: 10px" ng-click="showAddNewDialog($event)" class="md-icon-button">
+                    <md-icon style="color: white;" class="material-icons">add_circle_outline</md-icon>
+                    <md-tooltip md-direction="bottom">
+                        Create new dashboard
+                    </md-tooltip>
 
+                </md-button>
                 <md-button href="http://tiger.in.alcatel-lucent.com:8060/user/{{name}}"
                            class="md-icon-button">
                     <md-icon style="color: white;" class="material-icons">account_circle</md-icon>
