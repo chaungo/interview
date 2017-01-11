@@ -20,28 +20,28 @@ import util.gadget.GadgetUtility;
 public class ProductController {
     final static LoggerWapper logger = LoggerWapper.getLogger(ProductController.class);
 
-//    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result addProduct(@Param("product") String product) {
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, AdminUtility.getInstance().insertProduct(product));
     }
 
-//    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result deleteProduct(@Param("product") String product) {
         long result = AdminUtility.getInstance().deleteProduct(product);
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, result);
     }
 
-//    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result addCycle(@Param("cycle") String cycle) {
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, AdminUtility.getInstance().insertCycle(cycle));
     }
 
-//    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result deleteCycle(@Param("cycle") String cycle) {
         long result = AdminUtility.getInstance().deleteCycle(cycle);
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, result);
     }
-//    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result clearCache(@Param("cycle") String cycle, Context context) {
         String user = (String) context.getSession().get(Constant.USERNAME);
         logger.fastDebug("User: %s perform clearCache", user);
