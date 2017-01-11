@@ -19,7 +19,7 @@ public class GadgetCacheMap {
      * @param timeToLive : minute to live
      */
     private GadgetCacheMap(long timeToLive) {
-        this.timeToLive = timeToLive * 1000;
+        this.timeToLive = timeToLive * 1000 * 60;
     }
     
     

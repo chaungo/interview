@@ -14,6 +14,7 @@ public class PropertiesUtil {
     private PropertiesUtil() {
         prop.putAll(load("messages.properties"));
         prop.putAll(load("databases.properties"));
+        prop.putAll(load("internal_conf.properties"));
     }
 
     public static String getString(String name) {
