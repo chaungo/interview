@@ -10,6 +10,7 @@ import ninja.FilterChain;
 import ninja.Result;
 import util.Constant;
 import util.JSONUtil;
+import util.MessageConstant;
 import util.PropertiesUtil;
 
 public class APIFilter implements Filter {
@@ -27,7 +28,7 @@ public class APIFilter implements Filter {
                 logger.fastDebug("No cookies are available", e, new Object());
             }
         }
-        return ResultsUtil.convertException(new APIException(PropertiesUtil.getString(Constant.SESSION_ERROR_MESSAGE)), context);
+        return ResultsUtil.convertException(new APIException(PropertiesUtil.getString(MessageConstant.SESSION_ERROR_MESSAGE)), context);
     }
 
 }

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import service.HTTPClientUtil;
+import util.Constant;
 import util.JSONUtil;
 
 import java.util.Map;
@@ -45,8 +46,8 @@ public class LoginLogoutController {
             }
 
             if (respond.header("X-AUSERNAME").equals(username)) {
-                session.put("username", username);
-                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data("username", username).data("password", password)
+                session.put(Constant.USERNAME, username);
+                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
                         .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
                 Map<String, String> CruCookies = cruRespond.cookies();
                 session.put("crucookies", CruCookies.toString());

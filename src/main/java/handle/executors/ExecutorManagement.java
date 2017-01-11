@@ -3,6 +3,7 @@ package handle.executors;
 import manament.log.LoggerWapper;
 import models.exception.APIException;
 import util.Constant;
+import util.MessageConstant;
 import util.PropertiesUtil;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ExecutorManagement {
             return executor.invokeAll(tasks);
         } catch (InterruptedException e) {
             logger.error("error during invoke", e);
-            throw new APIException("error during invoke", e);
+            throw new APIException(PropertiesUtil.getString(MessageConstant.IVOKE_ERROR), e);
         }
     }
 
@@ -47,14 +48,14 @@ public class ExecutorManagement {
                     throw (APIException) e.getCause();
                 }
                 logger.error("error during invoke", e);
-                throw new APIException("error during invoke", e);
+                throw new APIException(PropertiesUtil.getString(MessageConstant.IVOKE_ERROR), e);
             } catch (ExecutionException e) {
                 if (e.getCause() != null && e.getCause() instanceof APIException) {
                     logger.error(e.getMessage(), e.getCause());
                     throw (APIException) e.getCause();
                 }
                 logger.fastDebug("error", e);
-                throw new APIException("error during invoke", e);
+                throw new APIException(PropertiesUtil.getString(MessageConstant.IVOKE_ERROR), e);
             }
         }
         return returnData;

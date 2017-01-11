@@ -3,14 +3,17 @@ package models.gadget;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
+import util.MessageConstant;
+import util.PropertiesUtil;
+
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SonarStatisticsGadget extends GadgetAPI {
-    public static final String author = "By Alcatel-Lucent AMS R&D";
-    public static final String name = "AMS SONAR Statistics Gadget";
-    public static final String pictureUrl = "";
+    public static final String author = PropertiesUtil.getString(MessageConstant.SONAR_AUTHOR, "By Alcatel-Lucent AMS R&D");
+    public static final String name = PropertiesUtil.getString(MessageConstant.SONAR_NAME, "AMS SONAR Statistics Gadget");
+    public static final String pictureUrl = PropertiesUtil.getString(MessageConstant.SONAR_PICTUREURL, "");
     public static final String addnewUIurl = "assets/html/addNewSonarGadget.html";
-    public static final String description = "Gadget to display statistics from AMS SONAR Setup";
+    public static final String description = PropertiesUtil.getString(MessageConstant.SONAR_DESCRIPTION, "Gadget to display statistics from AMS SONAR Setup");
 
     private Type type = Type.AMS_SONAR_STATISTICS_GADGET;
     private String data;

@@ -6,6 +6,7 @@ import ninja.Context;
 import ninja.Result;
 import ninja.Results;
 import util.Constant;
+import util.MessageConstant;
 import util.PropertiesUtil;
 
 public class ResultsUtil {
@@ -26,7 +27,7 @@ public class ResultsUtil {
     public static SessionInfo getSessionInfo(Context context) throws APIException {
         SessionInfo sessionInfo = context.getAttribute(Constant.API_SESSION_INFO_INTERNAL, SessionInfo.class);
         if (sessionInfo == null || sessionInfo.getCookies() == null || sessionInfo.getCookies().isEmpty()) {
-            throw new APIException(PropertiesUtil.getString(Constant.SESSION_ERROR_MESSAGE));
+            throw new APIException(PropertiesUtil.getString(MessageConstant.SESSION_ERROR_MESSAGE));
         }
         return sessionInfo;
     }

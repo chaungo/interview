@@ -3,16 +3,19 @@ package models.gadget;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import util.MessageConstant;
+import util.PropertiesUtil;
+
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StoryVsTestExecution extends GadgetAPI {
-    public static final String author = "";
-    public static final String name = "User Story Test Execution Report";
-    public static final String pictureUrl = "";
+    public static final String author = PropertiesUtil.getString(MessageConstant.STORY_AUTHOR, "");
+    public static final String name = PropertiesUtil.getString(MessageConstant.STORY_NAME, "User Story Test Execution Report");
+    public static final String pictureUrl = PropertiesUtil.getString(MessageConstant.STORY_PICTUREURL, "");
     public static final String addnewUIurl = "assets/html/UserStorySettings.html";
-    public static final String description = "User Story Execution Report";
+    public static final String description = PropertiesUtil.getString(MessageConstant.STORY_DESCRIPTION, "User Story Execution Report");
 
     private Type type = Type.STORY_TEST_EXECUTION;
     private Set<String> epic;
@@ -85,6 +88,5 @@ public class StoryVsTestExecution extends GadgetAPI {
     public void setSelectAllStory(boolean selectAll) {
         this.selectAllStory = selectAll;
     }
-
 
 }

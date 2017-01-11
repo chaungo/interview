@@ -3,16 +3,19 @@ package models.gadget;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import util.MessageConstant;
+import util.PropertiesUtil;
+
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssigneeVsTestExecution extends GadgetAPI {
-    public static final String author = "";
-    public static final String name = "Assignee Test Execution Report";
-    public static final String pictureUrl = "";
+    public static final String author = PropertiesUtil.getString(MessageConstant.ASSIGNEE_AUTHOR, "");
+    public static final String name = PropertiesUtil.getString(MessageConstant.ASSIGNEE_NAME, "Assignee");
     public static final String addnewUIurl = "assets/html/AssigneeSettings.html";
-    public static final String description = "Assignee Test Execution Report";
+    public static final String pictureUrl = PropertiesUtil.getString(MessageConstant.ASSIGNEE_PICTUREURL, "");
+    public static final String description = PropertiesUtil.getString(MessageConstant.ASSIGNEE_DESCRIPTION, "Assignee Report");
 
     private final Gadget.Type type = Gadget.Type.ASSIGNEE_TEST_EXECUTION;
     private boolean selectAllTestCycle;
@@ -55,7 +58,6 @@ public class AssigneeVsTestExecution extends GadgetAPI {
     public void setSelectAllTestCycle(boolean selectAllTestCycle) {
         this.selectAllTestCycle = selectAllTestCycle;
     }
-
 
     public Set<String> getCycles() {
         return cycles;

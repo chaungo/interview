@@ -84,7 +84,7 @@ public class OverdueReviewReportController {
                         JSONObject user = dataArray.getJSONObject(i);
                         JSONObject userInfo = new JSONObject();
                         userInfo.put("id", user.getString("id"));
-                        userInfo.put("name", user.getString("displayPrimary"));
+                        userInfo.put(Constant.NAME, user.getString("displayPrimary"));
                         userArray.put(userInfo);
                     }
                     cache.remove("user");

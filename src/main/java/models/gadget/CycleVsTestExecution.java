@@ -4,16 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import util.MessageConstant;
+import util.PropertiesUtil;
+
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CycleVsTestExecution extends GadgetAPI {
-    public static final String author = "";
-    public static final String name = "Cycle Test Execution Report";
-    public static final String pictureUrl = "";
+    public static final String author = PropertiesUtil.getString(MessageConstant.CYCLE_AUTHOR, "");
+    public static final String name = PropertiesUtil.getString(MessageConstant.CYCLE_NAME, "Cycle");
+    public static final String pictureUrl = PropertiesUtil.getString(MessageConstant.CYCLE_PICTUREURL, "");
     public static final String addnewUIurl = "assets/html/CycleSettings.html";
-    public static final String description = "Cycle Test Execution Report";
+    public static final String description = PropertiesUtil.getString(MessageConstant.CYCLE_DESCRIPTION, "Cycle Report");
 
     private Type type = Type.TEST_CYCLE_TEST_EXECUTION;
     @JsonProperty(required = true)

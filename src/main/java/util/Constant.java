@@ -67,8 +67,10 @@ public class Constant {
     public static final String API_SESSION_INFO = "APICookies";
     public static final String API_SESSION_INFO_INTERNAL = "APICookiesInternal";
     public static final String USERNAME = "username";
-    //message
-    public static final String SESSION_ERROR_MESSAGE = "session.error.message";
+    public static final String PASSWORD = "password";
+    public static final String ROLE = "role";
+    public static final String GROUPS = "groups";
+    public static final String NAME = "name";
 
     public static String DisplayName = "displayName";
 

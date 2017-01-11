@@ -12,6 +12,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import service.HTTPClientUtil;
+import util.Constant;
 import util.MyUtill;
 
 import java.io.BufferedReader;
@@ -28,7 +29,7 @@ public class ApplicationController {
         JSONObject userInfoRS = new JSONObject();
         Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         Connection req = Jsoup
-                .connect(String.format(LINK_GET_JIRA_USER_INFO, session.get("username")))
+                .connect(String.format(LINK_GET_JIRA_USER_INFO, session.get(Constant.USERNAME)))
                 .cookies(MyUtill.getCookies(session)).timeout(CONNECTION_TIMEOUT).ignoreContentType(true)
                 .ignoreHttpErrors(true);
         if (proxy != null) {
@@ -41,18 +42,18 @@ public class ApplicationController {
         JSONArray groups = userInfo.getJSONObject(Groups).getJSONArray(GroupsItems);
 
         JSONArray groupNames = new JSONArray();
-        userInfoRS.put("role", "");
+        userInfoRS.put(Constant.ROLE, "");
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
-            if (group.getString("name").contains("jira-administrators")) {
-                session.put("role", "jira-administrators");
-                userInfoRS.put("role", "jira-administrators");
+            if (group.getString(Constant.NAME).contains("jira-administrators")) {
+                session.put(Constant.ROLE, "jira-administrators");
+                userInfoRS.put(Constant.ROLE, "jira-administrators");
             }
 
-            groupNames.put(group.getString("name"));
+            groupNames.put(group.getString(Constant.NAME));
         }
 
-        userInfoRS.put("groups", groupNames.toString());
+        userInfoRS.put(Constant.GROUPS, groupNames.toString());
         return userInfoRS;
     }
 
@@ -70,7 +71,7 @@ public class ApplicationController {
 
         for (int i = 0; i < dataArray.length(); i++) {
             JSONObject project = dataArray.getJSONObject(i);
-            projectDataArray.put(project.getString("name"));
+            projectDataArray.put(project.getString(Constant.NAME));
         }
 
         return projectDataArray;
@@ -82,9 +83,9 @@ public class ApplicationController {
             JSONObject info = getUserInformation(session);
             JSONObject userInfo = new JSONObject();
             userInfo.put("displayName", info.getString("alias"));
-            userInfo.put("groups", new JSONArray(info.getString("groups")));
-            userInfo.put("role", info.getString("role"));
-            userInfo.put("name", session.get("username"));
+            userInfo.put(Constant.GROUPS, new JSONArray(info.getString("groups")));
+            userInfo.put(Constant.ROLE, info.getString("role"));
+            userInfo.put(Constant.NAME, session.get("username"));
             userInfo.put("projects", getJiraProjectofUserfromServer(session));
             return Results.text().render(userInfo);
         } catch (Exception e) {

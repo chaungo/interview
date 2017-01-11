@@ -3,14 +3,17 @@ package models.gadget;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
+import util.MessageConstant;
+import util.PropertiesUtil;
+
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OverdueReviewsGadget extends GadgetAPI {
-    public static final String author = "By Alcatel-Lucent AMS R&D";
-    public static final String name = "AMS Overdue Reviews Report Gadget";
-    public static final String pictureUrl = "";
+    public static final String author = PropertiesUtil.getString(MessageConstant.OVERDUE_AUTHOR, "By Alcatel-Lucent AMS R&D");
+    public static final String name = PropertiesUtil.getString(MessageConstant.OVERDUE_NAME, "AMS Overdue Reviews Report Gadget");
+    public static final String pictureUrl = PropertiesUtil.getString(MessageConstant.OVERDUE_PICTUREURL, "");
     public static final String addnewUIurl = "assets/html/addNewOverdueReviewReportGadget.html";
-    public static final String description = "AMS Overdue Reviews Report Gadget";
+    public static final String description = PropertiesUtil.getString(MessageConstant.OVERDUE_DESCRIPTION, "AMS Overdue Reviews Report Gadget");
 
     private Type type = Type.AMS_OVERDUE_REVIEWS;
     private String data;
