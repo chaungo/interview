@@ -16,7 +16,7 @@
 
     <properties>
         <ninja.version>5.8.0</ninja.version>
-        <jetty.version>9.2.10.v20150310</jetty.version>
+        <jetty.version>9.4.0.v20161208</jetty.version>
         <jackson.version>2.8.5</jackson.version>
         <quartz-scheduler.version>2.2.1</quartz-scheduler.version>
     </properties>
