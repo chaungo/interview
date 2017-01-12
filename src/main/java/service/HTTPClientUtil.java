@@ -83,15 +83,20 @@ public class HTTPClientUtil {
         return httpclient;
     }
 
-    public Map<String, String> loginGreenhopper(String username, String password) throws APIException {
+    public Map<String, String> loginGreenhopper(String username, String password, boolean rememberme) throws APIException {
         Map<String, String> sessionCookies = new HashMap<String, String>();
         try {
             Proxy proxy = getProxy();
             logger.fastDebug("Login to %s , proxy:%s", loginURL, proxy);
             SSLUtilities.trustAllHostnames();
             SSLUtilities.trustAllHttpsCertificates();
-            Connection req = Jsoup.connect(loginURL).ignoreHttpErrors(true).ignoreContentType(true).data(Constant.USERNAME_LOGIN_KEY, username).data(Constant.PASSWORD_LOGIN_KEY, password)
+            Connection req = Jsoup.connect(loginURL).ignoreHttpErrors(true).ignoreContentType(true)
+                    .data(Constant.USERNAME_LOGIN_KEY, username)
+                    .data(Constant.PASSWORD_LOGIN_KEY, password)
                     .timeout(PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT, 10000)).method(Connection.Method.POST);
+            if(rememberme){
+                req.data(Constant.REMEMBER_LOGIN_KEY, "true");
+            }
             if (proxy != null) {
                 req.proxy(proxy);
             }

@@ -35,7 +35,7 @@ public class LoginLogoutController {
             session.put("cookies", cookies.toString());
 
             //login to greenhopper
-            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password);
+            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
             if (cookiesMap != null && !cookiesMap.isEmpty()) {
                 SessionInfo sessionInfo = new SessionInfo();
                 sessionInfo.setCookies(cookiesMap);
