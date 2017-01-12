@@ -41,9 +41,6 @@ public class SonarStatisticGadgetController {
 
 
         if (isCacheExpired(document, 2)) {
-            result.put("release", data.getString("Release"));
-            result.put("period", data.getString("Period"));
-
             JSONArray metricList = new JSONArray();
             JSONArray metricsFromDB = getMetricsFromDB();
             List metrics = Arrays.asList(data.getString("Metrics").split(","));
@@ -96,6 +93,8 @@ public class SonarStatisticGadgetController {
         }
 
         result.put("id", GadgetId);
+        result.put("release", data.getString("Release"));
+        result.put("period", data.getString("Period"));
 
         mongoClient.close();
 
