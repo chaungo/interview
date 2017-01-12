@@ -57,6 +57,11 @@ public class GadgetService {
 
     public static List<Gadget> getDashboardGadgetbyDashboardId(String dashboardId) throws Exception {
         List<Gadget> gadgets = GadgetUtility.getInstance().findByDashboardId(dashboardId);
+        //todo
+
+
+
+
         return gadgets;
     }
 

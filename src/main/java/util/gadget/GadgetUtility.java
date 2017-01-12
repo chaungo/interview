@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.result.DeleteResult;
-
 import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
 import models.APIIssueVO;
@@ -178,59 +176,98 @@ public class GadgetUtility extends DatabaseUtility {
     }
 
     public List<Gadget> findByDashboardId(String id) throws APIException {
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.append(Constant.DASHBOAR_ID, id);
-        FindIterable<Document> documents = collection.find(searchQuery);
-        return parse(documents);
+        org.bson.Document searchQuery = new org.bson.Document(Constant.DASHBOAR_ID, id);
+        FindIterable<org.bson.Document> Iterable = collection.find(searchQuery);
+        return parse(Iterable);
     }
 
-    private List<Gadget> parse(FindIterable<Document> documents) throws APIException {
-        MongoCursor<Document> dbCursor = documents.iterator();
+    private List<Gadget> parse(FindIterable<org.bson.Document> Iterable) throws APIException {
+        //MongoCursor<Document> dbCursor = documents.iterator();
         List<Gadget> gadgets = new ArrayList<Gadget>();
-        while (dbCursor.hasNext()) {
-            Document document = dbCursor.next();
-            if (document != null) {
-                Type type = Gadget.Type.fromString((String) document.get(TYPE));
-                if (Gadget.Type.ASSIGNEE_TEST_EXECUTION
-                        .equals(type)) {
-                    AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), AssigneeVsTestExecution.class);
-                    assigneeGadget.setId(getObjectId(document));
-                    gadgets.add(assigneeGadget);
-                } else if (Gadget.Type.EPIC_US_TEST_EXECUTION
-                        .equals(type)) {
-                    EpicVsTestExecution epicGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), EpicVsTestExecution.class);
-                    epicGadget.setId(getObjectId(document));
-                    gadgets.add(epicGadget);
-                } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION
-                        .equals(type)) {
-                    CycleVsTestExecution cyclGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), CycleVsTestExecution.class);
-                    cyclGadget.setId(getObjectId(document));
-                    gadgets.add(cyclGadget);
-                } else if (Gadget.Type.STORY_TEST_EXECUTION
-                        .equals(type)) {
-                    StoryVsTestExecution storyGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), StoryVsTestExecution.class);
-                    storyGadget.setId(getObjectId(document));
-                    gadgets.add(storyGadget);
-                } else if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET
-                        .equals(type)) {
-                    SonarStatisticsGadget sonarStatisticsGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), SonarStatisticsGadget.class);
-                    sonarStatisticsGadget.setId(getObjectId(document));
-                    gadgets.add(sonarStatisticsGadget);
-                } else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
-                    OverdueReviewsGadget overGadget = JSONUtil.getInstance()
-                            .convertJSONtoObject(document.toJson(), OverdueReviewsGadget.class);
-                    overGadget.setId(getObjectId(document));
-                    gadgets.add(overGadget);
-                } else {
-                    logger.fastDebug("type %s is not available", document.get(TYPE));
-                }
+
+        for (org.bson.Document document : Iterable) {
+            Type type = Gadget.Type.fromString((String) document.get(TYPE));
+
+            if (type.equals(Type.ASSIGNEE_TEST_EXECUTION)) {
+                AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance()
+                        .convertJSONtoObject(document.toJson(), AssigneeVsTestExecution.class);
+                assigneeGadget.setId(getObjectId(document));
+                gadgets.add(assigneeGadget);
+            } else if (type.equals(Type.EPIC_US_TEST_EXECUTION)) {
+                EpicVsTestExecution epicGadget = JSONUtil.getInstance()
+                        .convertJSONtoObject(document.toJson(), EpicVsTestExecution.class);
+                epicGadget.setId(getObjectId(document));
+                gadgets.add(epicGadget);
+            } else if (type.equals(Type.TEST_CYCLE_TEST_EXECUTION)) {
+                CycleVsTestExecution cyclGadget = JSONUtil.getInstance()
+                        .convertJSONtoObject(document.toJson(), CycleVsTestExecution.class);
+                cyclGadget.setId(getObjectId(document));
+                gadgets.add(cyclGadget);
+            } else if (type.equals(Type.STORY_TEST_EXECUTION)) {
+                StoryVsTestExecution storyGadget = JSONUtil.getInstance()
+                        .convertJSONtoObject(document.toJson(), StoryVsTestExecution.class);
+                storyGadget.setId(getObjectId(document));
+                gadgets.add(storyGadget);
+            } else if (type.equals(Type.AMS_SONAR_STATISTICS_GADGET)) {
+
+                SonarStatisticsGadget sonarStatisticsGadget = JSONUtil.getInstance().convertJSONtoObject(document.toJson(), SonarStatisticsGadget.class);
+                sonarStatisticsGadget.setId(getObjectId(document));
+                gadgets.add(sonarStatisticsGadget);
+
+            } else if (type.equals(Type.AMS_OVERDUE_REVIEWS)) {
+                OverdueReviewsGadget overGadget = JSONUtil.getInstance()
+                        .convertJSONtoObject(document.toJson(), OverdueReviewsGadget.class);
+                overGadget.setId(getObjectId(document));
+                gadgets.add(overGadget);
+            } else {
+                logger.fastDebug("type %s is not available", document.get(TYPE));
             }
+
         }
+
+//        while (dbCursor.hasNext()) {
+//            Document document = dbCursor.next();
+//            if (document != null) {
+//                if (Gadget.Type.ASSIGNEE_TEST_EXECUTION
+//                        .equals(type)) {
+//                    AssigneeVsTestExecution assigneeGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), AssigneeVsTestExecution.class);
+//                    assigneeGadget.setId(getObjectId(document));
+//                    gadgets.add(assigneeGadget);
+//                } else if (Gadget.Type.EPIC_US_TEST_EXECUTION
+//                        .equals(type)) {
+//                    EpicVsTestExecution epicGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), EpicVsTestExecution.class);
+//                    epicGadget.setId(getObjectId(document));
+//                    gadgets.add(epicGadget);
+//                } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION
+//                        .equals(type)) {
+//                    CycleVsTestExecution cyclGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), CycleVsTestExecution.class);
+//                    cyclGadget.setId(getObjectId(document));
+//                    gadgets.add(cyclGadget);
+//                } else if (Gadget.Type.STORY_TEST_EXECUTION
+//                        .equals(type)) {
+//                    StoryVsTestExecution storyGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), StoryVsTestExecution.class);
+//                    storyGadget.setId(getObjectId(document));
+//                    gadgets.add(storyGadget);
+//                } else if (Gadget.Type.AMS_SONAR_STATISTICS_GADGET
+//                        .equals(type)) {
+//                    SonarStatisticsGadget sonarStatisticsGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), SonarStatisticsGadget.class);
+//                    sonarStatisticsGadget.setId(getObjectId(document));
+//                    gadgets.add(sonarStatisticsGadget);
+//                } else if (Type.AMS_OVERDUE_REVIEWS.equals(type)) {
+//                    OverdueReviewsGadget overGadget = JSONUtil.getInstance()
+//                            .convertJSONtoObject(document.toJson(), OverdueReviewsGadget.class);
+//                    overGadget.setId(getObjectId(document));
+//                    gadgets.add(overGadget);
+//                } else {
+//                    logger.fastDebug("type %s is not available", document.get(TYPE));
+//                }
+//            }
+//        }
         return gadgets;
     }
 
