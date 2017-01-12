@@ -79,7 +79,7 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                                         .push(anAssigneeDataSet);
                                 }
 
-                                assigneeIndividualTable = $(
+                                assigneeIndividualTable = $("#" + gadget.id).find(
                                     "#" + customTableId)
                                     .DataTable({
                                         bAutoWidth: false,
