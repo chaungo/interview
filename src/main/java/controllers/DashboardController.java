@@ -137,7 +137,7 @@ public class DashboardController {
     }
 
     @FilterWith(SecureFilter.class)
-    public Result updateDashboardOption(@Param("id") String dashboardId, @Param("name") String dashboardName, @Param("PRIVACY") String privacy) {
+    public Result updateDashboardOption(@Param("id") String dashboardId, @Param("name") String dashboardName, @Param("privacy") String privacy) {
         try {
             MongoClient mongoClient = new MongoClient();
             MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_TABLE);
