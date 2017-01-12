@@ -27,46 +27,39 @@ public class LoginLogoutController {
 
     public static boolean doLogin(String username, String password, Session session) throws Exception {
         boolean success = true;
-        try {
-            Connection.Response respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
-                    .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
+        Connection.Response respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
+                .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
 
-            Map<String, String> cookies = respond.cookies();
-            session.put("cookies", cookies.toString());
+        Map<String, String> cookies = respond.cookies();
+        session.put("cookies", cookies.toString());
 
-            //login to greenhopper
-            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
-            if (cookiesMap != null && !cookiesMap.isEmpty()) {
-                SessionInfo sessionInfo = new SessionInfo();
-                sessionInfo.setCookies(cookiesMap);
-                String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
-                session.put(API_SESSION_INFO, sessionInfoStr);
-            } else {
-                success = false;
-            }
-
-            if (respond.header("X-AUSERNAME").equals(username)) {
-                session.put(Constant.USERNAME, username);
-                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
-                        .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
-                Map<String, String> CruCookies = cruRespond.cookies();
-                session.put("crucookies", CruCookies.toString());
-
-                if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                    success = false;
-                }
-            }
-
-            if (respond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                success = false;
-            }
-        } catch (Exception e) {
-
+        //login to greenhopper
+        Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
+        if (cookiesMap != null && !cookiesMap.isEmpty()) {
+            SessionInfo sessionInfo = new SessionInfo();
+            sessionInfo.setCookies(cookiesMap);
+            String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
+            session.put(API_SESSION_INFO, sessionInfoStr);
+        } else {
             success = false;
         }
-        if (!success) {
-            session.clear();
+
+        if (respond.header("X-AUSERNAME").equals(username)) {
+            session.put(Constant.USERNAME, username);
+            Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
+                    .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
+            Map<String, String> CruCookies = cruRespond.cookies();
+            session.put("crucookies", CruCookies.toString());
+
+            if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+                success = false;
+            }
         }
+
+        if (respond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+            success = false;
+        }
+
         return success;
 
     }
