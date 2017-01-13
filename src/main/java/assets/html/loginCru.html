@@ -1,0 +1,32 @@
+<md-dialog flex="40">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Login to Crucible</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form action="/loginCru" method="post" style="margin: 10px">
+        <md-dialog-content>
+            <div class="md-block" layout="row" layout-align="start center">
+                <label layout-padding>Username</label>
+                <input ng-model="username" required name="username">
+            </div>
+
+            <div class="md-block" layout="row" layout-align="start center">
+                <label layout-padding>Password</label>
+                <input type="password" required name="password" ng-model="password">
+            </div>
+            <div layout-fill layout="row" layout-xs="row"
+                 layout-align="space-between center">
+                <md-button class="md-raised md-primary" type="submit">Login</md-button>
+            </div>
+
+            <md-dialog-actions layout="row">
+                <md-button class="md-raised md-primary" type="submit">Create</md-button>
+            </md-dialog-actions>
+        </md-dialog-content>
+    </form>
+</md-dialog>

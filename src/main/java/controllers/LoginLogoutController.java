@@ -35,25 +35,33 @@ public class LoginLogoutController {
             session.put(Constant.USERNAME, username);
 
             //login to crucible
-            Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
-                    .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
-            session.put("crucookies", cruRespond.cookies().toString());
+            try {
+                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
+                        .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
+                session.put("crucookies", cruRespond.cookies().toString());
 
-            if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                success = false;
+                if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+                    success = false;
+                }
+            } catch (Exception e) {
+                logger.error("Can not login to cru", e);
             }
+
 
             //login to greenhopper
-            Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
-            if (cookiesMap != null && !cookiesMap.isEmpty()) {
-                SessionInfo sessionInfo = new SessionInfo();
-                sessionInfo.setCookies(cookiesMap);
-                String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
-                session.put(API_SESSION_INFO, sessionInfoStr);
-            } else {
-                success = false;
+            try {
+                Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
+                if (cookiesMap != null && !cookiesMap.isEmpty()) {
+                    SessionInfo sessionInfo = new SessionInfo();
+                    sessionInfo.setCookies(cookiesMap);
+                    String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
+                    session.put(API_SESSION_INFO, sessionInfoStr);
+                } else {
+                    success = false;
+                }
+            }catch (Exception e) {
+                logger.error("Can not login to greenhopper", e);
             }
-
 
         } else {
             if (respond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {

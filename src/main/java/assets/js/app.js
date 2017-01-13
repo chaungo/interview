@@ -1036,6 +1036,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         }
     }).query().$promise.then(function (respone) {
         //console.log(respone);
+        //todo
         $scope.CruProjectList = respone;
         if ($scope.CruProjectList.length == 0) {
             $window.location.href = '/logout';
