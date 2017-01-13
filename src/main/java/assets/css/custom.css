@@ -22,13 +22,15 @@
     -webkit-font-smoothing: antialiased;
 }
 
-html,
-body {
-    background: #E0E0E0;
+html{
     height: 100%;
     width: 100%;
-    overflow: hidden;
-
+    position: fixed;
+}
+body {
+    background: #E0E0E0;
+    overflow: scroll;
+    position: fixed;
 }
 
 .optionSubHeader {
@@ -38,10 +40,10 @@ body {
     padding: 5px
 }
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 0;
-} */
- 
+}
+
 #gadgetContainer, #configurationMain {
     overflow: auto;
     height: 100%;

@@ -1,6 +1,6 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
     <@layout.myLayout "Homepage">
-    <div layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
+    <div style="padding-top: 40px;" layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
         <md-progress-linear ng-if="getting" md-mode="indeterminate"></md-progress-linear>
         <div style="height: 100%; width: 100%;" layout="row"
              layout-align="start start">

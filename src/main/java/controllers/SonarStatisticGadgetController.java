@@ -297,7 +297,6 @@ public class SonarStatisticGadgetController {
     public Result getPeriodList(Session session) {
         try {
             return Results.text().render(getPeriod(session));
-
         } catch (Exception e) {
             logger.error(e);
             return Results.internalServerError();
