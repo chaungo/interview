@@ -3,7 +3,7 @@
  */
 
 
-function drawAssigneeTable(dataTable, gadget, callback) {
+function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
     var columnList = getColumnArray(gadget.metrics, true);
     var jsonObjectForAssigneeTable;
 
@@ -27,8 +27,8 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                 showAssigneeTable(gadget);
             },
             success: function (responseData) {
+            	var index = 0;
                 dataTable.loading = false;
-                var index = 0;
                 $("#" + gadget.id).find("#assignee-table-container").html("");
                 if (debugAjaxResponse(responseData)) {
                     callback(responseData);
@@ -44,13 +44,14 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                             console
                                 .log(assigneeArray["issueData"].length);
                             if (assigneeArray["issueData"].length != 0) {
+                            	var tempTitle = [];
                                 var customTableId = "assignee-table-" + index;
                                 var assigneeTableDataSet = [];
                                 var assigneeIndividualTable;
-
+                                tempTitle.push(index+1, ". ", cycleKey);
                                 appendTemplateTable(
                                     customTableId,
-                                    cycleKey,
+                                    tempTitle.join(""),
                                     gadget,
                                     "#assignee-table-container");
                                 $("#" + gadget.id).find("#" + customTableId)
@@ -156,6 +157,7 @@ function drawAssigneeTable(dataTable, gadget, callback) {
                         });
                 $("#" + gadget.id).find("#assignee-update-btn").prop("disabled", false);
                 showAssigneeTable(gadget);
+                titleHandler(index);
             }
         });
 }

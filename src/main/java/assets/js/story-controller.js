@@ -23,9 +23,10 @@
  * #us-table-loader
  * 
  */
-function drawUsTable(dataTable, gadget, callback) {
+function drawUsTable(dataTable, gadget, callback,titleHandler) {
     var columnList = getColumnArray(gadget.metrics, false);
     var jsonObjectForUsTable;
+    
     if (dataTable.loading == true && GLOBAL_US_TABLES_AJAX.ajax != null) {
         dataTable.ajax.abort();
     }
@@ -43,15 +44,15 @@ function drawUsTable(dataTable, gadget, callback) {
             callback("Server Error");
         },
         success: function (responseData) {
+        	var index = 0;
+            var title = "";
             if (debugAjaxResponse(responseData)) {
                 callback(responseData);
                 showUsTable(gadget);
                 return;
             }
-
+            
             $("#" + gadget.id).find("#us-table-container").html("");
-            var index = 0;
-
             jsonObjectForUsTable = responseData;
             $.each(jsonObjectForUsTable["data"], function (epicKey,
                                                            storyArray) {
@@ -59,8 +60,9 @@ function drawUsTable(dataTable, gadget, callback) {
                     var customTableId = "us-table-" + index;
                     var usTableDataSet = [];
                     var usIndividualTable;
-
-                    appendTemplateTable(customTableId, epicKey + ": " + storyArray["summary"], gadget,
+                    var tempTitle = [];
+                    tempTitle.push(index + 1, ". ", epicKey, ": ",storyArray["summary"]);
+                    appendTemplateTable(customTableId, tempTitle.join(""), gadget,
                         "#us-table-container");
                     $("#" + gadget.id).find("#" + customTableId).append(TEMPLATE_HEADER_FOOTER);
 
@@ -131,13 +133,15 @@ function drawUsTable(dataTable, gadget, callback) {
                     });
                     usIndividualTable.columns(columnList).visible(false);
                     index++;
+                    
                 }
                 dataTable.loading = false;
                 showUsTable(gadget);
+                titleHandler(index);
             });
         }
     });
-
+    return index;
 }
 
 function showUsTable(gadget) {

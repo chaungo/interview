@@ -220,11 +220,6 @@
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
                                     <b>Epic Test Execution Gadget {{item.projectName}}</b>
                                     <div flex></div>
-
-
-
-
-
                                     <div data-ng-if="currentDashboard.owner == name">
 
                                         <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
@@ -295,7 +290,7 @@
                                  data-ng-if="item.type === 'STORY_TEST_EXECUTION'"
                                  data-ng-controller="StoryController">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <b>User Story Test Execution Gadget {{item.projectName}}</b>
+                                    <b>User Story Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</b>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">
@@ -410,7 +405,7 @@
                                  data-ng-if="item.type === 'ASSIGNEE_TEST_EXECUTION'"
                                  data-ng-controller="AssigneeController">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <b>Assignee Test Execution Gadget {{item.projectName}}</b>
+                                    <b>Assignee Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</b>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">

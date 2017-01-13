@@ -1248,7 +1248,6 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-
         drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling);
     }
 
@@ -1260,10 +1259,13 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         "ajax": null,
         "loading": false
     };
+    $scope.titleAdditionalInfo = null;
     $scope.showView = true;
     $scope.init = function (item) {
-
-        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling);
+    	var titleHandler = function(index){
+    		$scope.titleAdditionalInfo = "- " + index + " table(s)";
+    	}
+        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling,titleHandler);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1289,9 +1291,13 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
         "ajax": null,
         "loading": false
     };
+    $scope.titleAdditionalInfo = null;
     $scope.showView = true;
     $scope.init = function (item) {
-        drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling);
+    	var titleHandler = function(index){
+    		$scope.titleAdditionalInfo = "- " + index + " table(s)";
+    	}
+        drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
 
     $scope.toggleView = function () {
