@@ -28,7 +28,7 @@ public class LoginLogoutController {
     public static boolean doLogin(String username, String password, Session session) throws Exception {
         boolean success = true;
         Connection.Response respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
-                .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
+                .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
 
         Map<String, String> cookies = respond.cookies();
         session.put("cookies", cookies.toString());
@@ -47,7 +47,7 @@ public class LoginLogoutController {
         if (respond.header("X-AUSERNAME").equals(username)) {
             session.put(Constant.USERNAME, username);
             Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
-                    .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
+                    .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
             Map<String, String> CruCookies = cruRespond.cookies();
             session.put("crucookies", CruCookies.toString());
 
@@ -90,6 +90,7 @@ public class LoginLogoutController {
             }
         } catch (Exception e) {
             session.clear();
+            logger.error(e);
             return redirect("/login#connectionfailed");
         }
 
