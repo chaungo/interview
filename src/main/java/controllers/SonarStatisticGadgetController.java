@@ -388,6 +388,7 @@ public class SonarStatisticGadgetController {
                     List<String> metrics = Arrays.asList(mt.split(","));
                     String componentName = sonarStatisticArray.getJSONObject(0).getString(NAME);
                     RsComponent.put("componentName", componentName);
+                    RsComponent.put("componentKey", sonarKey);
                     msr = sonarStatisticArray.getJSONObject(0).getJSONArray("msr");
                     org.json.JSONObject RsMetricArray = new org.json.JSONObject();
                     for (int p = 0; p < msr.length(); p++) {

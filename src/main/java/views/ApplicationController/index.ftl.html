@@ -1,7 +1,6 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
     <@layout.myLayout "Homepage">
     <div style="padding-top: 40px;" layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
-        <md-progress-linear ng-if="getting" md-mode="indeterminate"></md-progress-linear>
         <div style="height: 100%; width: 100%;" layout="row"
              layout-align="start start">
             <div layout-fill style="background-color: white" flex="20">
@@ -121,9 +120,11 @@
                                 <td>{{$index + 1}}</td>
                                 <td style="text-align: left;">{{ y.componentName }}</td>
                                 <td ng-if="y.metricVal.coverage"
-                                    ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">{{
-                                    y.metricVal.coverage }} <span
-                                            ng-if="check(y.metricVal.coverage)">%</span>
+                                    ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">
+                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/coverage/list?id={{y.componentKey}}" target="_blank">
+                                        {{y.metricVal.coverage}}
+                                        <span ng-if="check(y.metricVal.coverage)">%</span>
+                                    </a>
                                 </td>
                                 <td ng-if="y.metricVal.critical_violations"
                                     ng-style="y.metricVal.critical_violations > 0 && {'color':'red'}">{{
@@ -131,8 +132,10 @@
                                 </td>
                                 <td ng-if="y.metricVal.new_coverage"
                                     ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
+                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/new_coverage/list?id={{y.componentKey}}" target="_blank">
                                     {{y.metricVal.new_coverage}} <span
                                         ng-if="check(y.metricVal.new_coverage)">%</span>
+                                    </a>
                                 </td>
                                 <td ng-if="y.metricVal.test_errors"
                                     ng-style="y.metricVal.test_errors > 0 && {'color':'red'}">{{

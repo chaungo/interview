@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/product.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/app.css">
+
     <html lang="en">
     <head>
         <title>${title}</title>
@@ -48,8 +49,8 @@
 
 
     <body ng-app="App" id="body">
-
     <div style="background-color: #205081; color: white;position: fixed;width: 100%;height: 40px">
+
         <div ng-controller="HeaderCtrl" layout="row" layout-wrap layout-align="start center">
 
             <div>
@@ -97,10 +98,14 @@
                 </md-button>
 
             </#if>
+
         </div>
+        <md-progress-linear style="position: fixed;" ng-if="getting" md-mode="indeterminate"></md-progress-linear>
+
     </div>
 
     <#nested/>
+
     </body>
     </html>
 </#macro>
