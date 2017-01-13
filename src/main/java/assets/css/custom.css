@@ -22,16 +22,14 @@
     -webkit-font-smoothing: antialiased;
 }
 
-html{
+html,body{
     height: 100%;
     width: 100%;
     position: fixed;
-}
-body {
     background: #E0E0E0;
     overflow: scroll;
-    position: fixed;
 }
+
 
 .optionSubHeader {
     color: black;
