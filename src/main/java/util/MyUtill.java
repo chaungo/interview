@@ -44,6 +44,7 @@ public class MyUtill {
         Proxy proxy = HTTPClientUtil.getInstance().getProxy();
         URL url2 = new URL(url);
         HttpURLConnection myURLConnection;
+
         if (proxy != null) {
             myURLConnection = (HttpURLConnection) url2.openConnection(proxy);
         } else {
