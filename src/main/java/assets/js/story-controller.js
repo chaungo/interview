@@ -62,8 +62,8 @@ function drawUsTable(dataTable, gadget, callback,titleHandler) {
                     var usIndividualTable;
                     var tempTitle = [];
                     tempTitle.push(index + 1, ". ", epicKey, ": ",storyArray["summary"]);
-                    appendTemplateTable(customTableId, tempTitle.join(""), gadget,
-                        "#us-table-container");
+                    appendTemplateUserStoryTable(customTableId, tempTitle.join(""), gadget,
+                        "#us-table-container", epicKey);
                     $("#" + gadget.id).find("#" + customTableId).append(TEMPLATE_HEADER_FOOTER);
 
 
