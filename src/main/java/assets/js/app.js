@@ -1022,34 +1022,41 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
     $scope.IAItems = [];
     $scope.IAItemNames = [];
     $scope.selectedIA = [];
+    $scope.loginForm = false;
 
 
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
 
+    $scope.getCruProjectList = function () {
+        $resource('/getCruProjectList', {}, {
+            query: {
+                method: 'post',
+                isArray: true
+            }
+        }).query().$promise.then(function (respone) {
+            //console.log(respone);
+            //todo
+            $scope.CruProjectList = respone;
+            if ($scope.CruProjectList.length == 0) {
+                // $window.location.href = '/logout';
+                $scope.loginForm = true;
+            }
 
-    $resource('/getCruProjectList', {}, {
-        query: {
-            method: 'post',
-            isArray: true
-        }
-    }).query().$promise.then(function (respone) {
-        //console.log(respone);
-        //todo
-        $scope.CruProjectList = respone;
-        if ($scope.CruProjectList.length == 0) {
-            $window.location.href = '/logout';
-        }
-        $scope.Loading = false;
-    }, function (error) {
-        //console.log(error);
-        $mdToast.show(
-            $mdToast.simple()
-                .textContent('Error! Can not get Cru Project List. Please check connection!')
-                .hideDelay(10000)
-        );
-    });
+            $scope.Loading = false;
+        }, function (error) {
+            //console.log(error);
+            $scope.loginForm = true;
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Error! Can not get Cru Project List. Please check connection!')
+                    .hideDelay(10000)
+            );
+        });
+    };
+
+
 
 
     $scope.choseProjectNext = function () {
