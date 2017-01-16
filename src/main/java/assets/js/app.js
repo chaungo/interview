@@ -1272,6 +1272,7 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     $scope.init = function (item) {
     	var titleHandler = function(index){
     		$scope.titleAdditionalInfo = "- " + index + " table(s)";
+    		$scope.$apply();
     	}
         drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling,titleHandler);
     }
@@ -1304,6 +1305,7 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     $scope.init = function (item) {
     	var titleHandler = function(index){
     		$scope.titleAdditionalInfo = "- " + index + " table(s)";
+    		$scope.$apply();
     	}
         drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
