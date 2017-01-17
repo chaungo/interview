@@ -55,10 +55,7 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             }
 
         }
-        getGreenHopperProjectList(callBack);
-        getGreenHopperProduct(callBackProduct);
-
-        var callback = function (result) {
+        var callbackCycle = function (result) {
             if (result.type == null) {
                 $scope.greenHopperCycleLink = result;
                 $scope.$apply();
@@ -66,17 +63,25 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
                 showError(result.data);
             }
         }
-        loadCycle(callback);
+        
+        getGreenHopperProjectList(callBack);
+        getGreenHopperProduct(callBackProduct);
+        loadCycle(callbackCycle);
+
+
+        
         item = $rootScope.gadgetToEdit;
         if (item != null) {
             if (item.type == "TEST_CYCLE_TEST_EXECUTION") {
                 $scope.gadgetId = item.id;
                 $scope.selectedProject = item.projectName;
+                console.log($scope.selectedProject);
                 $scope.selectedRelease = item.release;
-                $scope.selectedProject = item.products[0];
+                $scope.selectedProduct = item.products[0];
                 $scope.selectAllCycle = item.selectAllCycle;
                 $scope.selectedCycleLink = item.cycles;
                 $scope.selectedMetric = item.metrics;
+
             }
             $rootScope.gadgetToEdit = null;
         }

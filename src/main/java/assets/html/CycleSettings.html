@@ -1,4 +1,4 @@
-<md-dialog class="settingForm" ng-controller="CycleSettingController" ng-init="init()">
+<md-dialog class="settingForm" data-ng-controller="CycleSettingController" data-ng-init="init()">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Cycle Settings</h2>
@@ -15,9 +15,9 @@
                 <!-- Cycle Project Row -->
                 <tr>
                     <td class="col-md-6"><label>Project</label></td>
-                    <td class="col-md-6"><select class="form-control" id="cycleProject" ng-model="selectedProject"
-                                                 ng-change="onProjectReleaseProductChanged()"
-                                                 ng-options="selectedItem as selectedItem for selectedItem in greenHopperProjectList track by selectedItem">
+                    <td class="col-md-6"><select class="form-control" id="cycleProject" data-ng-model="selectedProject"
+                                                 data-ng-change="onProjectReleaseProductChanged()"
+                                                 data-ng-options="selectedItem as selectedItem for selectedItem in greenHopperProjectList track by selectedItem">
                         <option value="" selected disabled>-Select Project-</option>
                     </select></td>
                 </tr>
@@ -39,16 +39,16 @@
 
                     <td class="col-md-12 row">
                         <div class="col-md-9">
-                            <select id="cycleProduct" ng-model="selectedProduct"
-                                    ng-options="item as item for item in greenHopperProduct track by item"
-                                    ng-change="onProjectReleaseProductChanged()" class="form-control">
+                            <select id="cycleProduct" data-ng-model="selectedProduct"
+                                    data-ng-options="item as item for item in greenHopperProduct track by item"
+                                    data-ng-change="onProjectReleaseProductChanged()" class="form-control">
                                 <option value="" selected disabled>-Select Product-</option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <a href="/{{productPage}}" data-toggle="tooltip"
                                title="Only Jira Administrator can add new product. Function disabled for normal user."
-                               class="btn-to-product btn btn-default" ng-disabled="!isAdmin">Add Product</a>
+                               class="btn-to-product btn btn-default" data-ng-disabled="!isAdmin">Add Product</a>
                         </div>
                     </td>
                 </tr>
@@ -61,13 +61,13 @@
                     <td class="col-md-6">
                         <div>
                             <select class="form-control" multiple id="cycleCycle" data-ng-hide="selectAllCycle"
-                                    ng-model="selectedCycleLink"
-                                    ng-options="item as item for item in greenHopperCycleLink track by item">
+                                    data-ng-model="selectedCycleLink"
+                                    data-ng-options="item as item for item in greenHopperCycleLink track by item">
                             </select>
                         </div>
                         <div class="col-md-12" align="center" style="padding-top: 10px;">
-                            <label><input type="checkbox" id="cycleCheckAllCycle" ng-model="selectAllCycle"
-                                          ng-change="onCheckAllCycle()" ng-init="checked=true">Select All</label>
+                            <label><input type="checkbox" id="cycleCheckAllCycle" data-ng-model="selectAllCycle"
+                                          data-ng-change="onCheckAllCycle()" data-ng-init="checked=true">Select All</label>
                         </div>
                 </tr>
 
@@ -86,7 +86,7 @@
                 </tbody>
             </table>
         </div>
-        <md-progress-linear ng-show="greenHopperProjectList.length == 0"></md-progress-linear>
-        <button class="btn btn-success" ng-disabled="isDisabled" ng-click="saveGadget()">Update</button>
+        <md-progress-linear data-ng-show="greenHopperProjectList.length == 0"></md-progress-linear>
+        <button class="btn btn-success" data-ng-disabled="isDisabled" data-ng-click="saveGadget()">Update</button>
     </form>
 </md-dialog>
