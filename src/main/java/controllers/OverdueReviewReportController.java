@@ -46,6 +46,7 @@ public class OverdueReviewReportController {
             rs = rs + inputLine;
         }
         br.close();
+        System.out.println(rs);
         JSONArray dataArray = new JSONArray(rs);
 
         for (int i = 0; i < dataArray.length(); i++) {
@@ -175,7 +176,7 @@ public class OverdueReviewReportController {
         try {
             return Results.text().render(getCruProjectfromServer(session));
         } catch (Exception e) {
-            logger.warn(e);
+            logger.error(e);
             return Results.internalServerError();
         }
     }
