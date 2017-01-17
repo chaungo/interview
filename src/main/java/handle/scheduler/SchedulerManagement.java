@@ -54,7 +54,7 @@ public class SchedulerManagement {
         jobdatamap.put(API_KEY, clearJob);
         JobDetail clearCache = JobBuilder.newJob(JobWrapper.class).withIdentity(clearJob.getName(), "API_DATA").usingJobData(jobdatamap).build();
         Date triggerStartTime = DateUtils.addMinutes(new Date(), intervalInMinute);
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_CACHE_TRIGGER", "API_DATA").startAt(triggerStartTime)
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(clearJob.getName() +"-TRICGER", "API_DATA").startAt(triggerStartTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(intervalInMinute).repeatForever()).build();
         try {
             scheduler.scheduleJob(clearCache, trigger);
