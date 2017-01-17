@@ -46,6 +46,7 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
 
         router.GET().route("/gadget/getData").with(MyGadgetController.class, "getDataGadget");
+        router.GET().route("/gadget/cleanCache").with(MyGadgetController.class, "cleanCache");
         router.POST().route("/gadget/save").with(MyGadgetController.class, "insertOrUpdateGadget");
         router.GET().route("/gadget/gadgets").with(MyGadgetController.class, "getGadgetsInDashboardId");
         router.GET().route("/gadget/getStoryInEpic").with(MyGadgetController.class, "getStoryInEpic");
