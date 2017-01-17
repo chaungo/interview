@@ -35,7 +35,7 @@ public class LoginLogoutController {
             session.put(Constant.USERNAME, username);
 
             //login to crucible
-            loginCrucible(username, password, session);
+            //loginCrucible(username, password, session);
 
             //login to greenhopper
             try {

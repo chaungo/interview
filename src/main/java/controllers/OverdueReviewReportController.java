@@ -90,8 +90,6 @@ public class OverdueReviewReportController {
 
     public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
         JSONObject result = new JSONObject();
-        result.put("id", GadgetId);
-        result.put("project", data.getString("Project"));
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
@@ -104,6 +102,9 @@ public class OverdueReviewReportController {
         } else {
             result = new JSONObject(document.getString("cache"));
         }
+
+        result.put("id", GadgetId);
+        result.put("project", data.getString("Project"));
 
         return result;
 

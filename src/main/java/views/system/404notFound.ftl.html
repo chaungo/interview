@@ -1,18 +1,54 @@
-<#import "../layout/defaultLayout.ftl.html" as layout>
-    <@layout.myLayout "Error. Not found.">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="error-template">
-                    <h1>
-                        Oops!</h1>
-                    <h2>
-                        404 Not Found</h2>
-                    <div class="error-details">
-                        Sorry, an error has occured. Requested page not found!
-                    </div>
+<!DOCTYPE html>
+<head>
+    <script type="text/javascript" src="/assets/js/angular.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-material.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-aria.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-route.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-messages.min.js"></script>
+    <script type="text/javascript" src="/assets/js/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/assets/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Datatables -->
+    <script type="text/javascript" src="/assets/datatables/DataTables-1.10.13/js/jquery.dataTables.min.js"></script>
+
+    <!-- Custom script -->
+    <script type="text/javascript" src="/assets/js/constant.js"></script>
+    <script type="text/javascript" src="/assets/js/app.js"></script>
+    <script type="text/javascript" src="/assets/js/product.js"></script>
+    <script type="text/javascript" src="/assets/js/widget-script.js"></script>
+    <script type="text/javascript" src="/assets/js/epic-controller.js"></script>
+    <script type="text/javascript" src="/assets/js/story-controller.js"></script>
+    <script type="text/javascript" src="/assets/js/assignee-controller.js"></script>
+    <script type="text/javascript" src="/assets/js/cycle-controller.js"></script>
+
+    <script type="text/javascript" src="/assets/js/epicSettings.js"></script>
+    <script type="text/javascript" src="/assets/js/assigneeSettings.js"></script>
+    <script type="text/javascript" src="/assets/js/cycleSettings.js"></script>
+    <script type="text/javascript" src="/assets/js/UserStorySettings.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/angular-material.css">
+    <link rel="stylesheet" type="text/css" href="/assets/datatables/DataTables-1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/product.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/app.css">
+</head>
+
+<body ng-app="App" layout-fill layout="column" layout-align="center center">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Oops!</h1>
+                <h2>404 Not Found</h2>
+                Sorry, an error has occured. Requested page not found! Click <a href="/">here</a> to return to Home page.
                 </div>
             </div>
         </div>
     </div>
-</@layout.myLayout>
+</body>
+</html>

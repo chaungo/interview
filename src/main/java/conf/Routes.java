@@ -2,6 +2,7 @@ package conf;
 
 import controllers.*;
 import ninja.AssetsController;
+import ninja.Results;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
 
@@ -66,7 +67,8 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/listproject").with(MyGadgetController.class, "getProjectList");
         router.GET().route("/clearCache").with(MyGadgetController.class, "cleanCache");
 
-        router.GET().route("/.*").with(ApplicationController.class, "index");
+        router.GET().route("/").with(ApplicationController.class, "index");
+        router.GET().route("/.*").with(Results.html().template("views/system/404notFound.ftl.html"));
 
     }
 
