@@ -1,7 +1,16 @@
 <md-dialog ng-controller="AddNewOverdueReviewReportGadgetCtrl" flex="50">
-    <md-toolbar>
+    <md-toolbar ng-if="!loginForm">
         <div class="md-toolbar-tools">
             <h2>Add new Overdue Reviews Report gadget</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icons">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar ng-if="loginForm">
+        <div class="md-toolbar-tools">
+            <h2>Login to Crucible</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon class="material-icons">clear</md-icon>
@@ -11,27 +20,25 @@
 
 
     <div layout-fill layout="row" layout-align="center center">
+        <div style="padding: 10px" flex="50" ng-if="loginForm">
+            <div layout="column">
+                <md-input-container class="md-block">
+                    <label>Username</label>
+                    <input ng-model="cruusername" required>
+                </md-input-container>
 
-        <form ng-if="loginForm" action="/loginCru" method="post" style="margin: 10px">
-            <md-dialog-content>
-                <div class="md-block" layout="row" layout-align="start center">
-                    <label layout-padding>Username</label>
-                    <input ng-model="username" required name="username">
-                </div>
-
-                <div class="md-block" layout="row" layout-align="start center">
-                    <label layout-padding>Password</label>
-                    <input type="password" required name="password" ng-model="password">
-                </div>
-                <div layout-fill layout="row" layout-xs="row"
-                     layout-align="end center">
-                    <md-button class="md-raised md-primary" type="submit">Login</md-button>
-                </div>
-            </md-dialog-content>
-        </form>
+                <md-input-container class="md-block">
+                    <label>Password</label>
+                    <input ng-model="crupassword" type="password" required >
+                </md-input-container>
+            </div>
+            <div layout-fill layout="row" layout-align="end center">
+                <md-button ng-click="loginCru(cruusername,crupassword)" class="md-raised md-primary">Login</md-button>
+            </div>
+        </div>
 
 
-        <md-card layout-fill>
+        <div layout-padding ng-if="!loginForm" layout-fill>
             <div ng-hide="!choseProjectPage">
                 <md-card-title>
                     <md-card-title-text>
@@ -90,8 +97,7 @@
                     </div>
                 </md-card-content>
             </div>
-
-            <md-progress-linear ng-hide="!Loading"></md-progress-linear>
-        </md-card>
+        </div>
     </div>
+    <md-progress-linear ng-hide="!Loading"></md-progress-linear>
 </md-dialog>

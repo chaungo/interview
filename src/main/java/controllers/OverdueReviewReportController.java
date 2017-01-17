@@ -42,11 +42,12 @@ public class OverdueReviewReportController {
         String rs = "";
         BufferedReader br = getHttpURLConnection(LINK_GET_CRU_PROJECTS, session);
         String inputLine;
+
         while ((inputLine = br.readLine()) != null) {
             rs = rs + inputLine;
         }
+
         br.close();
-        System.out.println(rs);
         JSONArray dataArray = new JSONArray(rs);
 
         for (int i = 0; i < dataArray.length(); i++) {

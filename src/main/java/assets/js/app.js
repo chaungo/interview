@@ -1010,7 +1010,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
 
     $scope.choseProjectPage = true;
     $scope.choseUserPage = false;
-    $scope.Loading = true;
+    $scope.Loading = false;
 
     $scope.CruProjectList = [];
     $scope.projectId = "";
@@ -1020,11 +1020,37 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
     $scope.loginForm = false;
 
 
+
+
+    $scope.loginCru = function (cruusername,crupassword) {
+        $scope.Loading = true;
+        $resource('/loginCru', {
+            username: cruusername,
+            password: crupassword
+        }).save().$promise.then(function (response) {
+            $scope.loginForm = false;
+            $scope.getCruProjectList();
+            $scope.Loading = false;
+
+        }, function (error) {
+            $scope.Loading = false;
+            $scope.loginForm = true;
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent('Error! Please check connection!')
+                    .hideDelay(10000)
+            );
+        });
+
+    };
+
+
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
 
     $scope.getCruProjectList = function () {
+        $scope.Loading = true;
         $resource('/getCruProjectList', {}, {
             query: {
                 method: 'post',
@@ -1041,7 +1067,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
 
             $scope.Loading = false;
         }, function (error) {
-            //console.log(error);
+            $scope.Loading = false;
             $scope.loginForm = true;
             $mdToast.show(
                 $mdToast.simple()
@@ -1051,6 +1077,7 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
         });
     };
 
+    $scope.getCruProjectList();
 
     $scope.choseProjectNext = function () {
         if ($scope.projectId == "") {
@@ -1246,46 +1273,16 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
     $scope.dataTable = null;
     $scope.showView = true;
     $scope.titleAdditionalInfo = null;
-    $scope.isClearingCache = false;
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-    	var titleHandler = function(number){
-    		$scope.titleAdditionalInfo = "- "+ number +" table";
-    		$rootScope.$apply();
-    	}
-    	var dataTableCallback = function(table){
-    		$scope.dataTable = table;
-    	}
-    	var clearCacheCallback = function() {
-			$scope.isClearingCache = false;
-		}
-        drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling,titleHandler, dataTableCallback, clearCacheCallback);
+        var titleHandler = function (number) {
+            $scope.titleAdditionalInfo = "- " + number + " table";
+            $rootScope.$apply();
+        }
+        drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
-    
-    $scope.clearCacheGreenhopperGagdget = function(item) {
-    	if(!$scope.isClearingCache){
-    		$.ajax({
-        		url: "/clearCache",
-        		data: {
-        			id: item.id
-        		},
-        		beforeSend: function(){
-        			$scope.isClearingCache = true;
-        		},
-        		success: function(res){
-        			if($rootScope.debugAjaxAngular(res)){
-        				$scope.isClearingCache = false;
-        				return;
-        			}
-        			else{
-        				$scope.init(item);
-        			}
-        		}
-        	});
-    	}
-	}
 
 });
 
@@ -1297,47 +1294,16 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     };
     $scope.titleAdditionalInfo = null;
     $scope.showView = true;
-    $scope.isClearingCache = false;
     $scope.init = function (item) {
         var titleHandler = function (number) {
             $scope.titleAdditionalInfo = "- " + number + " table(s)";
             $rootScope.$apply();
         }
-        var dataTableCallback = function(table){
-    		$scope.dataTable = table;
-    		
-    	}
-		var clearCacheCallback = function() {
-			$scope.isClearingCache = false;
-		}
-        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback);
+        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
-    
-    $scope.clearCacheGreenhopperGagdget = function(item) {
-    	if(!$scope.isClearingCache){
-    		$.ajax({
-        		url: "/clearCache",
-        		data: {
-        			id: item.id
-        		},
-        		beforeSend: function(){
-        			$scope.isClearingCache = true;
-        		},
-        		success: function(res){
-        			if($rootScope.debugAjaxAngular(res)){
-        				$scope.isClearingCache = false;
-        				return;
-        			}
-        			else{
-        				$scope.init(item);
-        			}
-        		}
-        	});
-    	}
-	}
 
 });
 
@@ -1345,46 +1311,16 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
     $scope.dataTable = null;
     $scope.showView = true;
     $scope.titleAdditionalInfo = null;
-    $scope.isClearingCache = false;
     $scope.init = function (item) {
-    	var titleHandler = function(number){
-    		$scope.titleAdditionalInfo = "- "+ number +" table";
-    		$rootScope.$apply();
-    	}
-    	var dataTableCallback = function(table){
-    		$scope.dataTable = table;
-    	}
-    	var clearCacheCallback = function() {
-			$scope.isClearingCache = false;
-		}
-        drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback);
+        var titleHandler = function (number) {
+            $scope.titleAdditionalInfo = "- " + number + " table";
+            $rootScope.$apply();
+        }
+        drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
-    
-    $scope.clearCacheGreenhopperGagdget = function(item) {
-    	if(!$scope.isClearingCache){
-    		$.ajax({
-        		url: "/clearCache",
-        		data: {
-        			id: item.id
-        		},
-        		beforeSend: function(){
-        			$scope.isClearingCache = true;
-        		},
-        		success: function(res){
-        			if($rootScope.debugAjaxAngular(res)){
-        				$scope.isClearingCache = false;
-        				return;
-        			}
-        			else{
-        				$scope.init(item);
-        			}
-        		}
-        	});
-    	}
-	}
 
 });
 
@@ -1395,47 +1331,16 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     };
     $scope.titleAdditionalInfo = null;
     $scope.showView = true;
-    $scope.isClearingCache = false;
-    
     $scope.init = function (item) {
         var titleHandler = function (index) {
             $scope.titleAdditionalInfo = "- " + index + " table(s)";
             $rootScope.$apply();
         }
-        var dataTableCallback = function(table){
-    		$scope.dataTable = table;
-    	}
-        var clearCacheCallback = function() {
-			$scope.isClearingCache = false;
-		}
-        drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler,dataTableCallback, clearCacheCallback);
+        drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
 
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
-    
-    $scope.clearCacheGreenhopperGagdget = function(item) {
-    	if(!$scope.isClearingCache){
-    		$.ajax({
-        		url: "/clearCache",
-        		data: {
-        			id: item.id
-        		},
-        		beforeSend: function(){
-        			$scope.isClearingCache = true;
-        		},
-        		success: function(res){
-        			if($rootScope.debugAjaxAngular(res)){
-        				$scope.isClearingCache = false;
-        				return;
-        			}
-        			else{
-        				$scope.init(item);
-        			}
-        		}
-        	});
-    	}
-	}
 
 });

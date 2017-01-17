@@ -118,12 +118,12 @@ public class LoginLogoutController {
         return redirect("/");
     }
 
-    public Result loginCru(Session session, @Param("username") String username,
-                           @Param("password") String password) {
+    public Result loginCru(@Param("username") String username,
+                           @Param("password") String password, Session session) {
         if (loginCrucible(username, password, session)) {
             return Results.ok();
         } else {
-            return Results.internalServerError();
+            return Results.unauthorized();
         }
 
     }
