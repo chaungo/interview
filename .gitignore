@@ -6,3 +6,9 @@
 *.log 
 .idea/workspace.xml
 dependency-reduced-pom.xml
+gadget.2017-01-12.0.log.gz
+gadget.2017-01-13.0.log.gz
+gadget.2017-01-16.0.log.gz
+mylog.2017-01-12.0.log.gz
+mylog.2017-01-13.0.log.gz
+mylog.2017-01-16.0.log.gz

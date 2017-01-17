@@ -2,11 +2,13 @@ package util.gadget;
 
 import handle.executors.ExecutorManagement;
 import handle.executors.TestExecutionCallable;
+import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
 import models.*;
 import models.exception.APIException;
 import models.gadget.AssigneeVsTestExecution;
 import models.main.*;
+import models.main.DataCacheVO.State;
 import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
@@ -21,9 +23,8 @@ public class AssigneeUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(AssigneeUtility.class);
     private static final String PLUS = "+";
     private static AssigneeUtility INSTANCE = new AssigneeUtility();
-    ;
-    private static Map<String, Set<String>> cycleNameCache = new HashMap<String, Set<String>>();
-    private static Map<String, Set<AssigneeVO>> assigneesCache = new HashMap<String, Set<AssigneeVO>>();
+    private static GadgetCacheMap<Set<String>> cycleNameCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24)*60, "CycleCacheCleaner");
+    private static GadgetCacheMap<Set<AssigneeVO>> assigneesCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24)*60, "AssigneeCacheCleaner");
 
     private AssigneeUtility() {
     }
@@ -32,20 +33,20 @@ public class AssigneeUtility {
         return INSTANCE;
     }
 
-    public Map<String, GadgetDataWapper> getDataAssignee(AssigneeVsTestExecution assigneeGadget, Map<String, String> cookies) throws APIException {
+    public Map<String, GadgetDataWapper> getDataAssignee(AssigneeVsTestExecution assigneeGadget, SessionInfo sessionInfo) throws APIException {
         Map<String, GadgetDataWapper> returnData = new HashMap<>();
 
         String projectName = assigneeGadget.getProjectName();
-        Set<AssigneeVO> assigneeVOs = findAssigneeList(projectName, assigneeGadget.getRelease(), cookies);
+        Set<AssigneeVO> assigneeVOs = findAssigneeList(projectName, assigneeGadget.getRelease(), sessionInfo);
         Set<String> assignees = assigneeVOs.stream().map(a -> a.getDisplay()).collect(Collectors.toSet());
         Set<String> cycles = assigneeGadget.getCycles();
 
         if (assigneeGadget.isSelectAllTestCycle()) {
-            cycles = getListCycleName(projectName, assigneeGadget.getRelease(), assigneeGadget.getProducts(), cookies);
+            cycles = getListCycleName(projectName, assigneeGadget.getRelease(), assigneeGadget.getProducts(), sessionInfo);
         }
         if (cycles != null && !cycles.isEmpty()) {
             for (String cycle : cycles) {
-                ExecutionsVO executions = findExecution(projectName, cycle, assignees, cookies);
+                ExecutionsVO executions = findExecution(projectName, cycle, assignees, sessionInfo.getCookies());
                 if (executions != null && executions.getExecutions() != null) {
                     Map<String, List<ExecutionIssueVO>> assigneeMap = executions.getExecutions().stream()
                             .collect(Collectors.groupingBy(ExecutionIssueVO::getAssigneeDisplay));
@@ -77,24 +78,53 @@ public class AssigneeUtility {
         return returnData;
     }
 
-    public Set<AssigneeVO> findAssigneeList(String projectName, Release release, Map<String, String> cookies) throws APIException {
-        if (assigneesCache.get(projectName + PLUS + release) == null || assigneesCache.get(projectName + PLUS + release).isEmpty()) {
-            ExecutionsVO executions = findAllExecutionIsueeInProject(projectName, release, cookies);
-            if (executions != null && executions.getExecutions() != null) {
-                List<ExecutionIssueVO> excutions = executions.getExecutions();
-                Stream<ExecutionIssueVO> excutionsStream = excutions.stream();
-                assigneesCache.put(projectName + PLUS + release, excutionsStream
-                        .filter(e -> (e.getAssigneeUserName() != null && !e.getAssigneeUserName().isEmpty())).map(new Function<ExecutionIssueVO, AssigneeVO>() {
-                            @Override
-                            public AssigneeVO apply(ExecutionIssueVO issueVO) {
-                                AssigneeVO assigneeVO = new AssigneeVO(issueVO.getAssignee(), issueVO.getAssigneeUserName(), issueVO.getAssigneeDisplay());
-                                return assigneeVO;
-                            }
-                        }).collect(Collectors.toSet()));
+    public Set<AssigneeVO> findAssigneeList(String projectName, Release release, SessionInfo sessionInfo) throws APIException {
+        String cacheKey = projectName + PLUS + release + Constant.DELIMITER + sessionInfo.getUsername();
+        Set<AssigneeVO> returnData = new HashSet<>();
+        DataCacheVO<Set<AssigneeVO>> dataCache = assigneesCache.get(cacheKey);
+        boolean found = false;
+        if(dataCache != null){
+            long begin = System.currentTimeMillis();
+            int timeout = PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT);
+
+            while (!State.SUCCESS.equals(dataCache.getState())){
+                if(begin + timeout < System.currentTimeMillis()){
+                    logger.fastDebug("timeout when waiting cache");
+                    return returnData;
+                }
+                try{
+                    Thread.sleep(800);
+                } catch (InterruptedException e){
+                    logger.fastDebug("Thread interrupted", e, new Object());
+                }
+            }
+            returnData = dataCache.getData();
+            found = true;
+        }
+
+        if(!found){
+            DataCacheVO<Set<AssigneeVO>> value = new DataCacheVO<Set<AssigneeVO>>();
+            assigneesCache.put(cacheKey, value);
+            try{
+                ExecutionsVO executions = findAllExecutionIsueeInProject(projectName, release, sessionInfo.getCookies());
+                if(executions != null && executions.getExecutions() != null){
+                    List<ExecutionIssueVO> excutions = executions.getExecutions();
+                    Stream<ExecutionIssueVO> excutionsStream = excutions.stream();
+                    returnData = excutionsStream.filter(e -> (e.getAssigneeUserName() != null && !e.getAssigneeUserName().isEmpty()))
+                            .map(new Function<ExecutionIssueVO, AssigneeVO>() {
+                                @Override
+                                public AssigneeVO apply(ExecutionIssueVO issueVO) {
+                                    AssigneeVO assigneeVO = new AssigneeVO(issueVO.getAssignee(), issueVO.getAssigneeUserName(), issueVO.getAssigneeDisplay());
+                                    return assigneeVO;
+                                }
+                            }).collect(Collectors.toSet());
+                }
+            } finally{
+                value.setData(returnData);
+                value.setState(State.SUCCESS);
             }
         }
-        Set<AssigneeVO> assignees = assigneesCache.get(projectName + PLUS + release);
-        return assignees != null ? assignees : new HashSet<>();
+        return returnData;
 
     }
 
@@ -151,39 +181,65 @@ public class AssigneeUtility {
         return executions;
     }
 
-    public Set<String> getListCycleName(String projectName, Release release, Set<String> products, Map<String, String> cookies) throws APIException {
+    public Set<String> getListCycleName(String projectName, Release release, Set<String> products, SessionInfo sessionInfo) throws APIException {
         Set<String> returnData = new HashSet<>();
         StringBuffer provisional = new StringBuffer();
         provisional.append(provisional);
-        if (release != null) {
+        if(release != null){
             provisional.append(PLUS + release.toString());
         }
-        if (products != null && !products.isEmpty()) {
+        if(products != null && !products.isEmpty()){
             provisional.append(PLUS + products);
         }
-        String keyProvisional = provisional.toString();
-        if (cycleNameCache.get(keyProvisional) == null || cycleNameCache.get(keyProvisional).isEmpty()) {
-            List<JQLIssueVO> issues = findAllIssueInProject(projectName, release, products, cookies);
-            List<ExecutionIssueVO> executions = new ArrayList<>();
-            if (issues != null) {
-                List<TestExecutionCallable> tasks = new ArrayList<>();
-                issues.forEach(i -> tasks.add(new TestExecutionCallable(i, JQLIssuetypeVO.Type.fromString(i.getFields().getIssuetype().getName()), cookies)));
+        String keyProvisional = provisional.toString() + Constant.DELIMITER + sessionInfo.getUsername();
+        DataCacheVO<Set<String>> dataCache = cycleNameCache.get(keyProvisional);
+        boolean found = false;
 
-                List<ExecutionIssueResultWapper> taskResult = ExecutorManagement.getInstance().invokeAndGet(tasks);
-                for (ExecutionIssueResultWapper wapper : taskResult) {
-                    List<ExecutionIssueVO> executionVO = wapper.getExecutionsVO();
-                    if (executionVO != null) {
-                        executions.addAll(executionVO);
-                    }
+        if(dataCache != null){
+            long begin = System.currentTimeMillis();
+            int timeout = PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT);
+            
+            while (!State.SUCCESS.equals(dataCache.getState())){
+                if(begin + timeout < System.currentTimeMillis()){
+                    logger.fastDebug("timeout when waiting cache");
+                    return returnData;
                 }
-                Set<String> cycleNames = executions.stream().map(i -> i.getCycleName()).collect(Collectors.toSet());
-                if (cycleNames != null && !cycleNames.isEmpty()) {
-                    returnData.addAll(cycleNames);
-                    cycleNameCache.put(keyProvisional, returnData);
+                try{
+                    Thread.sleep(800);
+                } catch (InterruptedException e){
+                    logger.fastDebug("Thread interrupted", e, new Object());
                 }
             }
-        } else {
-            returnData = cycleNameCache.get(keyProvisional);
+            returnData = dataCache.getData();
+            found =true;
+        }
+        if(!found){
+            DataCacheVO<Set<String>> dataCacheVO = new DataCacheVO<Set<String>>();
+            cycleNameCache.put(keyProvisional, dataCacheVO);
+            try{
+                List<JQLIssueVO> issues = findAllIssueInProject(projectName, release, products, sessionInfo.getCookies());
+                List<ExecutionIssueVO> executions = new ArrayList<>();
+                if(issues != null){
+                    List<TestExecutionCallable> tasks = new ArrayList<>();
+                    issues.forEach(i -> tasks.add(
+                            new TestExecutionCallable(i, JQLIssuetypeVO.Type.fromString(i.getFields().getIssuetype().getName()), sessionInfo.getCookies())));
+
+                    List<ExecutionIssueResultWapper> taskResult = ExecutorManagement.getInstance().invokeAndGet(tasks);
+                    for (ExecutionIssueResultWapper wapper : taskResult){
+                        List<ExecutionIssueVO> executionVO = wapper.getExecutionsVO();
+                        if(executionVO != null){
+                            executions.addAll(executionVO);
+                        }
+                    }
+                    Set<String> cycleNames = executions.stream().map(i -> i.getCycleName()).collect(Collectors.toSet());
+                    if(cycleNames != null && !cycleNames.isEmpty()){
+                        returnData.addAll(cycleNames);
+                    }
+                }
+            } finally{
+                dataCacheVO.setData(returnData);
+                dataCacheVO.setState(State.SUCCESS);
+            }
         }
         return returnData;
     }
@@ -240,7 +296,7 @@ public class AssigneeUtility {
     }
 
     public void clearCache() {
-        cycleNameCache.clear();
-        assigneesCache.clear();
+        cycleNameCache.cleanAll();
+        assigneesCache.cleanAll();;
     }
 }

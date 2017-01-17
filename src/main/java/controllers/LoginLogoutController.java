@@ -44,6 +44,7 @@ public class LoginLogoutController {
                 if (cookiesMap != null && !cookiesMap.isEmpty()) {
                     SessionInfo sessionInfo = new SessionInfo();
                     sessionInfo.setCookies(cookiesMap);
+                    sessionInfo.setUsername(username);
                     String sessionInfoStr = JSONUtil.getInstance().convertToString(sessionInfo);
                     session.put(API_SESSION_INFO, sessionInfoStr);
                 } else {

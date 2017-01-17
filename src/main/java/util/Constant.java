@@ -54,6 +54,7 @@ public class Constant {
     public static final String OR = " OR ";
     public static final String OPEN_BRACKET = "(";
     public static final String CLOSE_BRACKET = ")";
+    public static final String DELIMITER = "\u00B0";
     public static final String MAIN_PROJECT = "FNMS 557x";
     //database
     public static final String DATABASE_SCHEMA = "DATABASE_SCHEMA";
@@ -77,7 +78,7 @@ public class Constant {
     public static String DISPLAY_NAME = "displayName";
     public static String ALIAS = "ALIAS";
     public static String ADMIN_ROLE = "jira-administrators";
-
+    public static String LOADING = "LOADING";
     public static String GADGET = "Gadget";
     public static String SONAR_GADGET = "SonarGadget";
     public static String REVIEW_GADGET = "ReviewGadget";
