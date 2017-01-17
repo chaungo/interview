@@ -20,4 +20,6 @@ public abstract class GadgetHandler extends Handler {
     public abstract Result getProjectList(SessionInfo sessionInfo) throws APIException;
 
     public abstract Result deleteGadget(String id) throws APIException;
+
+    public abstract Result cleanCache(String id, SessionInfo sessionInfo) throws APIException;
 }

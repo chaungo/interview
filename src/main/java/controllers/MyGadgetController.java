@@ -81,4 +81,13 @@ public class MyGadgetController {
             return ResultsUtil.convertException(e, context);
         }
     }
+    
+    public Result cleanCache(@Param("id") String id, Context context){
+        logger.fasttrace("cleanCache(%s)", id);
+        try {
+            return handler.cleanCache(id, ResultsUtil.getSessionInfo(context));
+        } catch (APIException e) {
+            return ResultsUtil.convertException(e, context);
+        }
+    }
 }

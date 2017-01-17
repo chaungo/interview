@@ -230,4 +230,11 @@ public class GadgetHandlerImpl extends GadgetHandler {
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, gadgetService.delete(id));
     }
 
+    @Override
+    public Result cleanCache(String id, SessionInfo sessionInfo) throws APIException {
+        String cacheID = id + Constant.DELIMITER + sessionInfo.getUsername();
+        dataGadgetCache.remove(cacheID);
+        return ResultsUtil.convertToResult(ResultCode.SUCCESS, cacheID);
+    }
+
 }
