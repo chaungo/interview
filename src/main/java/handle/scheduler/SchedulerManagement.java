@@ -10,6 +10,7 @@ import util.PropertiesUtil;
 import java.util.Date;
 
 public class SchedulerManagement {
+    public static final String API_KEY = "API_KEY_JOB";
     final static LoggerWapper logger = LoggerWapper.getLogger(SchedulerManagement.class);
     private static SchedulerManagement INSTANCE = new SchedulerManagement();
     private Scheduler scheduler;
@@ -18,7 +19,6 @@ public class SchedulerManagement {
         try{
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             startClearJob();
-            startClearDataJob();
             scheduler.start();
         } catch (SchedulerException e){
             logger.fastDebug("Cannot init scheduler", e, new Object());
@@ -43,12 +43,18 @@ public class SchedulerManagement {
         }
     }
 
-    public void startClearDataJob() {
-        int intervalInMinute = PropertiesUtil.getInt(Constant.CLEAN_DATA_CACHE_TIME, 1);
-        JobDetail clearCache = JobBuilder.newJob(CleanGadgetDataCacheJob.class).withIdentity("CLEAN_GADGET_DATA_CACHE", "API_DATA").build();
 
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+
+    public void schedule(APICacheJob clearJob) {
+        int intervalInMinute = PropertiesUtil.getInt(Constant.CLEAN_DATA_CACHE_TIME, 1);
+        JobDataMap jobdatamap = new JobDataMap();
+        jobdatamap.put(API_KEY, clearJob);
+        JobDetail clearCache = JobBuilder.newJob(JobWrapper.class).withIdentity(clearJob.getName(), "API_DATA").usingJobData(jobdatamap).build();
         Date triggerStartTime = DateUtils.addMinutes(new Date(), intervalInMinute);
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_GADGET_DATA_CACHE_TRIGGER", "API_DATA").startAt(triggerStartTime)
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_CACHE_TRIGGER", "API_DATA").startAt(triggerStartTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(intervalInMinute).repeatForever()).build();
         try{
             scheduler.scheduleJob(clearCache, trigger);
@@ -56,11 +62,7 @@ public class SchedulerManagement {
         } catch (SchedulerException e){
             logger.fastDebug("Cannot schedule clear data job", e, new Object());
         }
-
     }
 
-    public Scheduler getScheduler() {
-        return scheduler;
-    }
-
+   
 }

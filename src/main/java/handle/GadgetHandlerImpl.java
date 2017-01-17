@@ -22,8 +22,8 @@ import models.gadget.Gadget;
 import models.gadget.Gadget.Type;
 import models.gadget.StoryVsTestExecution;
 import models.main.GadgetData;
-import models.main.GadgetDataCacheVO;
-import models.main.GadgetDataCacheVO.State;
+import models.main.DataCacheVO;
+import models.main.DataCacheVO.State;
 import models.main.GadgetDataWapper;
 import ninja.Context;
 import ninja.Result;
@@ -35,7 +35,7 @@ import util.gadget.GadgetUtility;
 
 public class GadgetHandlerImpl extends GadgetHandler {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetHandlerImpl.class);
-    private static GadgetCacheMap dataGadgetCache = GadgetCacheMap.getInstance();
+    private static GadgetCacheMap<Map<String, GadgetDataWapper>> dataGadgetCache = new GadgetCacheMap<Map<String, GadgetDataWapper>>(PropertiesUtil.getInt(Constant.DATA_CACHE_TIME_TO_LIVE,10), "DataGadgetCache");
     
     public GadgetHandlerImpl() {
         gadgetService = GadgetUtility.getInstance();
@@ -140,10 +140,11 @@ public class GadgetHandlerImpl extends GadgetHandler {
     public Result getDataGadget(String id, SessionInfo sessionInfo) throws APIException {
         Map<String, GadgetDataWapper> gadgetsData = new HashMap<>();
         boolean found = false;
-        if(dataGadgetCache.get(id) != null){
-            GadgetDataCacheVO gadgetsDataCache = dataGadgetCache.get(id);
+        String cacheID = id + Constant.DELIMITER + sessionInfo.getUsername();
+        if(dataGadgetCache.get(cacheID) != null){
+            DataCacheVO<Map<String, GadgetDataWapper>> gadgetsDataCache = dataGadgetCache.get(cacheID);
             long begin = System.currentTimeMillis();
-            while (GadgetDataCacheVO.State.LOADING.equals(gadgetsDataCache.getState())){
+            while (DataCacheVO.State.LOADING.equals(gadgetsDataCache.getState())){
                 try{
                     Thread.sleep(800);
                 } catch (InterruptedException e){
@@ -154,8 +155,8 @@ public class GadgetHandlerImpl extends GadgetHandler {
                     break;
                 }
             }
-            if(GadgetDataCacheVO.State.SUCCESS.equals(gadgetsDataCache.getState())){
-                gadgetsData = gadgetsDataCache.getGadgetsData();
+            if(DataCacheVO.State.SUCCESS.equals(gadgetsDataCache.getState())){
+                gadgetsData = gadgetsDataCache.getData();
                 found = true;
             }
         }
@@ -163,38 +164,43 @@ public class GadgetHandlerImpl extends GadgetHandler {
         if(!found){
             Gadget gadget = gadgetService.get(id);
             if(gadget != null){
-                GadgetDataCacheVO dataCache = new GadgetDataCacheVO();
-                dataGadgetCache.put(id, dataCache);
-                if(Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadget.getType())){
-                    EpicVsTestExecution epicGadget = (EpicVsTestExecution) gadget;
-                    String projectName = epicGadget.getProjectName() != null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
-                    List<GadgetData> epicData = epicService.getDataEPic(epicGadget, sessionInfo.getCookies());
-                    GadgetDataWapper epicDataWapper = new GadgetDataWapper();
-                    epicDataWapper.setIssueData(epicData);
-                    epicDataWapper.setSummary(projectName);
-                    gadgetsData.put(projectName, epicDataWapper);
-                } else if(Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadget.getType())){
-                    CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
-                    String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
-                    List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo.getCookies());
-                    GadgetDataWapper epicDataWapper = new GadgetDataWapper();
-                    epicDataWapper.setIssueData(cycleData);
-                    epicDataWapper.setSummary(projectName);
-                    gadgetsData.put(projectName, epicDataWapper);
-                } else if(Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadget.getType())){
-                    AssigneeVsTestExecution assigneeGadget = (AssigneeVsTestExecution) gadget;
-                    gadgetsData = assigneeService.getDataAssignee(assigneeGadget, sessionInfo.getCookies());
-                } else if(Gadget.Type.STORY_TEST_EXECUTION.equals(gadget.getType())){
-                    StoryVsTestExecution storyGadget = (StoryVsTestExecution) gadget;
-                    gadgetsData = storyService.getDataStory(storyGadget, sessionInfo.getCookies());
-                } else{
-                    throw new APIException(String.format("cannot fetch data for gadgetType = %s", gadget.getType()));
+                
+                DataCacheVO<Map<String, GadgetDataWapper>> dataCache = new DataCacheVO<Map<String,GadgetDataWapper>>();
+                dataGadgetCache.put(cacheID, dataCache);
+                try{
+                    if(Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadget.getType())){
+                        EpicVsTestExecution epicGadget = (EpicVsTestExecution) gadget;
+                        String projectName = epicGadget.getProjectName() != null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
+                        List<GadgetData> epicData = epicService.getDataEPic(epicGadget, sessionInfo.getCookies());
+                        GadgetDataWapper epicDataWapper = new GadgetDataWapper();
+                        epicDataWapper.setIssueData(epicData);
+                        epicDataWapper.setSummary(projectName);
+                        gadgetsData.put(projectName, epicDataWapper);
+                    } else if(Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadget.getType())){
+                        CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
+                        String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
+                        List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo.getCookies());
+                        GadgetDataWapper epicDataWapper = new GadgetDataWapper();
+                        epicDataWapper.setIssueData(cycleData);
+                        epicDataWapper.setSummary(projectName);
+                        gadgetsData.put(projectName, epicDataWapper);
+                    } else if(Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadget.getType())){
+                        AssigneeVsTestExecution assigneeGadget = (AssigneeVsTestExecution) gadget;
+                        gadgetsData = assigneeService.getDataAssignee(assigneeGadget, sessionInfo);
+                    } else if(Gadget.Type.STORY_TEST_EXECUTION.equals(gadget.getType())){
+                        StoryVsTestExecution storyGadget = (StoryVsTestExecution) gadget;
+                        gadgetsData = storyService.getDataStory(storyGadget, sessionInfo.getCookies());
+                    } else{
+                        throw new APIException(String.format("cannot fetch data for gadgetType = %s", gadget.getType()));
+                    }
+                }finally {
+                    dataCache.setData(gadgetsData);
+                    dataCache.setState(State.SUCCESS);
                 }
-                dataCache.setGadgetsData(gadgetsData);
-                dataCache.setState(State.SUCCESS);
             } else{
                 throw new APIException(String.format("gadget id=%s not found", id));
             }
+            
         }
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, gadgetsData);
     }
@@ -216,7 +222,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
     @Override
     public Result getProjectList(SessionInfo sessionInfo) throws APIException {
-        return Results.json().render(gadgetService.getProjectList(sessionInfo.getCookies()));
+        return Results.json().render(gadgetService.getProjectList(sessionInfo));
     }
 
     @Override

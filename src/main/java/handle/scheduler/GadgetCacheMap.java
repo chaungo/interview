@@ -6,37 +6,29 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import manament.log.LoggerWapper;
-import models.main.GadgetDataCacheVO;
-import util.Constant;
-import util.PropertiesUtil;
-public class GadgetCacheMap {
+import models.main.DataCacheVO;
+public class GadgetCacheMap<T> {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetCacheMap.class);
     private long timeToLive;
-    private static ConcurrentMap<String, GadgetDataCacheVO> cacheMap = new ConcurrentHashMap<String, GadgetDataCacheVO>();;
-    private static GadgetCacheMap INSTANCE = new GadgetCacheMap(PropertiesUtil.getInt(Constant.DATA_CACHE_TIME_TO_LIVE, 10));
-    
+    private ConcurrentMap<String, DataCacheVO<T>> cacheMap = new ConcurrentHashMap<>();
     /**
      * 
      * @param timeToLive : minute to live
      */
-    private GadgetCacheMap(long timeToLive) {
+    public GadgetCacheMap(long timeToLive, String name) {
         this.timeToLive = timeToLive * 1000 * 60;
+        APICacheJob clearJob = new APICacheJob(this, name);
+        SchedulerManagement.getInstance().schedule(clearJob);
     }
     
-    
-    public static GadgetCacheMap getInstance() {
-        return INSTANCE;
-    }
-
-
     // PUT method
-    public void put(String key, GadgetDataCacheVO value) {
-            cacheMap.put(key, value);
+    public void put(String key, DataCacheVO<T> value) {
+        cacheMap.put(key, value);
     }
     
     // GET method
-    public GadgetDataCacheVO get(String key) {
-        GadgetDataCacheVO c = cacheMap.get(key);
+    public DataCacheVO<T> get(String key) {
+        DataCacheVO<T> c = cacheMap.get(key);
         if(c == null)
             return null;
         else{
@@ -56,14 +48,14 @@ public class GadgetCacheMap {
         long now = System.currentTimeMillis();
         ArrayList<String> deleteKey = null;
 
-        Iterator<Entry<String, GadgetDataCacheVO>> itr = cacheMap.entrySet().iterator();
+        Iterator<Entry<String, DataCacheVO<T>>> itr = cacheMap.entrySet().iterator();
 
         deleteKey = new ArrayList<String>();
-        GadgetDataCacheVO c = null;
+        DataCacheVO<T> c = null;
 
         while (itr.hasNext()){
-            Entry<String, GadgetDataCacheVO> key = itr.next();
-            c = (GadgetDataCacheVO) key.getValue();
+            Entry<String, DataCacheVO<T>> key = itr.next();
+            c = key.getValue();
             if(c != null && (now > (timeToLive + c.lastAccessed))){
                 deleteKey.add(key.getKey());
             }

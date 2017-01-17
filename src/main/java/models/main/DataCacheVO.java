@@ -1,9 +1,7 @@
 package models.main;
 
-import java.util.Map;
-
-public class GadgetDataCacheVO {
-    private Map<String, GadgetDataWapper> gadgetsData;
+public class DataCacheVO<T> {
+    private T data;
     private State state = State.LOADING;
     public long lastAccessed = System.currentTimeMillis();
     
@@ -15,12 +13,12 @@ public class GadgetDataCacheVO {
         this.lastAccessed = lastAccessed;
     }
 
-    public Map<String, GadgetDataWapper> getGadgetsData() {
-        return gadgetsData;
+    public T getData() {
+        return data;
     }
 
-    public void setGadgetsData(Map<String, GadgetDataWapper> gadgetsData) {
-        this.gadgetsData = gadgetsData;
+    public void setData(T data) {
+        this.data = data;
     }
 
     public State getState() {

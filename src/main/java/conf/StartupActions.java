@@ -9,6 +9,5 @@ import javax.inject.Singleton;
 public class StartupActions {
     public StartupActions() {
         SchedulerManagement.getInstance();
-        GadgetCacheMap.getInstance();
     }
 }
