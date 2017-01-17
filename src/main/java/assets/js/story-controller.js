@@ -136,9 +136,9 @@ function drawUsTable(dataTable, gadget, callback, titleHandler) {
 
                 }
                 dataTable.loading = false;
-                showUsTable(gadget);
-                titleHandler(index);
             });
+            showUsTable(gadget);
+            titleHandler(index);
         }
     });
     return index;
