@@ -145,7 +145,7 @@ function drawUsTable(dataTable, gadget, callback, titleHandler) {
 }
 
 function showUsTable(gadget) {
-    $("#" + gadget.id).find('#us-table-loader').fadeOut();
+    $("#" + gadget.id).find('#us-table-loader').hide();
     $("#" + gadget.id).find("#us-table-container").fadeIn();
 }
 

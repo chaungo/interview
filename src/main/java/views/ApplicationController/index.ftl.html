@@ -225,19 +225,19 @@
                                  data-ng-if="item.type === 'EPIC_US_TEST_EXECUTION'"
                                  data-ng-controller="EpicController">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <b>Epic Test Execution Gadget {{item.projectName}}</b>
+                                    <b>Epic Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</b>
                                     <div flex></div>
                                     <div data-ng-if="currentDashboard.owner == name">
 
                                         <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
-
+											
                                             <md-tooltip md-direction="bottom">
                                                 Edit
                                             </md-tooltip>
                                         </md-button>
-
+											
                                         <md-button class="md-icon-button" ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
                                             <md-tooltip md-direction="bottom">
@@ -245,7 +245,11 @@
                                             </md-tooltip>
                                         </md-button>
                                     </div>
-                                    <md-button class="md-icon-button" ng-click="toggleView()">
+							<md-button class="md-icon-button"
+								ng-click="clearCacheGagdget(item)"> <md-icon
+								class="material-icons">refresh</md-icon> <md-tooltip
+								md-direction="bottom"> Update </md-tooltip> </md-button>
+							<md-button class="md-icon-button" ng-click="toggleView()">
                                         <md-icon class="material-icons">keyboard_capslock</md-icon>
                                         <md-tooltip md-direction="bottom">
                                             Toggle View
@@ -315,14 +319,17 @@
                                                    style="color: orange; margin-right: 10px"
                                                    ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
-
+											
                                             <md-tooltip md-direction="bottom">
                                                 Delete
                                             </md-tooltip>
                                         </md-button>
 
                                     </div>
-
+									<md-button class="md-icon-button"
+								ng-click="clearCacheGagdget(item)"> <md-icon
+								class="material-icons">refresh</md-icon> <md-tooltip
+								md-direction="bottom"> Update </md-tooltip> </md-button>
                                     <md-button class="md-icon-button" ng-click="toggleView()">
                                         <md-icon class="material-icons">keyboard_capslock</md-icon>
                                         <md-tooltip md-direction="bottom">
@@ -344,7 +351,7 @@
                                  data-ng-if="item.type === 'TEST_CYCLE_TEST_EXECUTION'"
                                  data-ng-controller="CycleController">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <b>Cycle Test Execution Gadget {{item.projectName}}</b>
+                                    <b>Cycle Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</b>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">
@@ -368,6 +375,10 @@
                                             </md-tooltip>
                                         </md-button>
                                     </div>
+                                    <md-button class="md-icon-button"
+								ng-click="clearCacheGagdget(item)"> <md-icon
+								class="material-icons">refresh</md-icon> <md-tooltip
+								md-direction="bottom"> Update </md-tooltip> </md-button>
                                     <md-button class="md-icon-button" ng-click="toggleView()">
                                         <md-icon class="material-icons">keyboard_capslock</md-icon>
                                         <md-tooltip md-direction="bottom">
@@ -436,7 +447,10 @@
                                             </md-tooltip>
                                         </md-button>
                                     </div>
-
+									<md-button class="md-icon-button"
+								ng-click="clearCacheGagdget(item)"> <md-icon
+								class="material-icons">refresh</md-icon> <md-tooltip
+								md-direction="bottom"> Update </md-tooltip> </md-button>
                                     <md-button class="md-icon-button" ng-click="toggleView()">
                                         <md-icon class="material-icons">keyboard_capslock</md-icon>
                                         <md-tooltip md-direction="bottom">

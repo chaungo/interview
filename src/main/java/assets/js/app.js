@@ -1245,11 +1245,16 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
 app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.dataTable = null;
     $scope.showView = true;
+    $scope.titleAdditionalInfo = null;
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
     }
     $scope.init = function (item) {
-        drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling);
+    	var titleHandler = function(number){
+    		$scope.titleAdditionalInfo = "- "+ number +" table";
+    		$rootScope.$apply();
+    	}
+        drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling,titleHandler);
     }
 
 });
@@ -1263,8 +1268,9 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     $scope.titleAdditionalInfo = null;
     $scope.showView = true;
     $scope.init = function (item) {
-        var titleHandler = function (index) {
-            $scope.titleAdditionalInfo = "- " + index + " table(s)";
+        var titleHandler = function (number) {
+            $scope.titleAdditionalInfo = "- " + number + " table(s)";
+            $rootScope.$apply();
         }
         drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
@@ -1277,9 +1283,13 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
 app.controller('CycleController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.dataTable = null;
     $scope.showView = true;
+    $scope.titleAdditionalInfo = null;
     $scope.init = function (item) {
-
-        drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling);
+    	var titleHandler = function(number){
+    		$scope.titleAdditionalInfo = "- "+ number +" table";
+    		$rootScope.$apply();
+    	}
+        drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1297,12 +1307,12 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     $scope.init = function (item) {
         var titleHandler = function (index) {
             $scope.titleAdditionalInfo = "- " + index + " table(s)";
+            $scope.$apply();
         }
         drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
 
     $scope.toggleView = function () {
-        console.log($scope.showView);
         $scope.showView = !$scope.showView;
     }
 

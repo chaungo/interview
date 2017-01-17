@@ -1,4 +1,4 @@
-function drawEpicTable(dataTable, gadget, callback) {
+function drawEpicTable(dataTable, gadget, callback, titleHandler) {
     var columnList = getColumnArray(gadget.metrics, false);
     resetTableColumns(dataTable, false);
     if (dataTable != null) {
@@ -16,9 +16,6 @@ function drawEpicTable(dataTable, gadget, callback) {
                 callback('An error has been reported by DataTables: ' + message)
                 showEpicTable(gadget);
             }).DataTable({
-            "fnDrawCallback": function (oSettings) {
-                showEpicTable(gadget);
-            },
             bAutoWidth: false,
             "ajax": {
                 url: GET_DATA_URI,
@@ -38,6 +35,15 @@ function drawEpicTable(dataTable, gadget, callback) {
                             tempArray.push(v2);
                         });
                     });
+                    
+                    showEpicTable(gadget);
+                    if(tempArray.length == 0){
+                    	$("#" + gadget.id).find('#epic-table-container').hide();
+                    	titleHandler(0);
+                    }
+                    else{
+                    	titleHandler(1);
+                    }
                     return tempArray;
                 }
             },
@@ -109,7 +115,7 @@ function drawEpicTable(dataTable, gadget, callback) {
 
 function showEpicTable(gadget) {
     $("#" + gadget.id).find('#epic-table-container').fadeIn();
-    $("#" + gadget.id).find('#epic-table-loader').fadeOut();
+    $("#" + gadget.id).find('#epic-table-loader').hide();
 }
 
 function hideEpicTable(gadget) {

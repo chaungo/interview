@@ -41,8 +41,6 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                     .each(
                         jsonObjectForAssigneeTable["data"],
                         function (cycleKey, assigneeArray) {
-                            console
-                                .log(assigneeArray["issueData"].length);
                             if (assigneeArray["issueData"].length != 0) {
                                 var tempTitle = [];
                                 var customTableId = "assignee-table-" + index;
@@ -225,7 +223,7 @@ function hideAssigneeCycle(gadget) {
 
 function showAssigneeCycle(gadget) {
     $("#" + gadget.id).find('#assignee-cycle-available-div').fadeIn();
-    $("#" + gadget.id).find("#assignee-cycle-loader").fadeOut();
+    $("#" + gadget.id).find("#assignee-cycle-loader").hide();
 }
 
 function hideAssignee(gadget) {
@@ -245,5 +243,5 @@ function hideAssigneeTable(gadget) {
 
 function showAssigneeTable(gadget) {
     $("#" + gadget.id).find('#assignee-table-container').fadeIn();
-    $("#" + gadget.id).find("#assignee-table-loader").fadeOut();
+    $("#" + gadget.id).find("#assignee-table-loader").hide();
 }

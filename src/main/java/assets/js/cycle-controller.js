@@ -17,7 +17,7 @@
  */
 
 
-function drawCycleTable(dataTable, gadget, callback) {
+function drawCycleTable(dataTable, gadget, callback, titleHandler) {
     var columnList = getColumnArray(gadget.metrics, true);
     resetTableColumns(dataTable, true);
     if (dataTable != null) {
@@ -34,9 +34,6 @@ function drawCycleTable(dataTable, gadget, callback) {
                 callback('An error has been reported by DataTables: ' + message);
                 showCycleTable(gadget);
             }).DataTable({
-            "fnDrawCallback": function (oSettings) {
-                showCycleTable(gadget);
-            },
             bAutoWidth: false,
             "ajax": {
                 url: "/gadget/getData",
@@ -55,6 +52,14 @@ function drawCycleTable(dataTable, gadget, callback) {
                             tempArray.push(v2);
                         });
                     });
+                    showCycleTable(gadget);
+                    if(tempArray.length == 0){
+                    	$("#" + gadget.id).find('#cycle-table-container').hide();
+                    	titleHandler(0);
+                    }
+                    else{
+                    	titleHandler(1);
+                    }
                     return tempArray;
                 }
             },
@@ -100,12 +105,12 @@ function hideCycleSelect(gadget) {
 
 function showCycleSelect(gadget) {
     $("#" + gadget.id).find('#cycleMultiSelect').fadeIn();
-    $("#" + gadget.id).find("#cycle-loader").fadeOut();
+    $("#" + gadget.id).find("#cycle-loader").hide();
 }
 
 function showCycleTable(gadget) {
     $("#" + gadget.id).find('#cycle-table-container').fadeIn();
-    $("#" + gadget.id).find("#cycle-table-loader").fadeOut();
+    $("#" + gadget.id).find("#cycle-table-loader").hide();
 }
 
 function hideCycleTable(gadget) {
