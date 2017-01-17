@@ -1307,7 +1307,7 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     $scope.init = function (item) {
         var titleHandler = function (index) {
             $scope.titleAdditionalInfo = "- " + index + " table(s)";
-            $scope.$apply();
+            $rootScope.$apply();
         }
         drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
