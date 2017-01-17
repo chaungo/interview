@@ -36,7 +36,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
     }
 
     @Override
-    public Result insertOrUpdateGadget(String type, String data, Context context) throws APIException {
+    public Result insertOrUpdateGadget(String type, String data, SessionInfo sessionInfo) throws APIException {
         Gadget gadget = null;
         String gadgetId = "";
         Type gadgetType = Gadget.Type.valueOf(type);
@@ -46,7 +46,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
         if (data == null) {
             throw new APIException("data cannot be null");
         }
-        String username = (String) context.getSession().get(Constant.USERNAME);
+        String username = sessionInfo.getUsername();
         // String friendlyname = (String) context.getAttribute("alias");
         boolean toVerify = true;
         List<String> errorMessages = new ArrayList<>();
@@ -107,7 +107,8 @@ public class GadgetHandlerImpl extends GadgetHandler {
                 gadgetId = gadgetService.insertOrUpdate(gadget);
                 if (gadgetId.equals(gadget.getId())) {
                     //The case is update. Clean gadget data cache
-                    dataGadgetCache.remove(gadgetId);
+                    String cacheID = gadgetId + Constant.DELIMITER + sessionInfo.getUsername();
+                    dataGadgetCache.remove(cacheID);
                 }
             } else {
                 StringBuffer error = new StringBuffer();

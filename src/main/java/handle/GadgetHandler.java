@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class GadgetHandler extends Handler {
 
-    public abstract Result insertOrUpdateGadget(String type, String data, Context context) throws APIException;
+    public abstract Result insertOrUpdateGadget(String type, String data, SessionInfo sessionInfo) throws APIException;
 
     public abstract Result getGadgets(String id) throws APIException;
 
