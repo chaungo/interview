@@ -48,11 +48,7 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
-    $scope.isAdmin = false;
-    if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-        $scope.productPage = "configuration";
-        $scope.isAdmin = true;
-    }
+    $scope.productPage = "configuration";
 
     $scope.init = function () {
         var item = $rootScope.gadgetToEdit;

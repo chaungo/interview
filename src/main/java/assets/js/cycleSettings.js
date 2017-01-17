@@ -29,11 +29,7 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
-    $scope.isAdmin = false;
-    if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-        $scope.productPage = "configuration";
-        $scope.isAdmin = true;
-    }
+    $scope.productPage = "configuration";
     $scope.init = function () {
         var item;
         var callBack = function (result) {
@@ -67,8 +63,6 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
         loadCycle(callbackCycle);
-
-
         
         item = $rootScope.gadgetToEdit;
         if (item != null) {

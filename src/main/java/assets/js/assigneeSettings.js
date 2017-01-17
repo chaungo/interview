@@ -30,11 +30,8 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.cancel = function () {
         $mdDialog.cancel();
     }
-    $scope.isAdmin = false;
-    if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-        $scope.productPage = "configuration";
-        $scope.isAdmin = true;
-    }
+    $scope.productPage = "configuration";
+    
     $scope.init = function () {
         var item;
         var callBack = function (result) {

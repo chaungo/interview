@@ -16,11 +16,7 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
     $scope.usMultiSelectOptions = [];
     $scope.showEpicLoader = false;
     $scope.showStoryLoader = false;
-    $scope.isAdmin = false;
-    if ($rootScope.userInfo != null && $rootScope.userInfo.role == "jira-administrators") {
-        $scope.productPage = "configuration";
-        $scope.isAdmin = true;
-    }
+    $scope.productPage = "configuration";
 
     $scope.onProjectReleaseProductChanged = function () {
         $scope.getEpicsAngular(null);
