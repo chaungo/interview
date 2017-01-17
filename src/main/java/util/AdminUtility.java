@@ -14,14 +14,14 @@ import static util.Constant.NAME;
 
 public class AdminUtility extends DatabaseUtility {
     private static final String PRODUCT_COLLECTION = "Product";
-    private static final String CYCLE_COLLECTION = "Cycle";
+    private static final String RELEASE_COLLECTION = "GreenHopperRelease";
     private static AdminUtility INSTANCE = new AdminUtility();
     private MongoCollection<Document> productCollection;
-    private MongoCollection<Document> cycleCollection;
+    private MongoCollection<Document> releaseCollection;
 
     private AdminUtility() {
         productCollection = db.getCollection(PRODUCT_COLLECTION);
-        cycleCollection = db.getCollection(CYCLE_COLLECTION);
+        releaseCollection = db.getCollection(RELEASE_COLLECTION);
     }
 
     public static AdminUtility getInstance() {
@@ -60,30 +60,30 @@ public class AdminUtility extends DatabaseUtility {
         return result.getDeletedCount();
     }
 
-    public Set<String> getAllCycle() {
-        Set<String> cycles = new HashSet<>();
-        FindIterable<Document> documents = cycleCollection.find();
+    public Set<String> getAllRelease() {
+        Set<String> releases = new HashSet<>();
+        FindIterable<Document> documents = releaseCollection.find();
         documents.forEach(new Consumer<Document>() {
             @Override
             public void accept(Document doc) {
-                cycles.add((String) doc.get(NAME));
+                releases.add((String) doc.get(NAME));
             }
         });
-        return cycles;
+        return releases;
     }
 
-    public boolean insertCycle(String cycle) {
-        if (getAllProduct().contains(cycle)) {
+    public boolean insertRelease(String release) {
+        if (getAllRelease().contains(release)) {
             return false;
         }
-        Document document = new Document(NAME, cycle);
-        cycleCollection.insertOne(document);
+        Document document = new Document(NAME, release);
+        releaseCollection.insertOne(document);
         return true;
     }
 
-    public long deleteCycle(String cycle) {
-        Document document = new Document(NAME, cycle);
-        DeleteResult result = cycleCollection.deleteOne(document);
+    public long deleteRelease(String release) {
+        Document document = new Document(NAME, release);
+        DeleteResult result = releaseCollection.deleteOne(document);
         return result.getDeletedCount();
     }
 }

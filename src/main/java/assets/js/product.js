@@ -1,5 +1,5 @@
 var productTable = null;
-var cycleTable = null;
+var releaseTable = null;
 function createProducTable() {
     productTable = $("#productTable").DataTable(
         {
@@ -18,8 +18,8 @@ function createProducTable() {
         });
 }
 
-function createCycleTable() {
-    cycleTable = $("#cycleTable").DataTable(
+function createReleaseTable() {
+    releaseTable = $("#releaseTable").DataTable(
         {
             "searching": false,
             "paging": false,
@@ -55,13 +55,13 @@ function deleteProduct(product, callback) {
     });
 }
 
-function deleteCycle(cycle, callback) {
+function deleteRelease(release, callback) {
     $.ajax({
         method: "POST",
-        url: "/product/deleteCycle",
+        url: "/product/deleteRelease",
         dataType: "json",
         data: {
-            "cycle": cycle
+            "release": release
         },
         dataContext: "json",
         success: function (data) {
@@ -101,22 +101,22 @@ function createEvent() {
         }
     });
 
-    $('#addCycle').on('click', function () {
-        var newCycle = $("#cycleInput").val();
-        if (newCycle != null && newCycle != "") {
+    $('#addRelease').on('click', function () {
+        var newRelease = $("#releaseInput").val();
+        if (newRelease != null && newRelease != "") {
             $.ajax({
                 method: "POST",
-                url: "/product/insertCycle",
+                url: "/product/insertRelease",
                 dataType: "json",
                 data: {
-                    "cycle": newCycle
+                    "release": newRelease
                 },
                 dataContext: "json",
                 success: function (data) {
-                    if (cycleTable != null && data.type == "SUCCESS" && data.data == true) {
-                        cycleTable.row.add([newCycle, ""]).draw(false);
+                    if (releaseTable != null && data.type == "SUCCESS" && data.data == true) {
+                        releaseTable.row.add([newRelease, ""]).draw(false);
                         addEventTablesAction();
-                        $("#cycleInput").val("");
+                        $("#releaseInput").val("");
                     }
                 },
                 error: function (data) {
@@ -124,44 +124,6 @@ function createEvent() {
                 }
             });
         }
-    });
-
-    $('#findCycle').on('click', function () {
-        $("#searchComponent").attr("disabled", "");
-        var releaseValue = $("#release").val();
-        var productValue = $("#product").val();
-        var productValues = [productValue];
-
-        $("#suggest").html('');
-        $("#loader").addClass("loader");
-        $.ajax({
-            method: "GET",
-            url: "/listcycle",
-            dataType: "json",
-            dataContext: "json",
-            data: {
-                products: JSON.stringify(productValues),
-                release: releaseValue,
-                project: "FNMS 557x"
-            },
-            success: function (data) {
-                console.log(data);
-                if ($.isArray(data)) {
-                    for (i = 0; i < data.length; i++) {
-                        $("#suggest").append('<option>' + data[i] + '</option>');
-                    }
-                    $("#searchComponent").removeAttr("disabled");
-                } else {
-                    if (data.type == "error") {
-                        alert(data.data);
-                    }
-                }
-                $("#loader").removeClass("loader");
-            },
-            error: function (data) {
-                $("#loader").removeClass("loader");
-            }
-        });
     });
 
     $('#clearCacheBtn').on('click', function () {
@@ -189,15 +151,15 @@ function addEventTablesAction() {
 
     });
 
-    $('.cycleWrapper').off();
-    $('.cycleWrapper').unbind();
-    $('.cycleWrapper').on('click', '.delete-action', function (e) {
+    $('.releaseWrapper').off();
+    $('.releaseWrapper').unbind();
+    $('.releaseWrapper').on('click', '.delete-action', function (e) {
         if (productTable != null) {
-            var row = cycleTable.row($(this).parents('tr'));
+            var row = releaseTable.row($(this).parents('tr'));
             var removeRowFunction = function () {
                 row.remove().draw();
             }
-            deleteCycle(row.data()[0], removeRowFunction);
+            deleteRelease(row.data()[0], removeRowFunction);
         }
 
     });
@@ -205,7 +167,7 @@ function addEventTablesAction() {
 
 $(function () {
     createProducTable();
-    createCycleTable();
+    createReleaseTable();
     createEvent();
     addEventTablesAction();
 });

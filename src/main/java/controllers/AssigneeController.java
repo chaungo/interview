@@ -56,7 +56,7 @@ public class AssigneeController {
 
     public Result getListExistingCycle(Context context) {
         logger.fasttrace("getListExistingCycle()");
-        Set<String> cycles = AdminUtility.getInstance().getAllCycle();
+        Set<String> cycles = AdminUtility.getInstance().getAllRelease();
         return Results.json().render(cycles);
     }
 }

@@ -1,12 +1,13 @@
 package models.gadget;
 
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import util.MessageConstant;
 import util.PropertiesUtil;
-
-import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,7 +58,7 @@ public class CycleVsTestExecution extends GadgetAPI {
     }
 
     public boolean isSelectAllCycle() {
-        return selectAllCycle;
+        return true;
     }
 
     public void setSelectAllCycle(boolean selectAll) {

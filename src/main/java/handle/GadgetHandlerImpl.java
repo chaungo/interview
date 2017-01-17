@@ -1,5 +1,13 @@
 package handle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+
 import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
 import models.JQLIssueWapper;
@@ -7,23 +15,22 @@ import models.ResultCode;
 import models.SessionInfo;
 import models.exception.APIException;
 import models.exception.ResultsUtil;
-import models.gadget.*;
+import models.gadget.AssigneeVsTestExecution;
+import models.gadget.CycleVsTestExecution;
+import models.gadget.EpicVsTestExecution;
+import models.gadget.Gadget;
 import models.gadget.Gadget.Type;
+import models.gadget.StoryVsTestExecution;
 import models.main.DataCacheVO;
 import models.main.DataCacheVO.State;
 import models.main.GadgetData;
 import models.main.GadgetDataWapper;
-import ninja.Context;
 import ninja.Result;
 import ninja.Results;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
 import util.gadget.GadgetUtility;
-
-import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 public class GadgetHandlerImpl extends GadgetHandler {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetHandlerImpl.class);
@@ -179,7 +186,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
                     } else if (Gadget.Type.TEST_CYCLE_TEST_EXECUTION.equals(gadget.getType())) {
                         CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
                         String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
-                        List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo.getCookies());
+                        List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo);
                         GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                         epicDataWapper.setIssueData(cycleData);
                         epicDataWapper.setSummary(projectName);

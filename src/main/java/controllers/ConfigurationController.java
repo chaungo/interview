@@ -24,15 +24,15 @@ public class ConfigurationController {
 
     final static Logger logger = Logger.getLogger(ConfigurationController.class);
 
-    @FilterWith(AdminSecureFilter.class)
+//    @FilterWith(AdminSecureFilter.class)
     public Result configuration() {
         Set<String> products = AdminUtility.getInstance().getAllProduct();
-        Set<String> cycles = AdminUtility.getInstance().getAllCycle();
-        return Results.html().render("isProductPage", true).render("products", products).render("cycles", cycles);
+        Set<String> releases = AdminUtility.getInstance().getAllRelease();
+        return Results.html().render("isProductPage", true).render("products", products).render("releases", releases);
     }
 
 
-    @FilterWith(AdminSecureFilter.class)
+//    @FilterWith(AdminSecureFilter.class)
     public Result addNewRelease(@Param(NAME) String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
 
@@ -42,7 +42,7 @@ public class ConfigurationController {
         return Results.ok();
     }
 
-    @FilterWith(AdminSecureFilter.class)
+//    @FilterWith(AdminSecureFilter.class)
     public Result updateRelease(@Param("id") String id, @Param("name") String name, @Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(RELEASE_TABLE);
@@ -51,7 +51,7 @@ public class ConfigurationController {
         return Results.ok();
     }
 
-    @FilterWith(AdminSecureFilter.class)
+//    @FilterWith(AdminSecureFilter.class)
     public Result deleteRelease(@Param("url") String url) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(RELEASE_TABLE);

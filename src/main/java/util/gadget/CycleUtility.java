@@ -1,19 +1,18 @@
 package util.gadget;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Future;
+
 import handle.executors.CycleTestCallable;
 import handle.executors.ExecutorManagement;
 import manament.log.LoggerWapper;
 import models.ExecutionIssueResultWapper;
+import models.SessionInfo;
 import models.exception.APIException;
 import models.gadget.CycleVsTestExecution;
 import models.main.GadgetData;
-import util.AdminUtility;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
 
 public class CycleUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(CycleUtility.class);
@@ -26,17 +25,17 @@ public class CycleUtility {
         return INSTANCE;
     }
 
-    public List<GadgetData> getDataCycle(CycleVsTestExecution cycleGadget, Map<String, String> cookies) throws APIException {
+    public List<GadgetData> getDataCycle(CycleVsTestExecution cycleGadget, SessionInfo sessionInfo) throws APIException {
         List<GadgetData> returnData = new ArrayList<>();
         Set<String> cycles = cycleGadget.getCycles();
         String project = cycleGadget.getProjectName();
         if (cycleGadget.isSelectAllCycle()) {
-            cycles = AdminUtility.getInstance().getAllCycle();
+            cycles = AssigneeUtility.getInstance().getListCycleName(project, cycleGadget.getRelease(), cycleGadget.getProducts(), sessionInfo);
         }
         List<CycleTestCallable> tasks = new ArrayList<>();
         if (cycles != null && !cycles.isEmpty()) {
             for (String cycle : cycles) {
-                tasks.add(new CycleTestCallable(cycle, project, cookies));
+                tasks.add(new CycleTestCallable(cycle, project, sessionInfo.getCookies()));
             }
             List<Future<ExecutionIssueResultWapper>> taskResult = ExecutorManagement.getInstance().invokeTask(tasks);
             List<ExecutionIssueResultWapper> results = ExecutorManagement.getInstance().getResult(taskResult);
