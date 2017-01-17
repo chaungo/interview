@@ -3,15 +3,12 @@
  */
 
 
-function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
+function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback) {
     var columnList = getColumnArray(gadget.metrics, true);
     var jsonObjectForAssigneeTable;
 
-    if (dataTable.loading == true) {
-        dataTable.ajax.abort();
-    }
-
-    dataTable.ajax = $
+    if (dataTable.loading == false) {
+    	dataTable.ajax = $
         .ajax({
             url: GET_DATA_URI,
             method: "GET",
@@ -22,9 +19,8 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                 dataTable.loading = true;
                 hideAssigneeTable(gadget);
             },
-            error: function (xhr, textStatus, error) {
-                callback(error);
-                showAssigneeTable(gadget);
+            error: function(){
+            	clearCacheCallback();
             },
             success: function (responseData) {
                 var index = 0;
@@ -33,6 +29,7 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                 if (debugAjaxResponse(responseData)) {
                     callback(responseData);
                     showAssigneeTable(gadget);
+                    clearCacheCallback();
                     return;
                 }
 
@@ -153,11 +150,14 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                                 index++;
                             }
                         });
-                $("#" + gadget.id).find("#assignee-update-btn").prop("disabled", false);
                 showAssigneeTable(gadget);
+                dataTable.loading = false;
                 titleHandler(index);
+                dataTableCallback(dataTable);
+                clearCacheCallback();
             }
         });
+    } 
 }
 
 

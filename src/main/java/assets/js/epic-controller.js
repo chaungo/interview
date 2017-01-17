@@ -1,18 +1,28 @@
-function drawEpicTable(dataTable, gadget, callback, titleHandler) {
+function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback) {
     var columnList = getColumnArray(gadget.metrics, false);
     resetTableColumns(dataTable, false);
     if (dataTable != null) {
         hideEpicTable(gadget);
         dataTable.ajax.reload(function () {
-            showEpicTable(gadget);
+        	if(! dataTable.data().count()){
+        		$("#" + gadget.id).find('#epic-table-loader').fadeOut();
+        		$("#" + gadget.id).find('#epic-table-container').hide();
+        		clearCacheCallback();
+        	}
+        	else{
+        		showEpicTable(gadget);
+        		clearCacheCallback();
+        	}
+            
         });
         dataTable.columns(columnList).visible(true);
-
+        dataTableCallback(dataTable);
     } else {
         hideEpicTable(gadget);
         dataTable = $("#" + gadget.id).find('#epic-table').on(
             'error.dt',
             function (e, settings, techNote, message) {
+            	clearCacheCallback();
                 callback('An error has been reported by DataTables: ' + message)
                 showEpicTable(gadget);
             }).DataTable({
@@ -27,6 +37,7 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler) {
                     if (debugAjaxResponse(responseJson)) {
                         callback(responseJson);
                         showEpicTable(gadget);
+                        clearCacheCallback();
                         return [];
                     }
 
@@ -37,6 +48,7 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler) {
                     });
                     
                     showEpicTable(gadget);
+                    clearCacheCallback();
                     if(tempArray.length == 0){
                     	$("#" + gadget.id).find('#epic-table-container').hide();
                     	titleHandler(0);
@@ -109,6 +121,7 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler) {
             }]
         });
         dataTable.columns(columnList).visible(false);
+        dataTableCallback(dataTable);
     }
 }
 
