@@ -27,7 +27,7 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                 showAssigneeTable(gadget);
             },
             success: function (responseData) {
-            	var index = 0;
+                var index = 0;
                 dataTable.loading = false;
                 $("#" + gadget.id).find("#assignee-table-container").html("");
                 if (debugAjaxResponse(responseData)) {
@@ -44,11 +44,11 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler) {
                             console
                                 .log(assigneeArray["issueData"].length);
                             if (assigneeArray["issueData"].length != 0) {
-                            	var tempTitle = [];
+                                var tempTitle = [];
                                 var customTableId = "assignee-table-" + index;
                                 var assigneeTableDataSet = [];
                                 var assigneeIndividualTable;
-                                tempTitle.push(index+1, ". ", cycleKey);
+                                tempTitle.push(index + 1, ". ", cycleKey);
                                 appendTemplateTable(
                                     customTableId,
                                     tempTitle.join(""),

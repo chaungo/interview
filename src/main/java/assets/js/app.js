@@ -50,13 +50,13 @@ app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     $rootScope.isDisabled = false;
     $rootScope.tableErrorHandling = function (res) {
         if (res.type == "error") {
-        	if(res.errorCode == "COOKIES_EXPIRED"){
-        		window.location = "/logout";
-        	}
-        	else{
+            if (res.errorCode == "COOKIES_EXPIRED") {
+                window.location = "/logout";
+            }
+            else {
                 $mdToast.show($mdToast.simple().textContent(res['data']).hideDelay(5000));
-        	}
-            
+            }
+
         } else {
             $mdToast.show($mdToast.simple().textContent(res).hideDelay(5000));
         }
@@ -109,7 +109,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.currentDashboard = respone[0];
             $rootScope.getting = false;
             //console.log(respone);
-            if($rootScope.dashboardNameList.length==0){
+            if ($rootScope.dashboardNameList.length == 0) {
                 $rootScope.pageName = "Home";
             }
         }, function (error) {
@@ -148,12 +148,6 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         $rootScope.name = $rootScope.userInfo.name;
         $rootScope.getDashboardList();
     }
-
-
-
-
-
-
 
 
     $rootScope.showGadget = function () {
@@ -422,6 +416,7 @@ app.controller('HeaderCtrl', function ($rootScope, $scope, $resource, $mdDialog,
             $mdDialog.cancel();
         };
     }
+
     $scope.showAddNewDialog = function (ev) {
         $mdDialog.show({
             controller: DialogController,
@@ -1057,8 +1052,6 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
     };
 
 
-
-
     $scope.choseProjectNext = function () {
         if ($scope.projectId == "") {
             $mdToast.show(
@@ -1270,11 +1263,10 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     $scope.titleAdditionalInfo = null;
     $scope.showView = true;
     $scope.init = function (item) {
-    	var titleHandler = function(index){
-    		$scope.titleAdditionalInfo = "- " + index + " table(s)";
-    		$scope.$apply();
-    	}
-        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling,titleHandler);
+        var titleHandler = function (index) {
+            $scope.titleAdditionalInfo = "- " + index + " table(s)";
+        }
+        drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
     $scope.toggleView = function () {
         $scope.showView = !$scope.showView;
@@ -1303,10 +1295,9 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
     $scope.titleAdditionalInfo = null;
     $scope.showView = true;
     $scope.init = function (item) {
-    	var titleHandler = function(index){
-    		$scope.titleAdditionalInfo = "- " + index + " table(s)";
-    		$scope.$apply();
-    	}
+        var titleHandler = function (index) {
+            $scope.titleAdditionalInfo = "- " + index + " table(s)";
+        }
         drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler);
     }
 

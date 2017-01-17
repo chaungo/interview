@@ -2,13 +2,12 @@ package models.gadget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import util.MessageConstant;
 import util.PropertiesUtil;
 
 import java.util.Set;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EpicVsTestExecution extends GadgetAPI {
     public static final String author = PropertiesUtil.getString(MessageConstant.EPIC_AUTHOR, "");

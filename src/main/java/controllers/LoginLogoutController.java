@@ -35,17 +35,7 @@ public class LoginLogoutController {
             session.put(Constant.USERNAME, username);
 
             //login to crucible
-            try {
-                Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
-                        .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
-                session.put("crucookies", cruRespond.cookies().toString());
-
-                if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
-                    success = false;
-                }
-            } catch (Exception e) {
-                logger.error("Can not login to cru", e);
-            }
+            //loginCrucible(username, password, session);
 
 
             //login to greenhopper
@@ -59,7 +49,7 @@ public class LoginLogoutController {
                 } else {
                     success = false;
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 logger.error("Can not login to greenhopper", e);
             }
 
@@ -72,6 +62,23 @@ public class LoginLogoutController {
 
         return success;
 
+    }
+
+    static boolean loginCrucible(String username, String password, Session session) {
+        try {
+            Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
+                    .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
+            session.put("crucookies", cruRespond.cookies().toString());
+
+            if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+                return false;
+            }
+        } catch (Exception e) {
+            logger.error("Can not login Crucible", e);
+            return false;
+        }
+
+        return true;
     }
 
     public Result login(Session session) {
@@ -109,6 +116,16 @@ public class LoginLogoutController {
     public Result logout(Session session) {
         session.clear();
         return redirect("/");
+    }
+
+    public Result loginCru(Session session, @Param("username") String username,
+                           @Param("password") String password) {
+        if (loginCrucible(username, password, session)) {
+            return Results.ok();
+        } else {
+            return Results.internalServerError();
+        }
+
     }
 
 }

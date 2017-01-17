@@ -11,10 +11,10 @@ function appendTemplateTable(id, title, gadget, container) {
 }
 
 function appendTemplateUserStoryTable(id, title, gadget, container, issueKey) {
-	var hrefElement = [];
-	var htmlTitle = []; 
-	hrefElement.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, issueKey, '">', title, '</a>');
-	htmlTitle.push('<h4><b>', hrefElement.join(""), '</b></h4>')
+    var hrefElement = [];
+    var htmlTitle = [];
+    hrefElement.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, issueKey, '">', title, '</a>');
+    htmlTitle.push('<h4><b>', hrefElement.join(""), '</b></h4>')
     $(htmlTitle.join("")).appendTo($("#" + gadget.id).find(container));
     $('<table id="' + id + '" class="display"></table>').appendTo($("#" + gadget.id).find(container));
     $('<br><hr>').appendTo($("#" + gadget.id).find(container));

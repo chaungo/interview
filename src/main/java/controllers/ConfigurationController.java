@@ -17,9 +17,7 @@ import util.PropertiesUtil;
 
 import java.util.Set;
 
-import static util.Constant.NAME;
-import static util.Constant.MONGODB_ID;
-import static util.Constant.RELEASE_TABLE;
+import static util.Constant.*;
 
 @Singleton
 public class ConfigurationController {

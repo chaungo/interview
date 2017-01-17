@@ -94,7 +94,7 @@ public class HTTPClientUtil {
                     .data(Constant.USERNAME_LOGIN_KEY, username)
                     .data(Constant.PASSWORD_LOGIN_KEY, password)
                     .timeout(PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT, 10000)).method(Connection.Method.POST);
-            if(rememberme){
+            if (rememberme) {
                 req.data(Constant.REMEMBER_LOGIN_KEY, "true");
             }
             if (proxy != null) {

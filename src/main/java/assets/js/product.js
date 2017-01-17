@@ -163,11 +163,11 @@ function createEvent() {
             }
         });
     });
-    
+
     $('#clearCacheBtn').on('click', function () {
         $(this).attr("disabled", "true");
-        $.get("/clearCache", function(result){
-            if(result.type="SUCCESS"){
+        $.get("/clearCache", function (result) {
+            if (result.type = "SUCCESS") {
                 alert("Clear cache successful");
             }
             $(this).attr("disabled", "");

@@ -12,6 +12,25 @@
 
     <div layout-fill layout="row" layout-align="center center">
 
+        <form ng-if="loginForm" action="/loginCru" method="post" style="margin: 10px">
+            <md-dialog-content>
+                <div class="md-block" layout="row" layout-align="start center">
+                    <label layout-padding>Username</label>
+                    <input ng-model="username" required name="username">
+                </div>
+
+                <div class="md-block" layout="row" layout-align="start center">
+                    <label layout-padding>Password</label>
+                    <input type="password" required name="password" ng-model="password">
+                </div>
+                <div layout-fill layout="row" layout-xs="row"
+                     layout-align="end center">
+                    <md-button class="md-raised md-primary" type="submit">Login</md-button>
+                </div>
+            </md-dialog-content>
+        </form>
+
+
         <md-card layout-fill>
             <div ng-hide="!choseProjectPage">
                 <md-card-title>

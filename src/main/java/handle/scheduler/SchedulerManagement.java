@@ -15,12 +15,12 @@ public class SchedulerManagement {
     private Scheduler scheduler;
 
     private SchedulerManagement() {
-        try{
+        try {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             startClearJob();
             startClearDataJob();
             scheduler.start();
-        } catch (SchedulerException e){
+        } catch (SchedulerException e) {
             logger.fastDebug("Cannot init scheduler", e, new Object());
         }
     }
@@ -35,10 +35,10 @@ public class SchedulerManagement {
         Date triggerStartTime = DateUtils.addHours(new Date(), intervalInHours);
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_CACHE_TRIGGER", "API").startAt(triggerStartTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(intervalInHours).repeatForever()).build();
-        try{
+        try {
             scheduler.scheduleJob(clearCache, trigger);
             logger.fastInfo("started clear cache job");
-        } catch (SchedulerException e){
+        } catch (SchedulerException e) {
             logger.fastDebug("Cannot schedule job", e, new Object());
         }
     }
@@ -50,10 +50,10 @@ public class SchedulerManagement {
         Date triggerStartTime = DateUtils.addMinutes(new Date(), intervalInMinute);
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("CLEAN_GADGET_DATA_CACHE_TRIGGER", "API_DATA").startAt(triggerStartTime)
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(intervalInMinute).repeatForever()).build();
-        try{
+        try {
             scheduler.scheduleJob(clearCache, trigger);
             logger.fastInfo("started clear data cache job");
-        } catch (SchedulerException e){
+        } catch (SchedulerException e) {
             logger.fastDebug("Cannot schedule clear data job", e, new Object());
         }
 

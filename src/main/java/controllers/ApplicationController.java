@@ -19,13 +19,12 @@ import java.io.BufferedReader;
 import java.net.Proxy;
 
 import static util.Constant.*;
-import static util.Constant.ROLE;
-import static util.Constant.USERNAME;
 
 
 public class ApplicationController {
 
     final static Logger logger = Logger.getLogger(ApplicationController.class);
+
 
     public static JSONObject getUserInformation(Session session) throws Exception {
         JSONObject userInfoRS = new JSONObject();
@@ -113,6 +112,5 @@ public class ApplicationController {
     public Result index() {
         return Results.html();
     }
-
 
 }

@@ -23,10 +23,10 @@
  * #us-table-loader
  * 
  */
-function drawUsTable(dataTable, gadget, callback,titleHandler) {
+function drawUsTable(dataTable, gadget, callback, titleHandler) {
     var columnList = getColumnArray(gadget.metrics, false);
     var jsonObjectForUsTable;
-    
+
     if (dataTable.loading == true && GLOBAL_US_TABLES_AJAX.ajax != null) {
         dataTable.ajax.abort();
     }
@@ -44,14 +44,14 @@ function drawUsTable(dataTable, gadget, callback,titleHandler) {
             callback("Server Error");
         },
         success: function (responseData) {
-        	var index = 0;
+            var index = 0;
             var title = "";
             if (debugAjaxResponse(responseData)) {
                 callback(responseData);
                 showUsTable(gadget);
                 return;
             }
-            
+
             $("#" + gadget.id).find("#us-table-container").html("");
             jsonObjectForUsTable = responseData;
             $.each(jsonObjectForUsTable["data"], function (epicKey,
@@ -61,7 +61,7 @@ function drawUsTable(dataTable, gadget, callback,titleHandler) {
                     var usTableDataSet = [];
                     var usIndividualTable;
                     var tempTitle = [];
-                    tempTitle.push(index + 1, ". ", epicKey, ": ",storyArray["summary"]);
+                    tempTitle.push(index + 1, ". ", epicKey, ": ", storyArray["summary"]);
                     appendTemplateUserStoryTable(customTableId, tempTitle.join(""), gadget,
                         "#us-table-container", epicKey);
                     $("#" + gadget.id).find("#" + customTableId).append(TEMPLATE_HEADER_FOOTER);
@@ -133,7 +133,7 @@ function drawUsTable(dataTable, gadget, callback,titleHandler) {
                     });
                     usIndividualTable.columns(columnList).visible(false);
                     index++;
-                    
+
                 }
                 dataTable.loading = false;
                 showUsTable(gadget);

@@ -3,10 +3,10 @@ package models.main;
 import java.util.Map;
 
 public class GadgetDataCacheVO {
+    public long lastAccessed = System.currentTimeMillis();
     private Map<String, GadgetDataWapper> gadgetsData;
     private State state = State.LOADING;
-    public long lastAccessed = System.currentTimeMillis();
-    
+
     public long getLastAccessed() {
         return lastAccessed;
     }

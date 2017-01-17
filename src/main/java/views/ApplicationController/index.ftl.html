@@ -1,10 +1,11 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
     <@layout.myLayout "Homepage">
-    <div style="padding-top: 40px;" layout-fill ng-app="App" id="index" ng-controller="HomePageCtrl">
+    <div style="height: 100%; width: 100%;padding-top: 40px;" layout-fill ng-app="App" id="index"
+         ng-controller="HomePageCtrl">
         <md-progress-linear style="position: fixed;" ng-if="getting" md-mode="indeterminate"></md-progress-linear>
-        <div style="height: 100%; width: 100%;" layout="row"
+        <div layout-fill layout="row"
              layout-align="start start">
-            <div layout-fill style="background-color: white" flex="20">
+            <div style="background-color: white;height: 100%" flex="20">
                 <md-content>
                     <div ng-init="dashboards" layout="column"
                          layout-align="start stretch">
@@ -122,7 +123,8 @@
                                 <td style="text-align: left;">{{ y.componentName }}</td>
                                 <td ng-if="y.metricVal.coverage"
                                     ng-style="y.metricVal.coverage < {{limit}} && {'color':'red'}">
-                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/coverage/list?id={{y.componentKey}}" target="_blank">
+                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/coverage/list?id={{y.componentKey}}"
+                                       target="_blank">
                                         {{y.metricVal.coverage}}
                                         <span ng-if="check(y.metricVal.coverage)">%</span>
                                     </a>
@@ -133,9 +135,10 @@
                                 </td>
                                 <td ng-if="y.metricVal.new_coverage"
                                     ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
-                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/new_coverage/list?id={{y.componentKey}}" target="_blank">
-                                    {{y.metricVal.new_coverage}} <span
-                                        ng-if="check(y.metricVal.new_coverage)">%</span>
+                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/new_coverage/list?id={{y.componentKey}}"
+                                       target="_blank">
+                                        {{y.metricVal.new_coverage}} <span
+                                            ng-if="check(y.metricVal.new_coverage)">%</span>
                                     </a>
                                 </td>
                                 <td ng-if="y.metricVal.test_errors"

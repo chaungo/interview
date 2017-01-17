@@ -1,9 +1,6 @@
 package controllers;
 
-import java.util.Set;
-
 import com.google.inject.Singleton;
-
 import filter.AdminSecureFilter;
 import manament.log.LoggerWapper;
 import models.ResultCode;
@@ -15,6 +12,8 @@ import ninja.params.Param;
 import util.AdminUtility;
 import util.Constant;
 import util.gadget.GadgetUtility;
+
+import java.util.Set;
 
 @Singleton
 public class ProductController {
@@ -41,6 +40,7 @@ public class ProductController {
         long result = AdminUtility.getInstance().deleteCycle(cycle);
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, result);
     }
+
     @FilterWith(AdminSecureFilter.class)
     public Result clearCache(@Param("cycle") String cycle, Context context) {
         String user = (String) context.getSession().get(Constant.USERNAME);
@@ -48,10 +48,10 @@ public class ProductController {
         GadgetUtility.getInstance().clearCache();
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, "");
     }
-    
+
     public Result getAllProduct() {
         Set<String> products = AdminUtility.getInstance().getAllProduct();
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, products);
     }
-    
+
 }

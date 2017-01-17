@@ -9,11 +9,11 @@ public class Routes implements ApplicationRoutes {
     @Override
     public void init(Router router) {
         router.GET().route("/login").with(LoginLogoutController.class, "login");
+        router.POST().route("/loginCru").with(LoginLogoutController.class, "loginCru");
         router.POST().route("/login").with(LoginLogoutController.class, "loginPost");
         router.GET().route("/logout").with(LoginLogoutController.class, "logout");
         router.POST().route("/getUserInfo").with(ApplicationController.class, "getUserInfo");
         router.POST().route("/getProjectList").with(ApplicationController.class, "getProjectList");
-
 
         router.POST().route("/getGadgetList").with(GadgetController.class, "getGadgetList");
 
@@ -30,12 +30,10 @@ public class Routes implements ApplicationRoutes {
 
         router.POST().route("/getCruProjectList").with(OverdueReviewReportController.class, "getCruProjectList");
 
-
         router.GET().route("/configuration").with(ConfigurationController.class, "configuration");
         router.POST().route("/addNewRelease").with(ConfigurationController.class, "addNewRelease");
         router.POST().route("/deleteRelease").with(ConfigurationController.class, "deleteRelease");
         router.POST().route("/updateRelease").with(ConfigurationController.class, "updateRelease");
-
 
         router.GET().route("/dashboard/new").with(DashboardController.class, "new_dashboard");
         router.POST().route("/dashboard/new").with(DashboardController.class, "new_dashboard_post");
@@ -43,7 +41,6 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/getDashboardInfo").with(DashboardController.class, "getDashboardInfo");
         router.POST().route("/getDashboardList").with(DashboardController.class, "getDashboardList");
         router.POST().route("/updateDashboardOption").with(DashboardController.class, "updateDashboardOption");
-
 
         router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");
@@ -67,8 +64,9 @@ public class Routes implements ApplicationRoutes {
 
         router.GET().route("/listproject").with(MyGadgetController.class, "getProjectList");
         router.GET().route("/clearCache").with(ProductController.class, "clearCache");
-        
+
         router.GET().route("/.*").with(ApplicationController.class, "index");
+
     }
 
 }

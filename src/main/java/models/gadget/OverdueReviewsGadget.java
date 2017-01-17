@@ -2,11 +2,10 @@ package models.gadget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import util.MessageConstant;
 import util.PropertiesUtil;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = { "author", "name", "pictureUrl", "description" })
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"author", "name", "pictureUrl", "description"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OverdueReviewsGadget extends GadgetAPI {
     public static final String author = PropertiesUtil.getString(MessageConstant.OVERDUE_AUTHOR, "By Alcatel-Lucent AMS R&D");
