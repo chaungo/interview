@@ -28,7 +28,7 @@ public class MyGadgetController {
 
     public Result insertOrUpdateGadget(@Param("type") String type, @Param("data") String data, Context context) {
         try {
-            return handler.insertOrUpdateGadget(type, data, context);
+            return handler.insertOrUpdateGadget(type, data, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
             return ResultsUtil.convertException(e, context);
         }
