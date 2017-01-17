@@ -3,7 +3,7 @@ var app = angular.module('App', ['ngAnimate', 'ngMaterial', 'ngResource', 'ngMes
 
 app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     /////////////////////////////////////////////////////////////
-    console.log($location.protocol() + "://" + $location.host() + ":" + $location.port());
+   // console.log($location.protocol() + "://" + $location.host() + ":" + $location.port());
     $rootScope.host = $location.protocol() + "://" + $location.host() + ":" + $location.port();
 
     if ($location.absUrl().indexOf("configuration") > -1) {
