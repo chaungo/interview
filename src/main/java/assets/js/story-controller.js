@@ -38,9 +38,15 @@ function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallbac
     	            dataTableCallback(dataTable);
     	            hideUsTable(gadget);
     	        },
-    	        error: function(){
-    	        	clearCacheCallback();
-    	        },
+    	        error: function(e, status){
+                	if( e.status == 500){
+                		callback("500 Internal Server Error");
+                	}
+                	else if(status === "timeout"){
+                		callback("Ajax request timed out")
+                	}
+                	clearCacheCallback();
+                },
     	        success: function (responseData) {
     	            var index = 0;
     	            var title = "";
@@ -153,5 +159,5 @@ function showUsTable(gadget) {
 
 function hideUsTable(gadget) {
     $("#" + gadget.id).find('#us-table-loader').fadeIn();
-    $("#" + gadget.id).find("#us-table-container").fadeOut();
+    $("#" + gadget.id).find("#us-table-container").hide();
 }

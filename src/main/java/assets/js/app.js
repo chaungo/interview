@@ -1301,7 +1301,7 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
     $scope.init = function (item) {
         var titleHandler = function (number) {
             $scope.titleAdditionalInfo = "- " + number + " table(s)";
-            //$rootScope.$apply();
+            $rootScope.$apply();
         }
         var dataTableCallback = function(table){
     		$scope.dataTable = table;

@@ -128,6 +128,6 @@ function showCycleTable(gadget) {
 }
 
 function hideCycleTable(gadget) {
-    $("#" + gadget.id).find('#cycle-table-container').fadeOut();
+    $("#" + gadget.id).find('#cycle-table-container').hide();
     $("#" + gadget.id).find("#cycle-table-loader").fadeIn();
 }

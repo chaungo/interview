@@ -132,6 +132,6 @@ function showEpicTable(gadget) {
 }
 
 function hideEpicTable(gadget) {
-    $("#" + gadget.id).find('#epic-table-container').fadeOut();
+    $("#" + gadget.id).find('#epic-table-container').hide();
     $("#" + gadget.id).find('#epic-table-loader').fadeIn();
 }

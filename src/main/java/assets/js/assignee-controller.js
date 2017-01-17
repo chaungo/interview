@@ -19,7 +19,13 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                 dataTable.loading = true;
                 hideAssigneeTable(gadget);
             },
-            error: function(){
+            error: function(e, status){
+            	if( e.status == 500){
+            		callback("500 Internal Server Error");
+            	}
+            	else if(status === "timeout"){
+            		callback("Ajax request timed out")
+            	}
             	clearCacheCallback();
             },
             success: function (responseData) {
@@ -237,7 +243,7 @@ function showAssignee(gadget) {
 }
 
 function hideAssigneeTable(gadget) {
-    $("#" + gadget.id).find('#assignee-table-container').fadeOut();
+    $("#" + gadget.id).find('#assignee-table-container').hide();
     $("#" + gadget.id).find("#assignee-table-loader").fadeIn();
 }
 
