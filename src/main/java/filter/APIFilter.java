@@ -22,6 +22,9 @@ public class APIFilter implements Filter {
         if (sessionCookies != null && !sessionCookies.isEmpty()) {
             try {
                 SessionInfo sessionInfo = JSONUtil.getInstance().convertJSONtoObject(sessionCookies, SessionInfo.class);
+                if(sessionInfo == null || sessionInfo.getCookies() == null || sessionInfo.getUsername() == null){
+                    return ResultsUtil.convertException(new APIException(PropertiesUtil.getString(MessageConstant.SESSION_ERROR_MESSAGE)), context);
+                }
                 context.setAttribute(Constant.API_SESSION_INFO_INTERNAL, sessionInfo);
                 return filterChain.next(context);
             } catch (APIException e) {
