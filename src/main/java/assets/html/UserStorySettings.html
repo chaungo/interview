@@ -20,7 +20,7 @@
                     <td class="col-md-6"><select data-ng-change="onProjectReleaseProductChanged()" class="form-control"
                                                  id="usProject" data-ng-model="usProject"
                                                  data-ng-options="project for project in usProjectOptions">
-                        <option selected disabled>-Select Project-</option>
+                        <option value="" selected disabled>-Select Project-</option>
                     </select></td>
                 </tr>
                 <!-- US Release Row -->
@@ -28,11 +28,9 @@
                     <td class="col-md-6"><label>Release</label></td>
                     <td class="col-md-6"><select class="form-control"
                                                  id="usRelease" data-ng-change="onProjectReleaseProductChanged()"
-                                                 data-ng-model="usRelease">
-                        <option selected disabled>-Select Version-</option>
-                        <option value="1.2.0">R1.2.0</option>
-                        <option value="1.2.01">R1.2.01</option>
-                        <option value="1.3.0">R1.3.0</option>
+                                                 data-ng-model="usRelease"
+                                                 data-ng-options="release for release in usReleaseOptions">
+                        <option value="" selected disabled>-Select Version-</option>
                     </select></td>
                 </tr>
                 <!-- Product Row -->
@@ -43,7 +41,7 @@
                             <select id="usProduct" class="form-control" data-ng-model="usProduct"
                                     data-ng-options="product for product in usProductOptions"
                                     data-ng-change="onProjectReleaseProductChanged()">
-                                <option selected disabled>-Select Product-</option>
+                                <option value="" selected disabled>-Select Product-</option>
                             </select>
                         </div>
                         <div class="col-md-3">

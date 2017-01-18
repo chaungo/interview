@@ -12,3 +12,4 @@ var GET_CYCLE_URI = "/listcycle";
 var GET_PRODUCT_URI = "/product/getall";
 var GET_ASSIGNEE_URI = "/getassignee";
 var GET_EXISTING_CYCLE_URI = "/cycleExisting";
+var GET_RELEASE_URI = "/listRelease";

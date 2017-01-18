@@ -9,6 +9,12 @@ function getGreenHopperProduct(callBack) {
         callBack(data);
     });
 }
+function getGreenHopperRelease(callBack) {
+    $.get("/listRelease", function (data) {
+        callBack(data);
+    });
+}
+
 function verifyValue(arrayArgument) {
     var verify = true;
     $.each(arrayArgument, function (index, value) {
@@ -21,6 +27,7 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
     $scope.gadgetId = null;
     $scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
+    $scope.greenHopperRelease = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
@@ -51,25 +58,25 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             }
 
         }
-        var callbackCycle = function (result) {
-            if (result.type == null) {
-                $scope.greenHopperCycleLink = result;
+        var callBackRelease = function(result){
+        	if (result.type == SUCCESS) {
+                $scope.greenHopperRelease = result.data;
                 $scope.$apply();
             } else {
+                console.log(result);
                 showError(result.data);
             }
         }
         
         getGreenHopperProjectList(callBack);
+        getGreenHopperRelease(callBackRelease);
         getGreenHopperProduct(callBackProduct);
-        loadCycle(callbackCycle);
         
         item = $rootScope.gadgetToEdit;
         if (item != null) {
             if (item.type == "TEST_CYCLE_TEST_EXECUTION") {
                 $scope.gadgetId = item.id;
                 $scope.selectedProject = item.projectName;
-                console.log($scope.selectedProject);
                 $scope.selectedRelease = item.release;
                 $scope.selectedProduct = item.products[0];
                 $scope.selectAllCycle = item.selectAllCycle;

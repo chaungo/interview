@@ -9,6 +9,11 @@ function getGreenHopperProduct(callBack) {
         callBack(data);
     });
 }
+function getGreenHopperRelease(callBack) {
+    $.get("/listRelease", function (data) {
+        callBack(data);
+    });
+}
 function verifyValue(arrayArgument) {
     var verify = true;
     $.each(arrayArgument, function (index, value) {
@@ -25,6 +30,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.selectedMetric = null;
     $scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
+    $scope.greenHopperRelease = [];
     $scope.greenHopperCycleLink = [];
     $scope.selectAllCycle = true;
     $scope.cancel = function () {
@@ -51,9 +57,19 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
                 showError(result.data);
             }
         }
+        var callBackRelease = function(result){
+        	if (result.type == SUCCESS) {
+                $scope.greenHopperRelease = result.data;
+                $scope.$apply();
+            } else {
+                console.log(result);
+                showError(result.data);
+            }
+        }
       
         
         getGreenHopperProjectList(callBack);
+        getGreenHopperRelease(callBackRelease);
         getGreenHopperProduct(callBackProduct);
         
         if (item != null) {

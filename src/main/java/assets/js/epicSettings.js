@@ -9,6 +9,11 @@ function getGreenHopperProduct(callBack) {
         callBack(data);
     });
 }
+function getGreenHopperRelease(callBack) {
+    $.get("/listRelease", function (data) {
+        callBack(data);
+    });
+}
 function verifyValue(arrayArgument) {
     var verify = true;
     $.each(arrayArgument, function (index, value) {
@@ -38,6 +43,7 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
     $scope.gadgetId = null;
     $scope.greenHopperProjectList = [];
     $scope.greenHopperProduct = [];
+    $scope.greenHopperRelease = [];
     $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
@@ -70,8 +76,18 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                 showError(result.data);
             }
         }
+        var callBackRelease = function(result){
+        	if (result.type == SUCCESS) {
+                $scope.greenHopperRelease = result.data;
+                $scope.$apply();
+            } else {
+                console.log(result);
+                showError(result.data);
+            }
+        }
 
         getGreenHopperProjectList(callBack);
+        getGreenHopperRelease(callBackRelease);
         getGreenHopperProduct(callBackProduct);
 
         if (item != null) {
