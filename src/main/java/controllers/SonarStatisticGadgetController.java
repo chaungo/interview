@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static controllers.ConfigurationController.getPeriod;
 import static util.Constant.*;
 import static util.MyUtill.getHttpURLConnection;
 import static util.MyUtill.isCacheExpired;
@@ -42,6 +43,11 @@ public class SonarStatisticGadgetController {
         //todo
         MongoCollection<org.bson.Document> MetricCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(METRIC_TABLE);
         String period = MetricCollection.find(new org.bson.Document("code", "new_coverage")).first().getString("period");
+
+        if (period == null || period.equalsIgnoreCase("")) {
+            period = getPeriod(session).getJSONArray("PeriodArray").getJSONObject(0).getString("key");
+            MetricCollection.updateMany(new org.bson.Document(new org.bson.Document("code", "new_coverage")), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("period", period)));
+        }
 
 
         if (isCacheExpired(document, 2)) {
