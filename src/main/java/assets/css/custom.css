@@ -65,8 +65,8 @@ md-icon {
     border-top-right-radius: 3px;
 }
 
-.gadgetHeader {
-    height: 25px;
+.h4, .h5, .h6, h4, h5, h6 {
+   margin: 5px;
 }
 
 .gadgetHeader > b {
@@ -102,14 +102,14 @@ md-content {
     background: #607D8B;
     color: #FFFFFF;
     text-align: center;
-    padding: 1px;
+    padding: 2px;
     border-right: white groove 1px;
 
 }
 
 .responstable td {
     text-align: center;
-    padding: 1px;
+    padding: 2px;
 }
 
 

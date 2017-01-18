@@ -20,6 +20,7 @@ import util.PropertiesUtil;
 
 import java.io.BufferedReader;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static util.Constant.*;
 import static util.MyUtill.getHttpURLConnection;
@@ -91,9 +92,22 @@ public class SonarStatisticGadgetController {
             result = new JSONObject(document.getString("cache"));
         }
 
+
+        long lastUpateTime;
+
+        try {
+            Calendar calendar = new GregorianCalendar(Locale.getDefault());
+            Long millis = calendar.getTimeInMillis() - document.getLong(Constant.UPDATE_DATE);
+            lastUpateTime = TimeUnit.MILLISECONDS.toMinutes(millis);
+        } catch (Exception e) {
+            lastUpateTime = 0;
+        }
+
+
         result.put("id", GadgetId);
         result.put("release", data.getString("Release"));
         result.put("period", data.getString("Period"));
+        result.put("lastUpateTime", lastUpateTime);
 
         mongoClient.close();
 

@@ -17,10 +17,7 @@ import util.PropertiesUtil;
 import java.io.BufferedReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static util.Constant.*;
@@ -103,8 +100,20 @@ public class OverdueReviewReportController {
             result = new JSONObject(document.getString("cache"));
         }
 
+
+        long lastUpateTime;
+
+        try {
+            Calendar calendar = new GregorianCalendar(Locale.getDefault());
+            Long millis = calendar.getTimeInMillis() - document.getLong(Constant.UPDATE_DATE);
+            lastUpateTime = TimeUnit.MILLISECONDS.toMinutes(millis);
+        } catch (Exception e) {
+            lastUpateTime = 0;
+        }
+
         result.put("id", GadgetId);
         result.put("project", data.getString("Project"));
+        result.put("lastUpateTime", lastUpateTime);
 
         return result;
 
