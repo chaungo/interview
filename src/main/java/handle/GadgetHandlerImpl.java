@@ -327,6 +327,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
     @Override
     public Result cleanAllCache(SessionInfo sessionInfo) {
+        dataGadgetCache.cleanAll();
         gadgetService.clearCache();
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, "");
     }
