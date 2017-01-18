@@ -325,4 +325,10 @@ public class GadgetHandlerImpl extends GadgetHandler {
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, cacheID);
     }
 
+    @Override
+    public Result cleanAllCache(SessionInfo sessionInfo) {
+        gadgetService.clearCache();
+        return ResultsUtil.convertToResult(ResultCode.SUCCESS, "");
+    }
+
 }

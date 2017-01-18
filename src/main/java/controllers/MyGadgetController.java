@@ -90,4 +90,13 @@ public class MyGadgetController {
             return ResultsUtil.convertException(e, context);
         }
     }
+    
+    public Result cleanAllCache(Context context){
+        logger.fasttrace("cleanAllCache()");
+        try {
+            return handler.cleanAllCache(ResultsUtil.getSessionInfo(context));
+        } catch (APIException e) {
+            return ResultsUtil.convertException(e, context);
+        }
+    }
 }
