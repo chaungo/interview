@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import filter.AdminSecureFilter;
+import filter.SecureFilter;
 import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
@@ -32,7 +33,7 @@ public class ConfigurationController {
 
     final static Logger logger = Logger.getLogger(ConfigurationController.class);
 
-    @FilterWith(AdminSecureFilter.class)
+    @FilterWith(SecureFilter.class)
     public Result configuration() {
         Set<String> products = AdminUtility.getInstance().getAllProduct();
         Set<String> releases = AdminUtility.getInstance().getAllRelease();

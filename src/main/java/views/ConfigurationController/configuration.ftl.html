@@ -2,75 +2,74 @@
     <@layout.myLayout "Configuration">
     <div style="height: 100%; width: 100%;padding-top: 40px;" id="configurationMain" ng-controller="ConfigCtrl"
          layout-padding ng-app="App" layout-xs="column">
-
-        <div layout="row">
-
-            <div style="padding: 5px" flex>
-                <span class="md-headline">Release</span>
-                <div layout="row" layout-align="start center">
-                    <table layout-fill md-whiteframe="5" class="responstable">
-                        <th>Name</th>
-                        <th>Url</th>
-                        <th colspan="2">Action</th>
-                        <tbody>
-                        <tr ng-repeat="release in ReleaseList">
-                            <td>
-                                <div ng-hide="a">{{release.name}}</div>
-                                <md-input-container ng-hide="!a" class="md-block">
-                                    <input aria-label={{release.name}} required ng-model="release.name">
-                                </md-input-container>
-                            </td>
-                            <td>
-                                <div ng-hide="a"><a href="{{release.url}}">{{release.url}}</a></div>
-                                <md-input-container ng-hide="!a" class="md-block">
-                                    <input aria-label={{release.url}} required ng-model="release.url">
-                                </md-input-container>
-                            </td>
-                            <td>
-                                <md-button ng-hide="!a" class="md-icon-button"
-                                           ng-click="a=!a;editRelease(release,$event);">
-                                    <md-icon style="color: grey" class="material-icons">save</md-icon>
-                                </md-button>
-                                <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
-                                    <md-icon style="color: grey" class="material-icons">edit</md-icon>
-                                </md-button>
-                            </td>
-                            <td>
-                                <md-button class="md-icon-button" ng-click="deleteRelease(release,$event)">
-                                    <md-icon style="color: grey" class="material-icons">delete</md-icon>
-                                </md-button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <md-input-container class="md-block">
-                                    <input required placeholder="New Release's name" ng-model="newReleaseName">
-                                </md-input-container>
-                            </td>
-                            <td>
-                                <md-input-container class="md-block">
-                                    <input required placeholder="New Release's url" ng-model="newReleaseUrl">
-                                </md-input-container>
-                            </td>
-                            <td colspan="2">
-                                <md-button ng-click="addNewRelease($event)" class="md-raised md-warn">Add new
-                                </md-button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+        <#if (session.role)??>
+            <div layout="row">
+                <div style="padding: 5px" flex>
+                    <span class="md-headline">Release</span>
+                    <div layout="row" layout-align="start center">
+                        <table layout-fill md-whiteframe="5" class="responstable">
+                            <th>Name</th>
+                            <th>Url</th>
+                            <th colspan="2">Action</th>
+                            <tbody>
+                            <tr ng-repeat="release in ReleaseList">
+                                <td>
+                                    <div ng-hide="a">{{release.name}}</div>
+                                    <md-input-container ng-hide="!a" class="md-block">
+                                        <input aria-label={{release.name}} required ng-model="release.name">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <div ng-hide="a"><a href="{{release.url}}">{{release.url}}</a></div>
+                                    <md-input-container ng-hide="!a" class="md-block">
+                                        <input aria-label={{release.url}} required ng-model="release.url">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-button ng-hide="!a" class="md-icon-button"
+                                               ng-click="a=!a;editRelease(release,$event);">
+                                        <md-icon style="color: grey" class="material-icons">save</md-icon>
+                                    </md-button>
+                                    <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
+                                        <md-icon style="color: grey" class="material-icons">edit</md-icon>
+                                    </md-button>
+                                </td>
+                                <td>
+                                    <md-button class="md-icon-button" ng-click="deleteRelease(release,$event)">
+                                        <md-icon style="color: grey" class="material-icons">delete</md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <input required placeholder="New Release's name" ng-model="newReleaseName">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container class="md-block">
+                                        <input required placeholder="New Release's url" ng-model="newReleaseUrl">
+                                    </md-input-container>
+                                </td>
+                                <td colspan="2">
+                                    <md-button ng-click="addNewRelease($event)" class="md-raised md-warn">Add new
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="padding: 5px">
+                    <span class="md-headline">Period</span>
+                    <md-radio-group style="padding: 5px;" layout="column" ng-model="period">
+                        <md-radio-button ng-repeat="item in periodList" value="{{item.key}}">
+                            {{item.value}}
+                        </md-radio-button>
+                    </md-radio-group>
                 </div>
             </div>
-            <div style="padding: 5px">
-                <span class="md-headline">Period</span>
-                <md-radio-group style="padding: 5px;" layout="column" ng-model="period">
-                    <md-radio-button ng-repeat="item in periodList" value="{{item.key}}">
-                        {{item.value}}
-                    </md-radio-button>
-                </md-radio-group>
-            </div>
-        </div>
-
+        </#if>
         <div layout-padding>
             <div style="padding: 5px">
                 <span class="md-headline">Greenhoper</span>
