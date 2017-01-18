@@ -49,17 +49,16 @@ public class GadgetService {
     public static void clearCacheGadgetfromDB(String gadgetId) {
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
+        org.bson.Document document = collection.find(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(gadgetId))).first();
+
         org.bson.Document doc = new org.bson.Document("cache", "").append(Constant.UPDATE_DATE, 0);
-        collection.updateOne(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(gadgetId)), new org.bson.Document(Constant.MONGODB_SET, doc));
+        collection.updateMany(new org.bson.Document("data", document.get("data")), new org.bson.Document(Constant.MONGODB_SET, doc));
         mongoClient.close();
     }
 
 
     public static List<Gadget> getDashboardGadgetbyDashboardId(String dashboardId) throws Exception {
         List<Gadget> gadgets = GadgetUtility.getInstance().findByDashboardId(dashboardId);
-        //todo
-
-
         return gadgets;
     }
 
