@@ -95,7 +95,7 @@
                                 </md-tooltip>
                             </md-button>
                             <md-button class="md-icon-button" ng-click="hide=!hide">
-                                <md-icon ng-if="hide" class="material-icons">expand_more</md-icon>
+                                <md-icon aria-label="" ng-if="hide" class="material-icons">expand_more</md-icon>
                                 <md-tooltip ng-if="hide" md-direction="bottom">
                                     Toggle View
                                 </md-tooltip>
@@ -182,7 +182,7 @@
                                     Update
                                 </md-tooltip>
                             </md-button>
-                            <md-button class="md-icon-button" ng-click="hide=!hide">
+                            <md-button aria-label="Toggle View" class="md-icon-button" ng-click="hide=!hide">
                                 <md-icon ng-if="hide" class="material-icons">expand_more</md-icon>
                                 <md-tooltip ng-if="hide" md-direction="bottom">
                                     Toggle View
@@ -232,12 +232,12 @@
                                         <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
-											
+
                                             <md-tooltip md-direction="bottom">
                                                 Edit
                                             </md-tooltip>
                                         </md-button>
-											
+
                                         <md-button class="md-icon-button" ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
                                             <md-tooltip md-direction="bottom">
@@ -319,7 +319,7 @@
                                                    style="color: orange; margin-right: 10px"
                                                    ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
-											
+
                                             <md-tooltip md-direction="bottom">
                                                 Delete
                                             </md-tooltip>

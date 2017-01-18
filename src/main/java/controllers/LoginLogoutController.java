@@ -35,7 +35,7 @@ public class LoginLogoutController {
             session.put(Constant.USERNAME, username);
 
             //login to crucible
-            //loginCrucible(username, password, session);
+            loginCrucible(username, password, session);
 
             //login to greenhopper
             try {
@@ -116,6 +116,11 @@ public class LoginLogoutController {
     public Result logout(Session session) {
         session.clear();
         return redirect("/");
+    }
+
+    public Result clearSession(Session session) {
+        session.clear();
+        return Results.ok();
     }
 
     public Result loginCru(@Param("username") String username,

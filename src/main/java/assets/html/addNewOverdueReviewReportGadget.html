@@ -29,7 +29,7 @@
 
                 <md-input-container class="md-block">
                     <label>Password</label>
-                    <input ng-model="crupassword" type="password" required >
+                    <input ng-model="crupassword" type="password" required>
                 </md-input-container>
             </div>
             <div layout-fill layout="row" layout-align="end center">
@@ -53,7 +53,8 @@
                     <md-radio-group ng-model="projectId">
                         <md-content style="height: 300px">
                             <md-list>
-                                <md-list-item ng-click="projectId={{project.id}}" ng-repeat="project in CruProjectList | filter:searchText">
+                                <md-list-item ng-click="null"
+                                              ng-repeat="project in CruProjectList | filter:searchText">
                                     <md-radio-button layout-fill value="{{project.id}}">
                                         {{project.name}}
                                     </md-radio-button>
