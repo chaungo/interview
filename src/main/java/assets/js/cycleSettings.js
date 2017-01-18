@@ -104,9 +104,8 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
         var cycleProductVal = $("#cycleProduct").val();
         var cycleReleaseVal = $("#cycleRelease").val();
         var metricsVal = $("#cycleMetricMultiSelect").val();
-        var cycleCycle = $("#cycleCycle").val();
         var isNotEmpty = true;
-        var cycleCheckAllCycleVal = $("#cycleCheckAllCycle").prop('checked');
+        var cycleCheckAllCycleVal = true
         isNotEmpty &= (metricsVal != null && metricsVal.length > 0);
         if (cycleCheckAllCycleVal) {
             isNotEmpty &= verifyValue([cycleProjectVal, cycleProductVal, cycleReleaseVal]);
@@ -125,8 +124,6 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             object['metrics'] = metricsVal;
             if (cycleCheckAllCycleVal) {
                 object['selectAllCycle'] = true;
-            } else {
-                object['cycles'] = cycleCycle;
             }
             var jsonObj = JSON.stringify(object);
             var callback = function (result) {
