@@ -84,6 +84,8 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                                 assigneeIndividualTable = $("#" + gadget.id).find(
                                     "#" + customTableId)
                                     .DataTable({
+                                    	bSort: false,
+                                    	paging: false,
                                         bAutoWidth: false,
                                         data: assigneeTableDataSet,
                                         columns: [{

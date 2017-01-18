@@ -26,6 +26,8 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
                 callback('An error has been reported by DataTables: ' + message)
                 showEpicTable(gadget);
             }).DataTable({
+            bSort: false,
+            paging: false,
             bAutoWidth: false,
             "ajax": {
                 url: GET_DATA_URI,
@@ -66,9 +68,27 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
                     return createIssueLinkForTitle(data);
                 }
             }, {
-                "data": "key.summary"
+                "data": "key.summary",
+                "render": function(data, displayOrType,
+                                    rowData, setting){
+                	if(data == null){
+                		return "";
+                	}
+                	else{
+                		return data;
+                	}
+                }
             }, {
                 "data": "key.priority.name",
+                "render": function(data, displayOrType,
+                        rowData, setting){
+                	if(data == null){
+                		return "";
+                	}
+                	else{
+                		return data;
+                	}
+                }
             }, {
                 "data": "unexecuted",
                 "render": function (data, displayOrType,
