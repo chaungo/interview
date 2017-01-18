@@ -189,6 +189,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
                         CycleVsTestExecution cycleGadget = (CycleVsTestExecution) gadget;
                         String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
                         List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo);
+                        cycleData.add(getTotal(cycleData));
                         GadgetDataWapper epicDataWapper = new GadgetDataWapper();
                         epicDataWapper.setIssueData(cycleData);
                         epicDataWapper.setSummary(projectName);
@@ -205,6 +206,12 @@ public class GadgetHandlerImpl extends GadgetHandler {
                     } else if (Gadget.Type.STORY_TEST_EXECUTION.equals(gadget.getType())) {
                         StoryVsTestExecution storyGadget = (StoryVsTestExecution) gadget;
                         gadgetsData = storyService.getDataStory(storyGadget, sessionInfo.getCookies());
+                        gadgetsData.forEach(new BiConsumer<String, GadgetDataWapper>() {
+                            @Override
+                            public void accept(String key, GadgetDataWapper value) {
+                                value.getIssueData().add(getTotal(value.getIssueData()));
+                            }
+                        });
                     } else {
                         throw new APIException(String.format("cannot fetch data for gadgetType = %s", gadget.getType()));
                     }
@@ -231,11 +238,17 @@ public class GadgetHandlerImpl extends GadgetHandler {
             @Override
             public void accept(GadgetData t) {
                 total.getBlocked().increase(t.getBlocked().getTotal());
+                
                 total.getFailed().increase(t.getFailed().getTotal());
+                
                 total.getPassed().increase(t.getPassed().getTotal());
+                
                 total.getPlanned().increase(t.getPlanned().getTotal());
+                
                 total.getUnexecuted().increase(t.getUnexecuted().getTotal());
+                
                 total.getUnplanned().increase(t.getUnplanned().getTotal());
+                
                 total.getWip().increase(t.getWip().getTotal());
             }
         });
