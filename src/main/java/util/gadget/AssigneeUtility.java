@@ -33,8 +33,8 @@ public class AssigneeUtility {
         return INSTANCE;
     }
 
-    public Map<String, GadgetDataWapper> getDataAssignee(AssigneeVsTestExecution assigneeGadget, SessionInfo sessionInfo) throws APIException {
-        Map<String, GadgetDataWapper> returnData = new HashMap<>();
+    public Map<String, GadgetDataWrapper> getDataAssignee(AssigneeVsTestExecution assigneeGadget, SessionInfo sessionInfo) throws APIException {
+        Map<String, GadgetDataWrapper> returnData = new HashMap<>();
 
         String projectName = assigneeGadget.getProjectName();
         Set<AssigneeVO> assigneeVOs = findAssigneeList(projectName, assigneeGadget.getRelease(), sessionInfo);
@@ -67,7 +67,7 @@ public class AssigneeUtility {
                     // sorting
                     GadgetUtility.getInstance().sortData(gadgetDatas);
 
-                    GadgetDataWapper gadgetDataWrapper = new GadgetDataWapper();
+                    GadgetDataWrapper gadgetDataWrapper = new GadgetDataWrapper();
                     gadgetDataWrapper.setIssueData(gadgetDatas);
                     returnData.put(cycle, gadgetDataWrapper);
                 }

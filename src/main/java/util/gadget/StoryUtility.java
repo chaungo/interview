@@ -28,7 +28,7 @@ import models.JQLIssuetypeVO.Type;
 import models.exception.APIException;
 import models.gadget.StoryVsTestExecution;
 import models.main.GadgetData;
-import models.main.GadgetDataWapper;
+import models.main.GadgetDataWrapper;
 
 public class StoryUtility {
     private static final LoggerWapper logger = LoggerWapper.getLogger(StoryUtility.class);
@@ -104,8 +104,8 @@ public class StoryUtility {
         return testIssue;
     }
 
-    public Map<String, GadgetDataWapper> getDataStory(StoryVsTestExecution storyGadget, Map<String, String> cookies) throws APIException {
-        Map<String, GadgetDataWapper> returnData = new HashMap<>();
+    public Map<String, GadgetDataWrapper> getDataStory(StoryVsTestExecution storyGadget, Map<String, String> cookies) throws APIException {
+        Map<String, GadgetDataWrapper> returnData = new HashMap<>();
         Map<String, JQLIssueWapper> epicWrapperMap = null;
         if (storyGadget.isSelectAllEpic() && storyGadget.isSelectAllStory()) {
             String project = storyGadget.getProjectName();
@@ -168,7 +168,7 @@ public class StoryUtility {
             }
             GadgetUtility.getInstance().sortData(storyDatas);
 
-            GadgetDataWapper dataWrapper = new GadgetDataWapper();
+            GadgetDataWrapper dataWrapper = new GadgetDataWrapper();
             dataWrapper.setIssueData(storyDatas);
             dataWrapper.setSummary(storyWapper.getIssue().getFields().getSummary());
             returnData.put(epic, dataWrapper);

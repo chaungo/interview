@@ -2,7 +2,7 @@ package models.main;
 
 import java.util.List;
 
-public class GadgetDataWapper {
+public class GadgetDataWrapper {
     private List<GadgetData> issueData;
     private String summary;
 
