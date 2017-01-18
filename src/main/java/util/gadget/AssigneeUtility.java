@@ -37,8 +37,8 @@ public class AssigneeUtility {
         Map<String, GadgetDataWrapper> returnData = new HashMap<>();
 
         String projectName = assigneeGadget.getProjectName();
-        Set<AssigneeVO> assigneeVOs = findAssigneeList(projectName, assigneeGadget.getRelease(), sessionInfo);
-        Set<String> assignees = assigneeVOs.stream().map(a -> a.getDisplay()).collect(Collectors.toSet());
+//        Set<AssigneeVO> assigneeVOs = findAssigneeList(projectName, assigneeGadget.getRelease(), sessionInfo);
+//        Set<String> assignees = assigneeVOs.stream().map(a -> a.getDisplay()).collect(Collectors.toSet());
         Set<String> cycles = assigneeGadget.getCycles();
 
         if (assigneeGadget.isSelectAllTestCycle()) {
@@ -46,7 +46,7 @@ public class AssigneeUtility {
         }
         if (cycles != null && !cycles.isEmpty()) {
             for (String cycle : cycles) {
-                ExecutionsVO executions = findExecution(projectName, cycle, assignees, sessionInfo.getCookies());
+                ExecutionsVO executions = findExecution(projectName, cycle, null, sessionInfo.getCookies());
                 if (executions != null && executions.getExecutions() != null) {
                     Map<String, List<ExecutionIssueVO>> assigneeMap = executions.getExecutions().stream()
                             .collect(Collectors.groupingBy(ExecutionIssueVO::getAssigneeDisplay));
@@ -55,14 +55,6 @@ public class AssigneeUtility {
                         GadgetData gadgetData = GadgetUtility.getInstance().convertToGadgetData(assigneeMap.get(assignee));
                         gadgetData.setKey(new APIIssueVO(assignee, null));
                         gadgetDatas.add(gadgetData);
-                    }
-                    // init empty for assignees that have no test
-                    for (String assignee : assignees) {
-                        if (!assigneeMap.containsKey(assignee)) {
-                            GadgetData gadgetData = new GadgetData();
-                            gadgetData.setKey(new APIIssueVO(assignee, null));
-                            gadgetDatas.add(gadgetData);
-                        }
                     }
                     // sorting
                     GadgetUtility.getInstance().sortData(gadgetDatas);
@@ -152,7 +144,7 @@ public class AssigneeUtility {
             if ((assignees != null && !assignees.isEmpty()) || project != null) {
                 query.append(Constant.AND);
             }
-            query.append(String.format("cycleName ~ \"%s\"", cyclename));
+            query.append(String.format("cycleName = \"%s\"", cyclename));
         }
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put(Constant.PARAMERTER_ZQL_QUERY, query.toString());
