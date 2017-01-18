@@ -173,7 +173,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
-                        console.log(respone.Err);
+                        //console.log(respone.Err);
                         if (typeof respone.Err != 'undefined'){
                             $resource('/clearSession').save().$promise.then(function () {
                                 window.location = "/login#cookiesexpired";
