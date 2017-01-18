@@ -29,8 +29,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/getIAComponents").with(SonarStatisticGadgetController.class, "getIAComponents");
         router.POST().route("/getMetrics").with(SonarStatisticGadgetController.class, "getMetricList");
         router.POST().route("/getReleaseList").with(SonarStatisticGadgetController.class, "getReleaseList");
-        router.POST().route("/getPeriodList").with(SonarStatisticGadgetController.class, "getPeriodList");
-        router.POST().route("/setPeriod").with(SonarStatisticGadgetController.class, "setPeriod");
+
 
         router.POST().route("/getCruProjectList").with(OverdueReviewReportController.class, "getCruProjectList");
 
@@ -38,6 +37,9 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/addNewRelease").with(ConfigurationController.class, "addNewRelease");
         router.POST().route("/deleteRelease").with(ConfigurationController.class, "deleteRelease");
         router.POST().route("/updateRelease").with(ConfigurationController.class, "updateRelease");
+        router.POST().route("/getPeriodList").with(ConfigurationController.class, "getPeriodList");
+        router.POST().route("/setPeriod").with(ConfigurationController.class, "setPeriod");
+
 
         router.GET().route("/dashboard/new").with(DashboardController.class, "new_dashboard");
         router.POST().route("/dashboard/new").with(DashboardController.class, "new_dashboard_post");
@@ -62,12 +64,12 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/product/insertRelease").with(ProductController.class, "addRelease");
         router.GET().route("/product/getall").with(ProductController.class, "getAllProduct");
         router.GET().route("/listRelease").with(ProductController.class, "getAllRelease");
-        
+
         router.GET().route("/getEpicLinks").with(EpicController.class, "getEpicLinks");
         router.GET().route("/getassignee").with(AssigneeController.class, "getAssigneeList");
         router.GET().route("/listcycle").with(AssigneeController.class, "getListCycleName");
         router.GET().route("/cycleExisting").with(AssigneeController.class, "getListExistingCycle");
-        
+
         router.GET().route("/listproject").with(MyGadgetController.class, "getProjectList");
         router.GET().route("/clearCache").with(MyGadgetController.class, "cleanCache");
 
