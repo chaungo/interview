@@ -1,7 +1,5 @@
 package models.gadget;
 
-import models.main.Release;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +12,7 @@ public abstract class GadgetAPI implements Gadget {
     protected String user;
     protected String dashboardId;
     // fixVersion
-    protected Release release;
+    protected String release;
     protected Set<String> products;
     protected List<String> metrics;
     protected String projectName;
@@ -67,11 +65,11 @@ public abstract class GadgetAPI implements Gadget {
     }
 
     @Override
-    public Release getRelease() {
+    public String getRelease() {
         return release;
     }
 
-    public void setRelease(Release release) {
+    public void setRelease(String release) {
         this.release = release;
     }
 

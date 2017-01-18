@@ -1,11 +1,10 @@
 package models.gadget;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import models.main.Release;
-
 import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public interface Gadget {
     String getId();
@@ -18,7 +17,7 @@ public interface Gadget {
 
     Set<String> getProducts();
 
-    Release getRelease();
+    String getRelease();
 
     String getProjectName();
 

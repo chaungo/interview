@@ -11,7 +11,7 @@
     <form class="form-horizontal " role="form">
         <div class="md-padding" data-ng-cloack>
             <table class="table table-bordered">
-                <tbody ng-if="selectAllCycle">
+                <tbody>
                 <!-- Cycle Project Row -->
                 <tr>
                     <td class="col-md-6"><label>Project</label></td>
@@ -54,22 +54,6 @@
                 </tr>
                 </tbody>
                 <tbody>
-
-                <!-- Cycle Cycle Row -->
-                <tr>
-                    <td class="col-md-6"><label>Test Cycle</label></td>
-                    <td class="col-md-6">
-                        <div>
-                            <select class="form-control" multiple id="cycleCycle" data-ng-hide="selectAllCycle"
-                                    data-ng-model="selectedCycleLink"
-                                    data-ng-options="item as item for item in greenHopperCycleLink track by item">
-                            </select>
-                        </div>
-                        <div class="col-md-12" align="center" style="padding-top: 10px;">
-                            <label><input type="checkbox" id="cycleCheckAllCycle" data-ng-model="selectAllCycle"
-                                          data-ng-change="onCheckAllCycle()" data-ng-init="checked=true">Select All</label>
-                        </div>
-                </tr>
 
                 <!-- Cycle Metrics row -->
                 <tr>

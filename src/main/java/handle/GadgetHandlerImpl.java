@@ -101,13 +101,13 @@ public class GadgetHandlerImpl extends GadgetHandler {
                     errorMessages.add("dashboardId");
                 }
                 if (gadget.getProducts() == null || gadget.getProducts().isEmpty()) {
-                    errorMessages.add("Products");
+                    errorMessages.add("products");
                 }
                 if (gadget.getProjectName() == null || gadget.getProjectName().isEmpty()) {
-                    errorMessages.add("Project");
+                    errorMessages.add("projectName");
                 }
                 if (gadget.getRelease() == null) {
-                    errorMessages.add("Release");
+                    errorMessages.add("release");
                 }
             }
             if (errorMessages.isEmpty()) {

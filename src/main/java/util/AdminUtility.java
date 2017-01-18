@@ -1,18 +1,28 @@
 package util;
 
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.DeleteResult;
-import org.bson.Document;
-import service.DatabaseUtility;
+import static util.Constant.NAME;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static util.Constant.NAME;
+import org.bson.Document;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
+
+import manament.log.LoggerWapper;
+import models.SessionInfo;
+import models.exception.APIException;
+import models.main.ReleaseVO;
+import service.DatabaseUtility;
 
 public class AdminUtility extends DatabaseUtility {
+    private static final LoggerWapper logger = LoggerWapper.getLogger(AdminUtility.class);
+    
     private static final String PRODUCT_COLLECTION = "Product";
     private static final String RELEASE_COLLECTION = "GreenHopperRelease";
     private static AdminUtility INSTANCE = new AdminUtility();
@@ -72,12 +82,24 @@ public class AdminUtility extends DatabaseUtility {
         return releases;
     }
 
-    public boolean insertRelease(String release) {
-        if (getAllRelease().contains(release)) {
+    public boolean insertRelease(String release, SessionInfo sessionInfo) throws APIException {
+        if (release == null || getAllRelease().contains(release)) {
             return false;
         }
-        Document document = new Document(NAME, release);
-        releaseCollection.insertOne(document);
+        
+        ReleaseVO releaseVO = new ReleaseVO();
+        releaseVO.setName(release);
+        releaseVO.setDate(new Date());
+        releaseVO.setUsername(sessionInfo.getUsername());
+        
+        Document document;
+        try{
+            document = Document.parse(mapper.writeValueAsString(releaseVO));
+            releaseCollection.insertOne(document);
+        } catch (JsonProcessingException e){
+            logger.fastDebug("error during mapper.writeValueAsString", e);
+            throw new APIException("cannot insert release", e);
+        }
         return true;
     }
 

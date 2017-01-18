@@ -2,8 +2,8 @@ package util;
 
 public class MessageConstant {
 
-    public static final String IVOKE_ERROR = "invoke_error_message";
-    public static final String SESSION_ERROR_MESSAGE = "session_error_message";
+    public static final String IVOKE_ERROR = "invoke.error.message";
+    public static final String SESSION_ERROR_MESSAGE = "session.error.message";
 
     // #ASSIGNEE Gadget Information
     public static final String ASSIGNEE_PICTUREURL = "assignee.pictureurl";

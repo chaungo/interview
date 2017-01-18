@@ -7,7 +7,6 @@ import handle.AssigneeHandler;
 import manament.log.LoggerWapper;
 import models.exception.APIException;
 import models.exception.ResultsUtil;
-import models.main.Release;
 import ninja.Context;
 import ninja.FilterWith;
 import ninja.Result;
@@ -34,7 +33,7 @@ public class AssigneeController {
     public Result getAssigneeList(@Param("project") String projectName, @Param("release") String release, Context context) {
         logger.fasttrace("getAssigneeList(%s,%s)", projectName, release);
         try {
-            return handler.getAssigneeList(projectName, Release.fromString(release), ResultsUtil.getSessionInfo(context));
+            return handler.getAssigneeList(projectName, release, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
             return ResultsUtil.convertException(e, context);
         }
@@ -48,7 +47,7 @@ public class AssigneeController {
             if (productList != null) {
                 products = new HashSet<>(productList);
             }
-            return handler.getListCycleName(projectName, Release.fromString(release), products, ResultsUtil.getSessionInfo(context));
+            return handler.getListCycleName(projectName, release, products, ResultsUtil.getSessionInfo(context));
         } catch (APIException e) {
             return ResultsUtil.convertException(e, context);
         }

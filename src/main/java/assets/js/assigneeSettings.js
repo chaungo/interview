@@ -104,7 +104,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         var metricsVal = $("#assigneeMetricMultiSelect").val();
         var assigneeCycle = $("#assigneeCycle").val();
         var isNotEmpty = true;
-        var assigneeCheckAllCycleVal = $("#assigneeCheckAllCycle").prop('checked');
+        var assigneeCheckAllCycleVal = true;
         isNotEmpty &= (metricsVal != null && metricsVal.length > 0);
         if (assigneeCheckAllCycleVal) {
             isNotEmpty &= verifyValue([assigneeProjectVal, assigneeProductVal, assigneeReleaseVal]);
@@ -124,8 +124,6 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
             object['metrics'] = metricsVal;
             if (assigneeCheckAllCycleVal) {
                 object['selectAllTestCycle'] = true;
-            } else {
-                object['cycles'] = assigneeCycle;
             }
             var jsonObj = JSON.stringify(object);
             var callback = function (result) {
