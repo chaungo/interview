@@ -10,6 +10,12 @@ function appendTemplateTable(id, title, gadget, container) {
     $('<br><hr>').appendTo($("#" + gadget.id).find(container));
 }
 
+function prependTemplateTable(id, title, gadget, container) {
+	$('<br><hr>').prependTo($("#" + gadget.id).find(container));
+    $('<table id="' + id + '" class="display"></table>').prependTo($("#" + gadget.id).find(container));
+    $('<h4><b>' + title + '</b></h4>').prependTo($("#" + gadget.id).find(container));
+}
+
 function appendTemplateUserStoryTable(id, title, gadget, container, issueKey) {
     var hrefElement = [];
     var htmlTitle = [];

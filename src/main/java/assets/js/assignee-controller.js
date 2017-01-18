@@ -29,7 +29,7 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
             	clearCacheCallback();
             },
             success: function (responseData) {
-                var index = 0;
+                var index = 1;
                 dataTable.loading = false;
                 $("#" + gadget.id).find("#assignee-table-container").html("");
                 if (debugAjaxResponse(responseData)) {
@@ -49,12 +49,24 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                                 var customTableId = "assignee-table-" + index;
                                 var assigneeTableDataSet = [];
                                 var assigneeIndividualTable;
-                                tempTitle.push(index + 1, ". ", cycleKey);
-                                appendTemplateTable(
-                                    customTableId,
-                                    tempTitle.join(""),
-                                    gadget,
-                                    "#assignee-table-container");
+                                
+                                if(cycleKey.toLowerCase() !== "summary"){
+                                	tempTitle.push(index + 1, ". ", cycleKey);
+                                	appendTemplateTable(
+                                            customTableId,
+                                            tempTitle.join(""),
+                                            gadget,
+                                            "#assignee-table-container");
+                                }
+                                else{
+                                	tempTitle.push(1, ". ", cycleKey);
+                                	prependTemplateTable(
+                                            customTableId,
+                                            tempTitle.join(""),
+                                            gadget,
+                                            "#assignee-table-container");
+                                }
+                                
                                 $("#" + gadget.id).find("#" + customTableId)
                                     .append(
                                         TEMPLATE_HEADER_FOOTER_1);
