@@ -1,83 +1,76 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
     <@layout.myLayout "Configuration">
-    <div id="configurationMain" ng-controller="ConfigCtrl" layout-padding ng-app="App" layout-xs="column">
+    <div style="height: 100%; width: 100%;padding-top: 40px;" id="configurationMain" ng-controller="ConfigCtrl"
+         layout-padding ng-app="App" layout-xs="column">
 
-        <div>
-            <div>
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Choose Analysis Period for New Coverage</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
+        <div layout="row">
 
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Period</label>
-                        <md-select ng-model="period">
-                            <md-option ng-repeat="item in periodList" value="{{item.key}}">
-                                {{item.value}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-click="chosePeriodNext()" class="md-raised md-primary">Next</md-button>
-                    </md-card-actions>
-                </md-card-content>
+            <div style="padding: 5px" flex>
+                <span class="md-headline">Release</span>
+                <div layout="row" layout-align="start center">
+                    <table layout-fill md-whiteframe="5" class="responstable">
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th colspan="2">Action</th>
+                        <tbody>
+                        <tr ng-repeat="release in ReleaseList">
+                            <td>
+                                <div ng-hide="a">{{release.name}}</div>
+                                <md-input-container ng-hide="!a" class="md-block">
+                                    <input aria-label={{release.name}} required ng-model="release.name">
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <div ng-hide="a"><a href="{{release.url}}">{{release.url}}</a></div>
+                                <md-input-container ng-hide="!a" class="md-block">
+                                    <input aria-label={{release.url}} required ng-model="release.url">
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-button ng-hide="!a" class="md-icon-button"
+                                           ng-click="a=!a;editRelease(release,$event);">
+                                    <md-icon style="color: grey" class="material-icons">save</md-icon>
+                                </md-button>
+                                <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
+                                    <md-icon style="color: grey" class="material-icons">edit</md-icon>
+                                </md-button>
+                            </td>
+                            <td>
+                                <md-button class="md-icon-button" ng-click="deleteRelease(release,$event)">
+                                    <md-icon style="color: grey" class="material-icons">delete</md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <md-input-container class="md-block">
+                                    <input required placeholder="New Release's name" ng-model="newReleaseName">
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-input-container class="md-block">
+                                    <input required placeholder="New Release's url" ng-model="newReleaseUrl">
+                                </md-input-container>
+                            </td>
+                            <td colspan="2">
+                                <md-button ng-click="addNewRelease($event)" class="md-raised md-warn">Add new
+                                </md-button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <span class="md-headline">Release</span>
-            <div layout="row" layout-align="start center">
-                <table layout-fill md-whiteframe="5" class="responstable">
-                    <th> Name</th>
-                    <th> Url</th>
-                    <th colspan="2">Action</th>
-                    <tbody>
-                    <tr ng-repeat="release in ReleaseList">
-                        <td>
-                            <div ng-hide="a">{{release.name}}</div>
-                            <md-input-container ng-hide="!a" class="md-block">
-                                <input aria-label={{release.name}} required ng-model="release.name">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <div ng-hide="a"><a href="{{release.url}}">{{release.url}}</a></div>
-                            <md-input-container ng-hide="!a" class="md-block">
-                                <input aria-label={{release.url}} required ng-model="release.url">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-button ng-hide="!a" class="md-icon-button" ng-click="a=!a;editRelease(release,$event);">
-                                <md-icon style="color: grey" class="material-icons">save</md-icon>
-                            </md-button>
-                            <md-button ng-hide="a" class="md-icon-button" ng-click="a=!a">
-                                <md-icon style="color: grey" class="material-icons">edit</md-icon>
-                            </md-button>
-                        </td>
-                        <td>
-                            <md-button class="md-icon-button" ng-click="deleteRelease(release,$event)">
-                                <md-icon style="color: grey" class="material-icons">delete</md-icon>
-                            </md-button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <md-input-container class="md-block">
-                                <input required placeholder="New Release's name" ng-model="newReleaseName">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-input-container class="md-block">
-                                <input required placeholder="New Release's url" ng-model="newReleaseUrl">
-                            </md-input-container>
-                        </td>
-                        <td colspan="2">
-                            <md-button ng-click="addNewRelease($event)" class="md-raised md-warn">Add new</md-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div style="padding: 5px">
+                <span class="md-headline">Period</span>
+                <md-radio-group style="padding: 5px;" layout="column" ng-model="period">
+                    <md-radio-button ng-repeat="item in periodList" value="{{item.key}}">
+                        {{item.value}}
+                    </md-radio-button>
+                </md-radio-group>
             </div>
         </div>
+
         <div layout-padding>
             <div style="padding: 5px">
                 <span class="md-headline">Greenhoper</span>
@@ -86,21 +79,22 @@
             <div id="page-wrapper" md-whiteframe="5">
                 <div class="container-fluid">
                     <div class="row">
-                    <div class="col-lg-4">
-                        <form role="form">
-                            <div class="form-group productWrapper">
-                                <label>Existing Product</label>
-                                <table id="productTable" class="display"
-                                    width="100%" cellspacing="0"
-                                    class="responstable">
-                                    <thead>
+                        <div class="col-lg-4">
+                            <form role="form">
+                                <div class="form-group productWrapper">
+                                    <label>Existing Product</label>
+                                    <table id="productTable" class="display"
+                                           width="100%" cellspacing="0"
+                                           class="responstable">
+                                        <thead>
                                         <tr>
                                             <th>Product Name</th>
                                             <th
-                                                style="text-align: center">Action</th>
+                                                    style="text-align: center">Action
+                                            </th>
                                         </tr>
-                                    </thead>
-                                    <tbody>
+                                        </thead>
+                                        <tbody>
                                         <#if products??>
                                             <#list products as product>
                                                 <tr>
@@ -110,35 +104,35 @@
                                             </#list>
                                         </#if>
                                         </tbody>
-                                </table>
-                            </div>
-                            <label>Add product</label>
-                            <div class="form-group input-group">
-                                <input id="productInput"
-                                    class="form-control" type="text">
-                                <span class="input-group-btn">
+                                    </table>
+                                </div>
+                                <label>Add product</label>
+                                <div class="form-group input-group">
+                                    <input id="productInput"
+                                           class="form-control" type="text">
+                                    <span class="input-group-btn">
                                     <button id="addProduct"
-                                        class="btn btn-default"
-                                        type="button">
+                                            class="btn btn-default"
+                                            type="button">
                                         <i class="fa fa-plus-square"></i>
                                     </button>
                                 </span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="form-group releaseWrapper">
-                            <label>Existing Release</label>
-                            <table id="releaseTable" class="display"
-                                width="100%" cellspacing="0"
-                                class="responstable">
-                                <thead>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group releaseWrapper">
+                                <label>Existing Release</label>
+                                <table id="releaseTable" class="display"
+                                       width="100%" cellspacing="0"
+                                       class="responstable">
+                                    <thead>
                                     <tr>
                                         <th>Release</th>
                                         <th style="text-align: center">Action</th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     <#if releases??>
                                         <#list releases as release>
                                             <tr>
@@ -148,27 +142,27 @@
                                         </#list>
                                     </#if>
                                     </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <label>Add Release</label>
+                                </table>
+                            </div>
                             <div class="form-group">
-                                <div class="input-group">
-                                    <input id="releaseInput"
-                                        class="form-control" type="text">
-                                    <span class="input-group-btn">
+                                <label>Add Release</label>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input id="releaseInput"
+                                               class="form-control" type="text">
+                                        <span class="input-group-btn">
                                         <button id="addRelease"
-                                            class="btn btn-default"
-                                            type="button">
+                                                class="btn btn-default"
+                                                type="button">
                                             <i class="fa fa-plus-square"></i>
                                         </button>
                                     </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>
                     <!-- /.row -->
                     <div class="row">
                         <div class="col-lg-12">

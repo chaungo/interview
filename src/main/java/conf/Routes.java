@@ -30,6 +30,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/getMetrics").with(SonarStatisticGadgetController.class, "getMetricList");
         router.POST().route("/getReleaseList").with(SonarStatisticGadgetController.class, "getReleaseList");
         router.POST().route("/getPeriodList").with(SonarStatisticGadgetController.class, "getPeriodList");
+        router.POST().route("/setPeriod").with(SonarStatisticGadgetController.class, "setPeriod");
 
         router.POST().route("/getCruProjectList").with(OverdueReviewReportController.class, "getCruProjectList");
 

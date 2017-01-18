@@ -39,6 +39,10 @@ public class SonarStatisticGadgetController {
         MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOAR_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
+        //todo
+        MongoCollection<org.bson.Document> MetricCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(METRIC_TABLE);
+        String period = MetricCollection.find(new org.bson.Document("code", "new_coverage")).first().getString("period");
+
 
         if (isCacheExpired(document, 2)) {
             JSONArray metricList = new JSONArray();
@@ -68,7 +72,7 @@ public class SonarStatisticGadgetController {
             JSONArray RsIAArray = new JSONArray();
             ArrayList<Thread> threads = new ArrayList<>();
             for (int i = 0; i < IAComponent.length(); i++) {
-                getComponentInfo getComponentInfo = new getComponentInfo(IAComponent.getJSONObject(i), data.getString("Metrics"), data.getString("Period"), RsIAArray, session);
+                getComponentInfo getComponentInfo = new getComponentInfo(IAComponent.getJSONObject(i), data.getString("Metrics"), period, RsIAArray, session);
                 threads.add(getComponentInfo);
 
             }
@@ -106,7 +110,6 @@ public class SonarStatisticGadgetController {
 
         result.put("id", GadgetId);
         result.put("release", data.getString("Release"));
-        result.put("period", data.getString("Period"));
         result.put("lastUpateTime", lastUpateTime);
 
         mongoClient.close();
@@ -163,8 +166,10 @@ public class SonarStatisticGadgetController {
         return releases;
     }
 
-    public static JSONArray getPeriod(Session session) throws Exception {
 
+    public static JSONObject getPeriod(Session session) throws Exception {
+        JSONObject res = new JSONObject();
+        //todo
         JSONArray PeriodArray = new JSONArray();
         MongoClient mongoClient = new MongoClient();
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(METRIC_TABLE);
@@ -203,9 +208,12 @@ public class SonarStatisticGadgetController {
             PeriodArray = new JSONArray(document.getString("cache"));
         }
 
+        res.put("PeriodArray", PeriodArray);
+        res.put("CurrentPeriod", document.getString("period"));
+
         mongoClient.close();
 
-        return PeriodArray;
+        return res;
 
     }
 
@@ -315,6 +323,21 @@ public class SonarStatisticGadgetController {
             return Results.internalServerError();
         }
     }
+
+    @FilterWith(SecureFilter.class)
+    public Result setPeriod(@Param("period") String period) {
+        try {
+            MongoClient mongoClient = new MongoClient();
+            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.METRIC_TABLE);
+            collection.updateMany(new org.bson.Document(new org.bson.Document("code", "new_coverage")), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("period", period)));
+            mongoClient.close();
+            return Results.ok();
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
+    }
+
 
     @FilterWith(SecureFilter.class)
     public Result getReleaseList() {

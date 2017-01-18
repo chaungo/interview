@@ -95,9 +95,13 @@ md-content {
 }
 
 .responstable tr:nth-child(odd) {
-    background: #EEEEEE;
+    background: #f8f8f8;
 }
 
+.responstable tr:nth-child(even) {
+
+    background: #dcdcdc;
+}
 .responstable th {
     background: #607D8B;
     color: #FFFFFF;

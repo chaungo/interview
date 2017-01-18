@@ -75,6 +75,7 @@ public class GadgetController {
         } catch (JSONException | NullPointerException e) {
             JSONObject er = new JSONObject();
             er.put("Err",e);
+            e.printStackTrace();
             return Results.text().render(er);
         } catch (Exception e){
             logger.error("show_dashboard ", e);

@@ -100,31 +100,6 @@
                 </md-card-content>
 
             </div>
-
-            <div ng-hide="!chosePeriodPage">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Choose Analysis Period for New Coverage</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Period</label>
-                        <md-select ng-model="period">
-                            <md-option ng-repeat="item in periodList" value="{{item.key}}">
-                                {{item.value}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-click="chosePeriodNext()" class="md-raised md-primary">Next</md-button>
-                    </md-card-actions>
-                </md-card-content>
-
-
-            </div>
             <md-progress-linear ng-hide="!IALoading"></md-progress-linear>
         </md-card>
     </div>

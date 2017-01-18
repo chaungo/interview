@@ -174,11 +174,11 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
                         //console.log(respone.Err);
-                        if (typeof respone.Err != 'undefined'){
+                        if (typeof respone.Err != 'undefined') {
                             $resource('/clearSession').save().$promise.then(function () {
                                 window.location = "/login#cookiesexpired";
                             });
-                        }else {
+                        } else {
                             $rootScope.sonarStList = respone.AMSSONARStatisticsGadget;
                             $rootScope.greenHopperGadgets = respone.GreenHopperGadget;
                             $rootScope.reviewList = respone.AMSOverdueReviewsReportGadget;
@@ -469,7 +469,6 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
     $scope.choseReleasePage = true;
     $scope.choseIAPage = false;
     $scope.choseMetricPage = false;
-    $scope.chosePeriodPage = false;
     $scope.IALoading = false;
 
     $scope.releaseName = "";
@@ -649,8 +648,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         $scope.choseIAPage = true;
     };
 
-    $scope.periodList = [];
-    $scope.period = "";
+
     $scope.choseMetricNext = function () {
         //console.log("choseMetricNext");
         if ($scope.selectedMetric.length == 0) {
@@ -666,50 +664,11 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             }
         }
 
-        //
-        //console.log($scope.selectedMetricKeys);
-        if ($scope.selectedMetricKeys.indexOf("new_coverage") != -1) {
-            $scope.IALoading = true;
-            $resource('/getPeriodList', {}, {
-                query: {
-                    method: 'post',
-                    isArray: true
-                }
-            }).query().$promise.then(function (respone) {
-                //console.log(respone);
-                $scope.periodList = respone;
-                $scope.period = $scope.periodList[0].key;
-                $scope.chosePeriodPage = true;
-                $scope.choseMetricPage = false;
-                $scope.IALoading = false;
-            }, function (error) {
-                //console.log(error);
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent('Error! Can not get Period List. Please check connection!')
-                        .hideDelay(10000)
-                );
-            });
-        } else {
-            finish();
-        }
 
-
-    };
-
-
-    $scope.chosePeriodBack = function () {
-        $scope.choseMetricPage = true;
-        $scope.chosePeriodPage = false;
-    };
-
-
-    $scope.chosePeriodNext = function () {
-        $scope.gettingRs = true;
         finish();
 
-    };
 
+    };
 
     function finish() {
         var IANames = "";
@@ -739,8 +698,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 Data: {
                     Release: $scope.releaseName,
                     IANames: IANames,
-                    Metrics: Metrics,
-                    Period: $scope.period
+                    Metrics: Metrics
                 }
             };
 
@@ -773,8 +731,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 Data: {
                     Release: $scope.releaseName,
                     IANames: IANames,
-                    Metrics: Metrics,
-                    Period: $scope.period
+                    Metrics: Metrics
                 }
             };
 
@@ -814,7 +771,6 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         for (var i = 0; i < $rootScope.sonarGadgettoEdit.metricList.length; i++) {
             $scope.selectedMetric.push($rootScope.sonarGadgettoEdit.metricList[i].name);
         }
-        $scope.period = $rootScope.sonarGadgettoEdit.period;
     }
 
 
@@ -830,6 +786,36 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
     $scope.ReleaseList = [];
     $scope.newReleaseName = "";
     $scope.newReleaseUrl = "";
+
+    //todo
+
+    $resource('/getPeriodList', {}, {
+        query: {
+            method: 'post',
+            isArray: false
+        }
+    }).query().$promise.then(function (respone) {
+        console.log(respone);
+        $scope.periodList = respone.PeriodArray;
+        $scope.period = respone.CurrentPeriod;
+    }, function (error) {
+        //console.log(error);
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent('Error! Can not get Period List. Please check connection!')
+                .hideDelay(10000)
+        );
+    });
+
+    $scope.$watch('period', function () {
+        $resource('/setPeriod', {
+            period: $scope.period
+        }).save().$promise.then(function (respone) {
+
+        }, function (error) {
+            console.log(error)
+        });
+    });
 
 
     $rootScope.getReleaseRs = $resource('/getReleaseList', {}, {
