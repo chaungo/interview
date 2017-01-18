@@ -49,6 +49,7 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                                 var customTableId = "assignee-table-" + index;
                                 var assigneeTableDataSet = [];
                                 var assigneeIndividualTable;
+                                var totalRowArray = [];
                                 
                                 if(cycleKey.toLowerCase() !== "summary"){
                                 	tempTitle.push(index + 1, ". ", cycleKey);
@@ -70,9 +71,10 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                                 $("#" + gadget.id).find("#" + customTableId)
                                     .append(
                                         TEMPLATE_HEADER_FOOTER_1);
-
+                                
                                 for (var i = 0; i < assigneeArray["issueData"].length; i++) {
-                                    var anAssigneeDataSet = [];
+                                	var titleKey = assigneeArray["issueData"][i]["key"]["key"];
+                                	var anAssigneeDataSet = [];
                                     anAssigneeDataSet
                                         .push(assigneeArray["issueData"][i]["key"]["key"]);
                                     anAssigneeDataSet
@@ -89,9 +91,15 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                                         .push(assigneeArray["issueData"][i]["planned"]);
                                     anAssigneeDataSet
                                         .push(assigneeArray["issueData"][i]["unplanned"]);
-                                    assigneeTableDataSet
+                                    if(titleKey.toLowerCase() !== "total"){
+                                    	assigneeTableDataSet
                                         .push(anAssigneeDataSet);
+                                    }
+                                    else{
+                                    	totalRowArray = anAssigneeDataSet;
+                                    }
                                 }
+                                assigneeTableDataSet.push(totalRowArray);
 
                                 assigneeIndividualTable = $("#" + gadget.id).find(
                                     "#" + customTableId)
