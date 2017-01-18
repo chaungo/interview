@@ -83,7 +83,6 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                 $scope.onProjectReleaseProductChanged();
                 $scope.selectedEpicLink = item.epic;
                 $scope.selectedMetric = item.metrics;
-                $scope.$apply();
             }
             $rootScope.gadgetToEdit = null;
         }

@@ -19,12 +19,12 @@ function verifyValue(arrayArgument) {
 
 app.controller('AssigneeSettingController', function ($scope, $rootScope, $window, $mdDialog, $mdToast, $location, $resource) {
     $scope.gadgetId = null;
-    $scope.greenHopperProjectList = [];
-    $scope.greenHopperProduct = [];
-    $scope.selectedProduct = null;
     $scope.selectedProject = null;
     $scope.selectedRelease = null;
+    $scope.selectedProduct = null;
     $scope.selectedMetric = null;
+    $scope.greenHopperProjectList = [];
+    $scope.greenHopperProduct = [];
     $scope.greenHopperCycleLink = [];
     $scope.selectAllCycle = true;
     $scope.cancel = function () {
@@ -33,11 +33,11 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
     $scope.productPage = "configuration";
     
     $scope.init = function () {
-        var item;
+        var item = $rootScope.gadgetToEdit;
+        console.log(item);
         var callBack = function (result) {
             if (result.type == null) {
                 $scope.greenHopperProjectList = result;
-                $scope.$apply();
             } else {
                 console.log(result);
                 showError(result.data);
@@ -46,56 +46,30 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         var callBackProduct = function (result) {
             if (result.type == SUCCESS) {
                 $scope.greenHopperProduct = result.data;
-                $scope.$apply();
             } else {
                 console.log(result);
                 showError(result.data);
             }
-
         }
+      
+        
         getGreenHopperProjectList(callBack);
         getGreenHopperProduct(callBackProduct);
-
-        var callback = function (result) {
-            if (result.type == null) {
-                $scope.greenHopperCycleLink = result;
-                $scope.$apply();
-            } else {
-                showError(result.data);
-            }
-        }
-        loadCycle(callback);
-        item = $rootScope.gadgetToEdit;
+        
         if (item != null) {
             if (item.type == "ASSIGNEE_TEST_EXECUTION") {
                 $scope.gadgetId = item.id;
                 $scope.selectedProject = item.projectName;
                 $scope.selectedRelease = item.release;
-                $scope.selectedProject = item.products[0];
+                $scope.selectedProduct = item.products[0];
                 $scope.selectAllCycle = item.selectAllTestCycle;
-                $scope.selectedCycleLink = item.cycles;
                 $scope.selectedMetric = item.metrics;
             }
             $rootScope.gadgetToEdit = null;
         }
     }
 
-    $scope.onCheckAllCycle = function () {
-        var assigneeCycle = $("#assigneeCycle");
-        var assigneeCheckAllCycle = $("#assigneeCheckAllCycle").prop('checked');
-        if (assigneeCheckAllCycle) {
-            assigneeCycle.css("display", "none");
-        } else {
-            $scope.onProjectReleaseProductChanged();
-            assigneeCycle.css("display", "");
-        }
-    }
-
-    $scope.onProjectReleaseProductChanged = function () {
-    }
-
-
-    $scope.isDisabled = false;
+    
 
     $scope.saveGadget = function () {
         var assigneeProjectVal = $("#assigneeProject").val();
