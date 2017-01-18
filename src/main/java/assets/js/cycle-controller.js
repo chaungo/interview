@@ -45,6 +45,8 @@ function drawCycleTable(dataTable, gadget, callback, titleHandler, dataTableCall
                 clearCacheCallback();
                 showCycleTable(gadget);
             }).DataTable({
+            bSort: false,
+            paging: false,
             bAutoWidth: false,
             "ajax": {
                 url: "/gadget/getData",

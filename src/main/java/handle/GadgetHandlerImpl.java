@@ -26,22 +26,20 @@ import models.gadget.StoryVsTestExecution;
 import models.main.DataCacheVO;
 import models.main.DataCacheVO.State;
 import models.main.GadgetData;
-import models.main.GadgetDataWapper;
+import models.main.GadgetDataWrapper;
 import ninja.Result;
 import ninja.Results;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
-import util.gadget.GadgetUtility;
 
 public class GadgetHandlerImpl extends GadgetHandler {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetHandlerImpl.class);
 
-    private static GadgetCacheMap<Map<String, GadgetDataWapper>> dataGadgetCache = new GadgetCacheMap<Map<String, GadgetDataWapper>>(PropertiesUtil.getInt(Constant.DATA_CACHE_TIME_TO_LIVE, 10), "DataGadgetCache");
+    private static GadgetCacheMap<Map<String, GadgetDataWrapper>> dataGadgetCache = new GadgetCacheMap<Map<String, GadgetDataWrapper>>(PropertiesUtil.getInt(Constant.DATA_CACHE_TIME_TO_LIVE, 10), "DataGadgetCache");
 
 
     public GadgetHandlerImpl() {
-        gadgetService = GadgetUtility.getInstance();
     }
 
     @Override
@@ -142,12 +140,12 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
     @Override
     public Result getDataGadget(String id, SessionInfo sessionInfo) throws APIException {
-        Map<String, GadgetDataWapper> gadgetsData = new HashMap<>();
+        Map<String, GadgetDataWrapper> gadgetsData = new HashMap<>();
         boolean found = false;
 
         String cacheID = id + Constant.DELIMITER + sessionInfo.getUsername();
         if (dataGadgetCache.get(cacheID) != null) {
-            DataCacheVO<Map<String, GadgetDataWapper>> gadgetsDataCache = dataGadgetCache.get(cacheID);
+            DataCacheVO<Map<String, GadgetDataWrapper>> gadgetsDataCache = dataGadgetCache.get(cacheID);
             long begin = System.currentTimeMillis();
             while (DataCacheVO.State.LOADING.equals(gadgetsDataCache.getState())) {
                 try {
@@ -173,7 +171,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
             if (gadget != null) {
 
-                DataCacheVO<Map<String, GadgetDataWapper>> dataCache = new DataCacheVO<Map<String, GadgetDataWapper>>();
+                DataCacheVO<Map<String, GadgetDataWrapper>> dataCache = new DataCacheVO<Map<String, GadgetDataWrapper>>();
                 dataGadgetCache.put(cacheID, dataCache);
                 try {
                     if (Gadget.Type.EPIC_US_TEST_EXECUTION.equals(gadget.getType())) {
@@ -181,7 +179,7 @@ public class GadgetHandlerImpl extends GadgetHandler {
                         String projectName = epicGadget.getProjectName() != null ? epicGadget.getProjectName() : Constant.MAIN_PROJECT;
                         List<GadgetData> epicData = epicService.getDataEPic(epicGadget, sessionInfo.getCookies());
                         epicData.add(getTotal(epicData));
-                        GadgetDataWapper epicDataWapper = new GadgetDataWapper();
+                        GadgetDataWrapper epicDataWapper = new GadgetDataWrapper();
                         epicDataWapper.setIssueData(epicData);
                         epicDataWapper.setSummary(projectName);
                         gadgetsData.put(projectName, epicDataWapper);
@@ -190,25 +188,49 @@ public class GadgetHandlerImpl extends GadgetHandler {
                         String projectName = cycleGadget.getProjectName() != null ? cycleGadget.getProjectName() : Constant.MAIN_PROJECT;
                         List<GadgetData> cycleData = cycleService.getDataCycle(cycleGadget, sessionInfo);
                         cycleData.add(getTotal(cycleData));
-                        GadgetDataWapper epicDataWapper = new GadgetDataWapper();
+                        GadgetDataWrapper epicDataWapper = new GadgetDataWrapper();
                         epicDataWapper.setIssueData(cycleData);
                         epicDataWapper.setSummary(projectName);
                         gadgetsData.put(projectName, epicDataWapper);
                     } else if (Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadget.getType())) {
                         AssigneeVsTestExecution assigneeGadget = (AssigneeVsTestExecution) gadget;
                         gadgetsData = assigneeService.getDataAssignee(assigneeGadget, sessionInfo);
-                        gadgetsData.forEach(new BiConsumer<String, GadgetDataWapper>() {
+                        
+                        GadgetDataWrapper summaryTableDataWrapper = new GadgetDataWrapper();
+                        summaryTableDataWrapper.setSummary(Constant.SUMMARY_TABLE_TITLE);
+                        List<GadgetData> summaryData = new ArrayList<>();
+                        summaryTableDataWrapper.setIssueData(summaryData);
+                        
+                        gadgetsData.forEach(new BiConsumer<String, GadgetDataWrapper>() {
                             @Override
-                            public void accept(String key, GadgetDataWapper value) {
+                            public void accept(String key, GadgetDataWrapper value) {
+                                //Add total to table
                                 value.getIssueData().add(getTotal(value.getIssueData()));
+                                
+                                //Add summary table
+                                Set<String> summaryAssignees = summaryData.stream().map(t -> t.getKey().getKey()).collect(Collectors.toSet());
+                                List<GadgetData> issueData = value.getIssueData();
+                                issueData.forEach(new Consumer<GadgetData>() {
+                                    @Override
+                                    public void accept(GadgetData gadgetData) {
+                                        String assignee = gadgetData.getKey().getKey();
+                                        if(summaryAssignees.contains(assignee)){
+                                            GadgetData assigneeData = summaryData.stream().filter(t -> t.getKey().getKey().equals(assignee)).findFirst().get();
+                                            addAllValue(gadgetData, assigneeData);
+                                        } else {
+                                            summaryData.add(gadgetData);
+                                        }
+                                    }
+                                });
                             }
                         });
+                        gadgetsData.put(Constant.SUMMARY_TABLE_KEY, summaryTableDataWrapper);
                     } else if (Gadget.Type.STORY_TEST_EXECUTION.equals(gadget.getType())) {
                         StoryVsTestExecution storyGadget = (StoryVsTestExecution) gadget;
                         gadgetsData = storyService.getDataStory(storyGadget, sessionInfo.getCookies());
-                        gadgetsData.forEach(new BiConsumer<String, GadgetDataWapper>() {
+                        gadgetsData.forEach(new BiConsumer<String, GadgetDataWrapper>() {
                             @Override
-                            public void accept(String key, GadgetDataWapper value) {
+                            public void accept(String key, GadgetDataWrapper value) {
                                 value.getIssueData().add(getTotal(value.getIssueData()));
                             }
                         });
@@ -237,24 +259,34 @@ public class GadgetHandlerImpl extends GadgetHandler {
         epicData.stream().forEach(new Consumer<GadgetData>() {
             @Override
             public void accept(GadgetData t) {
-                total.getBlocked().increase(t.getBlocked().getTotal());
-                
-                total.getFailed().increase(t.getFailed().getTotal());
-                
-                total.getPassed().increase(t.getPassed().getTotal());
-                
-                total.getPlanned().increase(t.getPlanned().getTotal());
-                
-                total.getUnexecuted().increase(t.getUnexecuted().getTotal());
-                
-                total.getUnplanned().increase(t.getUnplanned().getTotal());
-                
-                total.getWip().increase(t.getWip().getTotal());
+                addAllValue(t, total);
             }
         });
         return total;
     }
-
+    
+    private void addAllValue(GadgetData from, GadgetData to){
+        to.getBlocked().increase(from.getBlocked().getTotal());
+        to.getBlocked().getIssues().addAll(from.getBlocked().getIssues());
+        
+        to.getFailed().increase(from.getFailed().getTotal());
+        to.getFailed().getIssues().addAll(from.getFailed().getIssues());
+        
+        to.getPassed().increase(from.getPassed().getTotal());
+        to.getPassed().getIssues().addAll(from.getPassed().getIssues());
+        
+        to.getPlanned().increase(from.getPlanned().getTotal());
+        to.getPlanned().getIssues().addAll(from.getPlanned().getIssues());
+        
+        to.getUnexecuted().increase(from.getUnexecuted().getTotal());
+        to.getUnexecuted().getIssues().addAll(from.getUnexecuted().getIssues());
+        
+        to.getUnplanned().increase(from.getUnplanned().getTotal());
+        to.getUnplanned().getIssues().addAll(from.getUnplanned().getIssues());
+        
+        to.getWip().increase(from.getWip().getTotal());
+        to.getWip().getIssues().addAll(from.getWip().getIssues());
+    }
     @Override
     public Result getStoryInEpic(List<String> epics, SessionInfo sessionInfo) throws APIException {
         Map<String, JQLIssueWapper> storiesIssues = storyService.findStoryInEpic(epics, sessionInfo.getCookies());

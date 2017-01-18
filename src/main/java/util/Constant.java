@@ -56,6 +56,8 @@ public class Constant {
     public static final String CLOSE_BRACKET = ")";
     public static final String DELIMITER = "\u00B0";
     public static final String MAIN_PROJECT = "FNMS 557x";
+    public static final String SUMMARY_TABLE_KEY = "Summary";
+    public static final String SUMMARY_TABLE_TITLE = "Summary - Assignee Vs Test Execution Status";
     //database
     public static final String DATABASE_SCHEMA = "DATABASE_SCHEMA";
     public static final String DATABASE_HOST = "DATABASE_HOST";
@@ -76,7 +78,7 @@ public class Constant {
     public static final String DATA_CACHE_TIME_TO_LIVE = "internal.conf.gadgetdata.timetolive";
 
 
-    public static final String TOTAL = "total";
+    public static final String TOTAL = "Total";
 
     public static String DISPLAY_NAME = "displayName";
     public static String ALIAS = "ALIAS";

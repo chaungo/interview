@@ -71,12 +71,25 @@ function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallbac
     	                        "#us-table-container", epicKey);
     	                    $("#" + gadget.id).find("#" + customTableId).append(TEMPLATE_HEADER_FOOTER);
 
-
+    	                    console.log(storyArray['issueData']);
     	                    for (var i = 0; i < storyArray['issueData'].length; i++) {
     	                        var aStoryDataSet = [];
+    	                        var tempSummaryDict = storyArray['issueData'][i]["key"]["summary"];
+    	                        var tempPriorityDict = storyArray['issueData'][i]["key"]["priority"];
     	                        aStoryDataSet.push(storyArray['issueData'][i]["key"]);
-    	                        aStoryDataSet.push(storyArray['issueData'][i]["key"]["summary"]);
-    	                        aStoryDataSet.push(storyArray['issueData'][i]["key"]["priority"]["name"]);
+    	                        if(tempSummaryDict != null){
+    	                        	aStoryDataSet.push(tempSummaryDict);
+    	                        }
+    	                        else{
+    	                        	aStoryDataSet.push("");
+    	                        }
+    	                        
+    	                        if(tempPriorityDict != null){
+    	                        	aStoryDataSet.push(tempPriorityDict["name"]);
+    	                        }
+    	                        else{
+    	                        	aStoryDataSet.push("");
+    	                        }
     	                        aStoryDataSet.push(storyArray['issueData'][i]["unexecuted"]);
     	                        aStoryDataSet.push(storyArray['issueData'][i]["failed"]);
     	                        aStoryDataSet.push(storyArray['issueData'][i]["wip"]);
@@ -88,6 +101,8 @@ function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallbac
     	                    }
 
     	                    usIndividualTable = $("#" + gadget.id).find("#" + customTableId).DataTable({
+    	                    	bSort: false,
+    	                    	paging: false,
     	                        bAutoWidth: false,
     	                        data: usTableDataSet,
     	                        columns: [{

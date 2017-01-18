@@ -151,6 +151,14 @@ function createIssueLinks(data, displayOrType, rowData, setting) {
 
 function createIssueLinkForTitle(data) {
     var htmlString = [];
-    htmlString.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, data["key"], '">', data["key"], '</a>');
+    var tempTitle = data["key"];
+    tempTitle = tempTitle.toLowerCase();
+    if(tempTitle === "total"){
+    	htmlString.push( data["key"]);
+    }
+    else{
+    	htmlString.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, data["key"], '">', data["key"], '</a>');
+    }
     return htmlString.join("");
+    
 }
