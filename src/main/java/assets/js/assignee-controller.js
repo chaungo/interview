@@ -180,7 +180,12 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                         });
                 showAssigneeTable(gadget);
                 dataTable.loading = false;
-                titleHandler(index);
+                if(index === 1){
+                	titleHandler(index-1);
+                }else{
+                	titleHandler(index);
+                }
+                
                 dataTableCallback(dataTable);
                 clearCacheCallback();
             }
