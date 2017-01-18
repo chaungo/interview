@@ -215,10 +215,16 @@ public class GadgetHandlerImpl extends GadgetHandler {
                                     public void accept(GadgetData gadgetData) {
                                         String assignee = gadgetData.getKey().getKey();
                                         if(summaryAssignees.contains(assignee)){
-                                            GadgetData assigneeData = summaryData.stream().filter(t -> t.getKey().getKey().equals(assignee)).findFirst().get();
-                                            addAllValue(gadgetData, assigneeData);
+                                            for(GadgetData assigneeData : summaryData){
+                                                if(assigneeData.getKey().getKey().equals(assignee)){
+                                                    addAllValue(gadgetData, assigneeData);
+                                                }
+                                            }
                                         } else {
-                                            summaryData.add(gadgetData);
+                                            GadgetData row = new GadgetData();
+                                            row.setKey(gadgetData.getKey());
+                                            addAllValue(gadgetData, row);
+                                            summaryData.add(row);
                                         }
                                     }
                                 });
