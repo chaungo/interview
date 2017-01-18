@@ -75,6 +75,9 @@ public class Constant {
     public static final String CLEAN_DATA_CACHE_TIME = "internal.conf.cleardatacache.time";
     public static final String DATA_CACHE_TIME_TO_LIVE = "internal.conf.gadgetdata.timetolive";
 
+
+    public static final String TOTAL = "total";
+
     public static String DISPLAY_NAME = "displayName";
     public static String ALIAS = "ALIAS";
     public static String ADMIN_ROLE = "jira-administrators";
