@@ -14,10 +14,12 @@
                             <h3>Welcome to Dashboard Management</h3>
                             <div layout-padding
                                  layout="column" layout-align="center center">
-                                <span style="color:white;background: red;border-radius: 5px;" ng-hide="!wronginfo"
+                                <span style="color:white;background: red;border-radius: 5px;" ng-if="wronginfo"
                                       layout-padding>The username or password is incorrect - please try again.</span>
                                 <span style="color:white;background: red;border-radius: 5px;"
-                                      ng-hide="!connectionfailed" layout-padding>Unable to connect to authentication server. Please check connection!</span>
+                                      ng-if="connectionfailed" layout-padding>Unable to connect to authentication server. Please check connection!</span>
+                                <span style="color:white;background: red;border-radius: 5px;"
+                                      ng-if="cookiesexpired" layout-padding>Cookies has expired, please login again!</span>
                             </div>
                         </md-card-title>
                         <md-card-content layout="column" layout-align="center center">

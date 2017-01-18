@@ -12,6 +12,7 @@ import ninja.params.Param;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import util.JSONUtil;
 
@@ -20,6 +21,9 @@ import java.util.List;
 import static controllers.OverdueReviewReportController.getReview;
 import static controllers.SonarStatisticGadgetController.getSonarStatistic;
 import static service.GadgetService.*;
+import static util.Constant.AMS_SONAR_STATISTICS_GADGET_KEY;
+import static util.Constant.AMS_OVERDUE_REVIEWS_REPORT_GADGET_KEY;
+import static util.Constant.GREENHOPPER_GADGET_KEY;
 
 
 /**
@@ -64,10 +68,15 @@ public class GadgetController {
 
                 }
             }
-            result.put("AMSSONARStatisticsGadget", sonarStatisticsGadget);
-            result.put("AMSOverdueReviewsReportGadget", overdueReviewGadget);
-            result.put("GreenHopperGadget", greenHopperGadgets);
-        } catch (Exception e) {
+
+            result.put(AMS_SONAR_STATISTICS_GADGET_KEY, sonarStatisticsGadget);
+            result.put(AMS_OVERDUE_REVIEWS_REPORT_GADGET_KEY, overdueReviewGadget);
+            result.put(GREENHOPPER_GADGET_KEY, greenHopperGadgets);
+        } catch (JSONException | NullPointerException e) {
+            JSONObject er = new JSONObject();
+            er.put("Err",e);
+            return Results.text().render(er);
+        } catch (Exception e){
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
         }
