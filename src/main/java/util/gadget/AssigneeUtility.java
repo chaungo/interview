@@ -78,7 +78,7 @@ public class AssigneeUtility {
         return returnData;
     }
 
-    public Set<AssigneeVO> findAssigneeList(String projectName, Release release, SessionInfo sessionInfo) throws APIException {
+    public Set<AssigneeVO> findAssigneeList(String projectName, String release, SessionInfo sessionInfo) throws APIException {
         String cacheKey = projectName + PLUS + release + Constant.DELIMITER + sessionInfo.getUsername();
         Set<AssigneeVO> returnData = new HashSet<>();
         DataCacheVO<Set<AssigneeVO>> dataCache = assigneesCache.get(cacheKey);
@@ -161,7 +161,7 @@ public class AssigneeUtility {
         return executions;
     }
 
-    public ExecutionsVO findAllExecutionIsueeInProject(String projectName, Release release, Map<String, String> cookies) throws APIException {
+    public ExecutionsVO findAllExecutionIsueeInProject(String projectName, String release, Map<String, String> cookies) throws APIException {
         StringBuffer query = new StringBuffer();
         if (projectName == null || projectName.isEmpty()) {
             return null;
@@ -169,7 +169,7 @@ public class AssigneeUtility {
         query.append("project = \"" + projectName + "\"");
         if (release != null) {
             query.append(Constant.AND);
-            query.append(String.format("fixVersion = %s", release.toString()));
+            query.append(String.format("fixVersion = %s", release));
         }
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put(Constant.PARAMERTER_ZQL_QUERY, query.toString());
@@ -181,12 +181,12 @@ public class AssigneeUtility {
         return executions;
     }
 
-    public Set<String> getListCycleName(String projectName, Release release, Set<String> products, SessionInfo sessionInfo) throws APIException {
+    public Set<String> getListCycleName(String projectName, String release, Set<String> products, SessionInfo sessionInfo) throws APIException {
         Set<String> returnData = new HashSet<>();
         StringBuffer provisional = new StringBuffer();
         provisional.append(provisional);
         if(release != null){
-            provisional.append(PLUS + release.toString());
+            provisional.append(PLUS + release);
         }
         if(products != null && !products.isEmpty()){
             provisional.append(PLUS + products);
@@ -248,7 +248,7 @@ public class AssigneeUtility {
         cycleNameCache = null;
     }
 
-    public List<JQLIssueVO> findAllIssueInProject(String projectName, Release release, Set<String> products, Map<String, String> cookies) throws APIException {
+    public List<JQLIssueVO> findAllIssueInProject(String projectName, String release, Set<String> products, Map<String, String> cookies) throws APIException {
         List<JQLIssueVO> returnData = new ArrayList<>();
         StringBuffer query = new StringBuffer();
         if (projectName == null || projectName.isEmpty()) {
@@ -257,7 +257,7 @@ public class AssigneeUtility {
         query.append("project = \"" + projectName + "\"");
         if (release != null) {
             query.append(Constant.AND);
-            query.append(String.format("fixVersion = %s", release.toString()));
+            query.append(String.format("fixVersion = %s", release));
         }
 
         if (products != null && !products.isEmpty()) {

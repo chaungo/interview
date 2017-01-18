@@ -39,10 +39,9 @@ import models.gadget.OverdueReviewsGadget;
 import models.gadget.SonarStatisticsGadget;
 import models.gadget.StoryVsTestExecution;
 import models.main.DataCacheVO;
+import models.main.DataCacheVO.State;
 import models.main.GadgetData;
 import models.main.JQLSearchResult;
-import models.main.Release;
-import models.main.DataCacheVO.State;
 import service.DatabaseUtility;
 import service.HTTPClientUtil;
 import util.Constant;
@@ -94,7 +93,7 @@ public class GadgetUtility extends DatabaseUtility {
         // gadget.setStories(story);
         gadget.setUser("tducle");
 //        gadget.setId("5865c9978dbec7462029d419");
-        gadget.setRelease(Release.R1_2_0);
+        gadget.setRelease("1_2_0");
         GadgetUtility.getInstance().insertOrUpdate(gadget);
     }
 
