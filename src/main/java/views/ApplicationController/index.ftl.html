@@ -67,7 +67,11 @@
                      style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <b>AMS SONAR Statistics {{item.release}}</b>
+                            <h4>AMS SONAR Statistics {{item.release}}</h4>
+                            <div ng-if="item.lastUpateTime > 1">(update {{item.lastUpateTime}} mins ago)</div>
+                            <div ng-if="item.lastUpateTime == 1">(update {{item.lastUpateTime}} min ago)</div>
+                            <div ng-if="item.lastUpateTime == 0">(just update)</div>
+
                             <div flex></div>
                             <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
                                        style="color: yellow;"
@@ -163,7 +167,10 @@
                 <div id="{{re.id}}" ng-init="hide=flase" ng-repeat="re in reviewList" style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <b>AMS Overdue Reviews Report Gadget {{re.project}}</b>
+                            <h4>AMS Overdue Reviews Report Gadget{{re.release}}</h4>
+                            <div ng-if="re.lastUpateTime > 1">(update {{re.lastUpateTime}} mins ago)</div>
+                            <div ng-if="re.lastUpateTime == 1">(update {{re.lastUpateTime}} min ago)</div>
+                            <div ng-if="re.lastUpateTime == 0">(just update)</div>
                             <div flex></div>
                             <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
                                        style="color: orange; margin-right: 10px"
