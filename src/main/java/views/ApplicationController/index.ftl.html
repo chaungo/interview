@@ -64,7 +64,7 @@
                 </div>
 
                 <div id="{{item.id}}" ng-init="hide=flase" ng-repeat="item in sonarStList"
-                     style="width: 100%">
+                     style="width: 100%" >
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
                             <h4>AMS SONAR Statistics {{item.release}}</h4>
@@ -110,7 +110,7 @@
                                 </md-tooltip>
                             </md-button>
                         </div>
-                        <table ng-if="!hide" class="responstable" style="width: 100%">
+                        <table ng-if="!hide" class="responstable" style="width: 100%" ng-mouseover="gadgetHover(item)">
                             <tr>
                                 <th>Index</th>
                                 <th>Component</th>
@@ -201,7 +201,7 @@
                                 </md-tooltip>
                             </md-button>
                         </div>
-                        <table ng-if="!hide" class="responstable" style="width: 100%">
+                        <table ng-if="!hide" class="responstable" style="width: 100%" ng-mouseover="gadgetHover(re)">
                             <tr>
                                 <th>Index</th>
                                 <th>IA</th>

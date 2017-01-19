@@ -91,6 +91,11 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     $rootScope.userInfo = {};
 
 
+    $scope.gadgetHover = function (item) {
+        item.lastUpateTime = Math.round(((Date.now() - item.upateTime) / 1000) / 60);
+    };
+
+
     $rootScope.getDashboardList = function () {
         $rootScope.sonarStList = [];
         $rootScope.reviewList = [];
@@ -786,8 +791,6 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
     $scope.ReleaseList = [];
     $scope.newReleaseName = "";
     $scope.newReleaseUrl = "";
-
-    //todo
 
     $resource('/getPeriodList', {}, {
         query: {

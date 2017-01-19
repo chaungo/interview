@@ -101,19 +101,17 @@ public class OverdueReviewReportController {
         }
 
 
-        long lastUpateTime;
+        long upateTime;
 
         try {
-            Calendar calendar = new GregorianCalendar(Locale.getDefault());
-            Long millis = calendar.getTimeInMillis() - document.getLong(Constant.UPDATE_DATE);
-            lastUpateTime = TimeUnit.MILLISECONDS.toMinutes(millis);
+            upateTime = document.getLong(Constant.UPDATE_DATE);
         } catch (Exception e) {
-            lastUpateTime = 0;
+            upateTime = 0;
         }
 
         result.put("id", GadgetId);
         result.put("project", data.getString("Project"));
-        result.put("lastUpateTime", lastUpateTime);
+        result.put("upateTime", upateTime);
 
         return result;
 

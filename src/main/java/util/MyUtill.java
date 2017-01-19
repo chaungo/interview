@@ -65,7 +65,7 @@ public class MyUtill {
 
     public static boolean isCacheExpired(org.bson.Document document, int timeInHour) {
         try {
-            GregorianCalendar latestUpdateTime = new GregorianCalendar(Locale.getDefault());
+            GregorianCalendar latestUpdateTime = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
             latestUpdateTime.setTimeInMillis(document.getLong(Constant.UPDATE_DATE));
             latestUpdateTime.add(Calendar.HOUR, timeInHour);
             GregorianCalendar currentTime = new GregorianCalendar(Locale.getDefault());

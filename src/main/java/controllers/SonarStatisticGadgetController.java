@@ -20,7 +20,6 @@ import util.PropertiesUtil;
 
 import java.io.BufferedReader;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import static controllers.ConfigurationController.getPeriod;
 import static util.Constant.*;
@@ -96,27 +95,26 @@ public class SonarStatisticGadgetController {
 
             result.put("RsIAArray", RsIAArray);
 
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, new GregorianCalendar(TimeZone.getTimeZone("UTC")).getTimeInMillis())));
 
         } else {
             result = new JSONObject(document.getString("cache"));
         }
 
 
-        long lastUpateTime;
+        long upateTime;
 
         try {
-            Calendar calendar = new GregorianCalendar(Locale.getDefault());
-            Long millis = calendar.getTimeInMillis() - document.getLong(Constant.UPDATE_DATE);
-            lastUpateTime = TimeUnit.MILLISECONDS.toMinutes(millis);
+            upateTime = document.getLong(Constant.UPDATE_DATE);
         } catch (Exception e) {
-            lastUpateTime = 0;
+            upateTime = 0;
         }
 
 
         result.put("id", GadgetId);
         result.put("release", data.getString("Release"));
-        result.put("lastUpateTime", lastUpateTime);
+        result.put("upateTime", upateTime);
+
 
         mongoClient.close();
 
