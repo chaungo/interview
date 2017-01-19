@@ -2,7 +2,6 @@ package handle;
 
 import models.SessionInfo;
 import models.exception.APIException;
-import ninja.Context;
 import ninja.Result;
 
 import java.util.List;

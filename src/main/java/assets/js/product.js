@@ -117,7 +117,7 @@ function createEvent() {
                         releaseTable.row.add([newRelease, ""]).draw(false);
                         addEventTablesAction();
                         $("#releaseInput").val("");
-                    }else{
+                    } else {
                         alert(data.data);
                     }
                 },

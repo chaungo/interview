@@ -24,26 +24,6 @@
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/java/META-INF/persistence.xml" />
       </configuration>
     </facet>
-    <facet type="web" name="Web2">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/java/assets/js/assignee-controller.js" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/java/assets/js" relative="/WEB-INF" />
-        </webroots>
-      </configuration>
-    </facet>
-    <facet type="web" name="Web3">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/java/assets/lobipanel/css" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/java/assets/lobipanel" relative="/WEB-INF" />
-        </webroots>
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />

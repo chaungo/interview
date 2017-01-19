@@ -23,19 +23,19 @@ function drawCycleTable(dataTable, gadget, callback, titleHandler, dataTableCall
     if (dataTable != null) {
         hideCycleTable(gadget);
         dataTable.ajax.reload(function () {
-        	if(! dataTable.data().count()){
-        		$("#" + gadget.id).find('#cycle-table-loader').fadeOut();
-        		$("#" + gadget.id).find('#cycle-table-container').hide();
-        		clearCacheCallback();
-        	}
-        	else{
-        		showCycleTable(gadget);
-        		clearCacheCallback();
-        	}
+            if (!dataTable.data().count()) {
+                $("#" + gadget.id).find('#cycle-table-loader').fadeOut();
+                $("#" + gadget.id).find('#cycle-table-container').hide();
+                clearCacheCallback();
+            }
+            else {
+                showCycleTable(gadget);
+                clearCacheCallback();
+            }
         });
         dataTable.columns(columnList).visible(false);
         dataTableCallBack(dataTable);
-        
+
     } else {
         hideCycleTable(gadget);
         dataTable = $("#" + gadget.id).find('#cycle-table').on(
@@ -68,12 +68,12 @@ function drawCycleTable(dataTable, gadget, callback, titleHandler, dataTableCall
                     });
                     clearCacheCallback();
                     showCycleTable(gadget);
-                    if(tempArray.length == 0){
-                    	$("#" + gadget.id).find('#cycle-table-container').hide();
-                    	titleHandler(0);
+                    if (tempArray.length == 0) {
+                        $("#" + gadget.id).find('#cycle-table-container').hide();
+                        titleHandler(0);
                     }
-                    else{
-                    	titleHandler(1);
+                    else {
+                        titleHandler(1);
                     }
                     return tempArray;
                 }

@@ -1,14 +1,5 @@
 package handle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
 import models.APIIssueVO;
@@ -17,12 +8,8 @@ import models.ResultCode;
 import models.SessionInfo;
 import models.exception.APIException;
 import models.exception.ResultsUtil;
-import models.gadget.AssigneeVsTestExecution;
-import models.gadget.CycleVsTestExecution;
-import models.gadget.EpicVsTestExecution;
-import models.gadget.Gadget;
+import models.gadget.*;
 import models.gadget.Gadget.Type;
-import models.gadget.StoryVsTestExecution;
 import models.main.DataCacheVO;
 import models.main.DataCacheVO.State;
 import models.main.GadgetData;
@@ -32,6 +19,11 @@ import ninja.Results;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
+
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GadgetHandlerImpl extends GadgetHandler {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetHandlerImpl.class);
@@ -195,18 +187,18 @@ public class GadgetHandlerImpl extends GadgetHandler {
                     } else if (Gadget.Type.ASSIGNEE_TEST_EXECUTION.equals(gadget.getType())) {
                         AssigneeVsTestExecution assigneeGadget = (AssigneeVsTestExecution) gadget;
                         gadgetsData = assigneeService.getDataAssignee(assigneeGadget, sessionInfo);
-                        
+
                         GadgetDataWrapper summaryTableDataWrapper = new GadgetDataWrapper();
                         summaryTableDataWrapper.setSummary(Constant.SUMMARY_TABLE_TITLE);
                         List<GadgetData> summaryData = new ArrayList<>();
                         summaryTableDataWrapper.setIssueData(summaryData);
-                        
+
                         gadgetsData.forEach(new BiConsumer<String, GadgetDataWrapper>() {
                             @Override
                             public void accept(String key, GadgetDataWrapper value) {
                                 //Add total to table
                                 value.getIssueData().add(getTotal(value.getIssueData()));
-                                
+
                                 //Add summary table
                                 Set<String> summaryAssignees = summaryData.stream().map(t -> t.getKey().getKey()).collect(Collectors.toSet());
                                 List<GadgetData> issueData = value.getIssueData();
@@ -214,9 +206,9 @@ public class GadgetHandlerImpl extends GadgetHandler {
                                     @Override
                                     public void accept(GadgetData gadgetData) {
                                         String assignee = gadgetData.getKey().getKey();
-                                        if(summaryAssignees.contains(assignee)){
-                                            for(GadgetData assigneeData : summaryData){
-                                                if(assigneeData.getKey().getKey().equals(assignee)){
+                                        if (summaryAssignees.contains(assignee)) {
+                                            for (GadgetData assigneeData : summaryData) {
+                                                if (assigneeData.getKey().getKey().equals(assignee)) {
                                                     addAllValue(gadgetData, assigneeData);
                                                 }
                                             }
@@ -270,29 +262,30 @@ public class GadgetHandlerImpl extends GadgetHandler {
         });
         return total;
     }
-    
-    private void addAllValue(GadgetData from, GadgetData to){
+
+    private void addAllValue(GadgetData from, GadgetData to) {
         to.getBlocked().increase(from.getBlocked().getTotal());
         to.getBlocked().getIssues().addAll(from.getBlocked().getIssues());
-        
+
         to.getFailed().increase(from.getFailed().getTotal());
         to.getFailed().getIssues().addAll(from.getFailed().getIssues());
-        
+
         to.getPassed().increase(from.getPassed().getTotal());
         to.getPassed().getIssues().addAll(from.getPassed().getIssues());
-        
+
         to.getPlanned().increase(from.getPlanned().getTotal());
         to.getPlanned().getIssues().addAll(from.getPlanned().getIssues());
-        
+
         to.getUnexecuted().increase(from.getUnexecuted().getTotal());
         to.getUnexecuted().getIssues().addAll(from.getUnexecuted().getIssues());
-        
+
         to.getUnplanned().increase(from.getUnplanned().getTotal());
         to.getUnplanned().getIssues().addAll(from.getUnplanned().getIssues());
-        
+
         to.getWip().increase(from.getWip().getTotal());
         to.getWip().getIssues().addAll(from.getWip().getIssues());
     }
+
     @Override
     public Result getStoryInEpic(List<String> epics, SessionInfo sessionInfo) throws APIException {
         Map<String, JQLIssueWapper> storiesIssues = storyService.findStoryInEpic(epics, sessionInfo.getCookies());

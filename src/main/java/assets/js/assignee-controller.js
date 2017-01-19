@@ -8,189 +8,189 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
     var jsonObjectForAssigneeTable;
 
     if (dataTable.loading == false) {
-    	dataTable.ajax = $
-        .ajax({
-            url: GET_DATA_URI,
-            method: "GET",
-            data: {
-                id: gadget.id
-            },
-            beforeSend: function () {
-                dataTable.loading = true;
-                hideAssigneeTable(gadget);
-            },
-            error: function(e, status){
-            	if( e.status == 500){
-            		callback("500 Internal Server Error");
-            	}
-            	else if(status === "timeout"){
-            		callback("Ajax request timed out")
-            	}
-            	clearCacheCallback();
-            },
-            success: function (responseData) {
-                var index = 1;
-                dataTable.loading = false;
-                $("#" + gadget.id).find("#assignee-table-container").html("");
-                if (debugAjaxResponse(responseData)) {
-                    callback(responseData);
-                    showAssigneeTable(gadget);
+        dataTable.ajax = $
+            .ajax({
+                url: GET_DATA_URI,
+                method: "GET",
+                data: {
+                    id: gadget.id
+                },
+                beforeSend: function () {
+                    dataTable.loading = true;
+                    hideAssigneeTable(gadget);
+                },
+                error: function (e, status) {
+                    if (e.status == 500) {
+                        callback("500 Internal Server Error");
+                    }
+                    else if (status === "timeout") {
+                        callback("Ajax request timed out")
+                    }
                     clearCacheCallback();
-                    return;
-                }
+                },
+                success: function (responseData) {
+                    var index = 1;
+                    dataTable.loading = false;
+                    $("#" + gadget.id).find("#assignee-table-container").html("");
+                    if (debugAjaxResponse(responseData)) {
+                        callback(responseData);
+                        showAssigneeTable(gadget);
+                        clearCacheCallback();
+                        return;
+                    }
 
-                jsonObjectForAssigneeTable = responseData;
-                $
-                    .each(
-                        jsonObjectForAssigneeTable["data"],
-                        function (cycleKey, assigneeArray) {
-                            if (assigneeArray["issueData"].length != 0) {
-                                var tempTitle = [];
-                                var customTableId = "assignee-table-" + index;
-                                var assigneeTableDataSet = [];
-                                var assigneeIndividualTable;
-                                var totalRowArray = [];
-                                
-                                if(cycleKey.toLowerCase() !== "summary"){
-                                	tempTitle.push(index + 1, ". ", cycleKey);
-                                	appendTemplateTable(
+                    jsonObjectForAssigneeTable = responseData;
+                    $
+                        .each(
+                            jsonObjectForAssigneeTable["data"],
+                            function (cycleKey, assigneeArray) {
+                                if (assigneeArray["issueData"].length != 0) {
+                                    var tempTitle = [];
+                                    var customTableId = "assignee-table-" + index;
+                                    var assigneeTableDataSet = [];
+                                    var assigneeIndividualTable;
+                                    var totalRowArray = [];
+
+                                    if (cycleKey.toLowerCase() !== "summary") {
+                                        tempTitle.push(index + 1, ". ", cycleKey);
+                                        appendTemplateTable(
                                             customTableId,
                                             tempTitle.join(""),
                                             gadget,
                                             "#assignee-table-container");
-                                }
-                                else{
-                                	tempTitle.push(1, ". ", cycleKey);
-                                	prependTemplateTable(
+                                    }
+                                    else {
+                                        tempTitle.push(1, ". ", cycleKey);
+                                        prependTemplateTable(
                                             customTableId,
                                             tempTitle.join(""),
                                             gadget,
                                             "#assignee-table-container");
-                                }
-                                
-                                $("#" + gadget.id).find("#" + customTableId)
-                                    .append(
-                                        TEMPLATE_HEADER_FOOTER_1);
-                                
-                                for (var i = 0; i < assigneeArray["issueData"].length; i++) {
-                                	var titleKey = assigneeArray["issueData"][i]["key"]["key"];
-                                	var anAssigneeDataSet = [];
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["key"]["key"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["unexecuted"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["failed"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["wip"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["blocked"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["passed"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["planned"]);
-                                    anAssigneeDataSet
-                                        .push(assigneeArray["issueData"][i]["unplanned"]);
-                                    if(titleKey.toLowerCase() !== "total"){
-                                    	assigneeTableDataSet
-                                        .push(anAssigneeDataSet);
                                     }
-                                    else{
-                                    	totalRowArray = anAssigneeDataSet;
-                                    }
-                                }
-                                assigneeTableDataSet.push(totalRowArray);
 
-                                assigneeIndividualTable = $("#" + gadget.id).find(
-                                    "#" + customTableId)
-                                    .DataTable({
-                                    	bSort: false,
-                                    	paging: false,
-                                        bAutoWidth: false,
-                                        data: assigneeTableDataSet,
-                                        columns: [{
-                                            title: "Assignee"
-                                        }, {
-                                            title: "UNEXECUTED",
-                                            "render": function (data,
-                                                                displayOrType,
-                                                                rowData,
-                                                                setting) {
-                                                return createIssueLinks(
-                                                    data,
-                                                    displayOrType,
-                                                    rowData,
-                                                    setting);
-                                            }
-                                        }, {
-                                            title: "FAILED",
-                                            "render": function (data,
-                                                                displayOrType,
-                                                                rowData,
-                                                                setting) {
-                                                return createIssueLinks(
-                                                    data,
-                                                    displayOrType,
-                                                    rowData,
-                                                    setting);
-                                            }
-                                        }, {
-                                            title: "WIP",
-                                            "render": function (data,
-                                                                displayOrType,
-                                                                rowData,
-                                                                setting) {
-                                                return createIssueLinks(
-                                                    data,
-                                                    displayOrType,
-                                                    rowData,
-                                                    setting);
-                                            }
-                                        }, {
-                                            title: "BLOCKED",
-                                            "render": function (data,
-                                                                displayOrType,
-                                                                rowData,
-                                                                setting) {
-                                                return createIssueLinks(
-                                                    data,
-                                                    displayOrType,
-                                                    rowData,
-                                                    setting);
-                                            }
-                                        }, {
-                                            title: "PASSED",
-                                            "render": function (data,
-                                                                displayOrType,
-                                                                rowData,
-                                                                setting) {
-                                                return createIssueLinks(
-                                                    data,
-                                                    displayOrType,
-                                                    rowData,
-                                                    setting);
-                                            }
-                                        }]
-                                    });
-                                assigneeIndividualTable
-                                    .columns(columnList)
-                                    .visible(false);
-                                index++;
-                            }
-                        });
-                showAssigneeTable(gadget);
-                dataTable.loading = false;
-                if(index === 1){
-                	titleHandler(index-1);
-                }else{
-                	titleHandler(index);
+                                    $("#" + gadget.id).find("#" + customTableId)
+                                        .append(
+                                            TEMPLATE_HEADER_FOOTER_1);
+
+                                    for (var i = 0; i < assigneeArray["issueData"].length; i++) {
+                                        var titleKey = assigneeArray["issueData"][i]["key"]["key"];
+                                        var anAssigneeDataSet = [];
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["key"]["key"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["unexecuted"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["failed"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["wip"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["blocked"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["passed"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["planned"]);
+                                        anAssigneeDataSet
+                                            .push(assigneeArray["issueData"][i]["unplanned"]);
+                                        if (titleKey.toLowerCase() !== "total") {
+                                            assigneeTableDataSet
+                                                .push(anAssigneeDataSet);
+                                        }
+                                        else {
+                                            totalRowArray = anAssigneeDataSet;
+                                        }
+                                    }
+                                    assigneeTableDataSet.push(totalRowArray);
+
+                                    assigneeIndividualTable = $("#" + gadget.id).find(
+                                        "#" + customTableId)
+                                        .DataTable({
+                                            bSort: false,
+                                            paging: false,
+                                            bAutoWidth: false,
+                                            data: assigneeTableDataSet,
+                                            columns: [{
+                                                title: "Assignee"
+                                            }, {
+                                                title: "UNEXECUTED",
+                                                "render": function (data,
+                                                                    displayOrType,
+                                                                    rowData,
+                                                                    setting) {
+                                                    return createIssueLinks(
+                                                        data,
+                                                        displayOrType,
+                                                        rowData,
+                                                        setting);
+                                                }
+                                            }, {
+                                                title: "FAILED",
+                                                "render": function (data,
+                                                                    displayOrType,
+                                                                    rowData,
+                                                                    setting) {
+                                                    return createIssueLinks(
+                                                        data,
+                                                        displayOrType,
+                                                        rowData,
+                                                        setting);
+                                                }
+                                            }, {
+                                                title: "WIP",
+                                                "render": function (data,
+                                                                    displayOrType,
+                                                                    rowData,
+                                                                    setting) {
+                                                    return createIssueLinks(
+                                                        data,
+                                                        displayOrType,
+                                                        rowData,
+                                                        setting);
+                                                }
+                                            }, {
+                                                title: "BLOCKED",
+                                                "render": function (data,
+                                                                    displayOrType,
+                                                                    rowData,
+                                                                    setting) {
+                                                    return createIssueLinks(
+                                                        data,
+                                                        displayOrType,
+                                                        rowData,
+                                                        setting);
+                                                }
+                                            }, {
+                                                title: "PASSED",
+                                                "render": function (data,
+                                                                    displayOrType,
+                                                                    rowData,
+                                                                    setting) {
+                                                    return createIssueLinks(
+                                                        data,
+                                                        displayOrType,
+                                                        rowData,
+                                                        setting);
+                                                }
+                                            }]
+                                        });
+                                    assigneeIndividualTable
+                                        .columns(columnList)
+                                        .visible(false);
+                                    index++;
+                                }
+                            });
+                    showAssigneeTable(gadget);
+                    dataTable.loading = false;
+                    if (index === 1) {
+                        titleHandler(index - 1);
+                    } else {
+                        titleHandler(index);
+                    }
+
+                    dataTableCallback(dataTable);
+                    clearCacheCallback();
                 }
-                
-                dataTableCallback(dataTable);
-                clearCacheCallback();
-            }
-        });
-    } 
+            });
+    }
 }
 
 

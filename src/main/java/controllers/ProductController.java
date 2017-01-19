@@ -1,9 +1,6 @@
 package controllers;
 
-import java.util.Set;
-
 import com.google.inject.Singleton;
-
 import filter.APIFilter;
 import manament.log.LoggerWapper;
 import models.ResultCode;
@@ -16,6 +13,8 @@ import ninja.params.Param;
 import util.AdminUtility;
 import util.Constant;
 import util.gadget.GadgetUtility;
+
+import java.util.Set;
 
 @Singleton
 @FilterWith(APIFilter.class)
@@ -32,9 +31,9 @@ public class ProductController {
     }
 
     public Result addRelease(@Param("release") String release, Context context) {
-        try{
+        try {
             return ResultsUtil.convertToResult(ResultCode.SUCCESS, AdminUtility.getInstance().insertRelease(release, ResultsUtil.getSessionInfo(context)));
-        } catch (APIException e){
+        } catch (APIException e) {
             return ResultsUtil.convertException(e, context);
         }
     }
@@ -55,7 +54,7 @@ public class ProductController {
         Set<String> products = AdminUtility.getInstance().getAllProduct();
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, products);
     }
-    
+
     public Result getAllRelease() {
         Set<String> releases = AdminUtility.getInstance().getAllRelease();
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, releases);

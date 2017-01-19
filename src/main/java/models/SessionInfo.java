@@ -5,7 +5,7 @@ import java.util.Map;
 public class SessionInfo {
     private Map<String, String> cookies;
     private String username;
-    
+
     public String getUsername() {
         return username;
     }

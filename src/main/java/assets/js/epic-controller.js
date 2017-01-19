@@ -4,16 +4,16 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
     if (dataTable != null) {
         hideEpicTable(gadget);
         dataTable.ajax.reload(function () {
-        	if(! dataTable.data().count()){
-        		$("#" + gadget.id).find('#epic-table-loader').fadeOut();
-        		$("#" + gadget.id).find('#epic-table-container').hide();
-        		clearCacheCallback();
-        	}
-        	else{
-        		showEpicTable(gadget);
-        		clearCacheCallback();
-        	}
-            
+            if (!dataTable.data().count()) {
+                $("#" + gadget.id).find('#epic-table-loader').fadeOut();
+                $("#" + gadget.id).find('#epic-table-container').hide();
+                clearCacheCallback();
+            }
+            else {
+                showEpicTable(gadget);
+                clearCacheCallback();
+            }
+
         });
         dataTable.columns(columnList).visible(true);
         dataTableCallback(dataTable);
@@ -22,7 +22,7 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
         dataTable = $("#" + gadget.id).find('#epic-table').on(
             'error.dt',
             function (e, settings, techNote, message) {
-            	clearCacheCallback();
+                clearCacheCallback();
                 callback('An error has been reported by DataTables: ' + message)
                 showEpicTable(gadget);
             }).DataTable({
@@ -48,15 +48,15 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
                             tempArray.push(v2);
                         });
                     });
-                    
+
                     showEpicTable(gadget);
                     clearCacheCallback();
-                    if(tempArray.length == 0){
-                    	$("#" + gadget.id).find('#epic-table-container').hide();
-                    	titleHandler(0);
+                    if (tempArray.length == 0) {
+                        $("#" + gadget.id).find('#epic-table-container').hide();
+                        titleHandler(0);
                     }
-                    else{
-                    	titleHandler(1);
+                    else {
+                        titleHandler(1);
                     }
                     return tempArray;
                 }
@@ -69,25 +69,25 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
                 }
             }, {
                 "data": "key.summary",
-                "render": function(data, displayOrType,
-                                    rowData, setting){
-                	if(data == null){
-                		return "";
-                	}
-                	else{
-                		return data;
-                	}
+                "render": function (data, displayOrType,
+                                    rowData, setting) {
+                    if (data == null) {
+                        return "";
+                    }
+                    else {
+                        return data;
+                    }
                 }
             }, {
                 "data": "key.priority.name",
-                "render": function(data, displayOrType,
-                        rowData, setting){
-                	if(data == null){
-                		return "";
-                	}
-                	else{
-                		return data;
-                	}
+                "render": function (data, displayOrType,
+                                    rowData, setting) {
+                    if (data == null) {
+                        return "";
+                    }
+                    else {
+                        return data;
+                    }
                 }
             }, {
                 "data": "unexecuted",

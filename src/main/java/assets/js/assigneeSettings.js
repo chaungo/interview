@@ -37,7 +37,7 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         $mdDialog.cancel();
     }
     $scope.productPage = "configuration";
-    
+
     $scope.init = function () {
         var item = $rootScope.gadgetToEdit;
         console.log(item);
@@ -57,8 +57,8 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
                 showError(result.data);
             }
         }
-        var callBackRelease = function(result){
-        	if (result.type == SUCCESS) {
+        var callBackRelease = function (result) {
+            if (result.type == SUCCESS) {
                 $scope.greenHopperRelease = result.data;
                 $scope.$apply();
             } else {
@@ -66,12 +66,12 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
                 showError(result.data);
             }
         }
-      
-        
+
+
         getGreenHopperProjectList(callBack);
         getGreenHopperRelease(callBackRelease);
         getGreenHopperProduct(callBackProduct);
-        
+
         if (item != null) {
             if (item.type == "ASSIGNEE_TEST_EXECUTION") {
                 $scope.gadgetId = item.id;
@@ -85,7 +85,6 @@ app.controller('AssigneeSettingController', function ($scope, $rootScope, $windo
         }
     }
 
-    
 
     $scope.saveGadget = function () {
         var assigneeProjectVal = $("#assigneeProject").val();

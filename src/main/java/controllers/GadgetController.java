@@ -21,9 +21,7 @@ import java.util.List;
 import static controllers.OverdueReviewReportController.getReview;
 import static controllers.SonarStatisticGadgetController.getSonarStatistic;
 import static service.GadgetService.*;
-import static util.Constant.AMS_SONAR_STATISTICS_GADGET_KEY;
-import static util.Constant.AMS_OVERDUE_REVIEWS_REPORT_GADGET_KEY;
-import static util.Constant.GREENHOPPER_GADGET_KEY;
+import static util.Constant.*;
 
 
 /**
@@ -74,10 +72,10 @@ public class GadgetController {
             result.put(GREENHOPPER_GADGET_KEY, greenHopperGadgets);
         } catch (JSONException | NullPointerException e) {
             JSONObject er = new JSONObject();
-            er.put("Err",e);
+            er.put("Err", e);
             e.printStackTrace();
             return Results.text().render(er);
-        } catch (Exception e){
+        } catch (Exception e) {
             logger.error("show_dashboard ", e);
             return Results.internalServerError();
         }

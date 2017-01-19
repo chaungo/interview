@@ -79,7 +79,9 @@ public class Constant {
 
 
     public static final String TOTAL = "Total";
-
+    public static final String AMS_SONAR_STATISTICS_GADGET_KEY = "AMSSONARStatisticsGadget";
+    public static final String AMS_OVERDUE_REVIEWS_REPORT_GADGET_KEY = "AMSOverdueReviewsReportGadget";
+    public static final String GREENHOPPER_GADGET_KEY = "GreenHopperGadget";
     public static String DISPLAY_NAME = "displayName";
     public static String ALIAS = "ALIAS";
     public static String ADMIN_ROLE = "jira-administrators";
@@ -88,7 +90,6 @@ public class Constant {
     public static String SONAR_GADGET = "SonarGadget";
     public static String REVIEW_GADGET = "ReviewGadget";
     public static String GREENHOPPER_GADGET = "GreenHopperGadget";
-
     public static String OWNER = "owner";
     public static String PRIVACY = "privacy";
     public static String PRIVACY_STATUS = "status";
@@ -100,19 +101,12 @@ public class Constant {
     public static String USER_GROUPS = "groups";
     public static String USER_PROJECTS = "projects";
     public static String GROUP_ITEMS = "items";
-
     public static String DASHBOARD_NAME_COL = "dashboard_name";
     public static String DASHBOARD_TABLE = "Dashboard";
     public static String RELEASE_TABLE = "Release";
     public static String METRIC_TABLE = "Sonar_Metric";
     public static String UPDATE_DATE = "updateDate";
     public static String RELEASE_URL = "url";
-
-    public static final String AMS_SONAR_STATISTICS_GADGET_KEY = "AMSSONARStatisticsGadget";
-    public static final String AMS_OVERDUE_REVIEWS_REPORT_GADGET_KEY = "AMSOverdueReviewsReportGadget";
-    public static final String GREENHOPPER_GADGET_KEY = "GreenHopperGadget";
-
-
     public static String METRIC_KEY[] = {"coverage", "critical_violations", "new_coverage", "test_errors",
             "test_execution_time", "test_failures"};
 

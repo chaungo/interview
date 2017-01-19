@@ -26,8 +26,9 @@
                 <tr>
                     <td class="col-md-6"><label>Release</label></td>
                     <td class="col-md-6"><select class="form-control" ng-model="selectedRelease"
-                    						 	ng-change="onProjectReleaseProductChanged()"
-                                                 id="epicRelease" ng-options="selectedItem as selectedItem for selectedItem in greenHopperRelease track by selectedItem">
+                                                 ng-change="onProjectReleaseProductChanged()"
+                                                 id="epicRelease"
+                                                 ng-options="selectedItem as selectedItem for selectedItem in greenHopperRelease track by selectedItem">
                         <option value="" selected disabled>-Select Version-</option>
                     </select></td>
                 </tr>
@@ -37,9 +38,9 @@
                     <td class="col-md-12 row">
                         <div class="col-md-9">
                             <select id="epicProduct" ng-model="selectedProduct"
-                            		ng-change="onProjectReleaseProductChanged()"
+                                    ng-change="onProjectReleaseProductChanged()"
                                     ng-options="item as item for item in greenHopperProduct track by item"
-                                     class="form-control">
+                                    class="form-control">
                                 <option value="" selected disabled>-Select Product-</option>
                             </select>
                         </div>

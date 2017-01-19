@@ -1,10 +1,10 @@
 package models.gadget;
 
-import java.util.List;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.List;
+import java.util.Set;
 
 public interface Gadget {
     String getId();

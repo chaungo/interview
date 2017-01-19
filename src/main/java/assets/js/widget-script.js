@@ -11,7 +11,7 @@ function appendTemplateTable(id, title, gadget, container) {
 }
 
 function prependTemplateTable(id, title, gadget, container) {
-	$('<br><hr>').prependTo($("#" + gadget.id).find(container));
+    $('<br><hr>').prependTo($("#" + gadget.id).find(container));
     $('<table id="' + id + '" class="display"></table>').prependTo($("#" + gadget.id).find(container));
     $('<h4><b>' + title + '</b></h4>').prependTo($("#" + gadget.id).find(container));
 }
@@ -159,12 +159,12 @@ function createIssueLinkForTitle(data) {
     var htmlString = [];
     var tempTitle = data["key"];
     tempTitle = tempTitle.toLowerCase();
-    if(tempTitle === "total"){
-    	htmlString.push( data["key"]);
+    if (tempTitle === "total") {
+        htmlString.push(data["key"]);
     }
-    else{
-    	htmlString.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, data["key"], '">', data["key"], '</a>');
+    else {
+        htmlString.push('<a href="', GREENHOPPER_BROWSE_ISSUE_LINK, data["key"], '">', data["key"], '</a>');
     }
     return htmlString.join("");
-    
+
 }

@@ -1,28 +1,26 @@
 package util;
 
-import static util.Constant.NAME;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
+import manament.log.LoggerWapper;
+import models.SessionInfo;
+import models.exception.APIException;
+import models.main.ReleaseVO;
+import org.bson.Document;
+import service.DatabaseUtility;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import org.bson.Document;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.DeleteResult;
-
-import manament.log.LoggerWapper;
-import models.SessionInfo;
-import models.exception.APIException;
-import models.main.ReleaseVO;
-import service.DatabaseUtility;
+import static util.Constant.NAME;
 
 public class AdminUtility extends DatabaseUtility {
     private static final LoggerWapper logger = LoggerWapper.getLogger(AdminUtility.class);
-    
+
     private static final String PRODUCT_COLLECTION = "Product";
     private static final String RELEASE_COLLECTION = "GreenHopperRelease";
     private static AdminUtility INSTANCE = new AdminUtility();
@@ -86,17 +84,17 @@ public class AdminUtility extends DatabaseUtility {
         if (release == null || getAllRelease().contains(release)) {
             return false;
         }
-        
+
         ReleaseVO releaseVO = new ReleaseVO();
         releaseVO.setName(release);
         releaseVO.setDate(new Date());
         releaseVO.setUsername(sessionInfo.getUsername());
-        
+
         Document document;
-        try{
+        try {
             document = Document.parse(mapper.writeValueAsString(releaseVO));
             releaseCollection.insertOne(document);
-        } catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             logger.fastDebug("error during mapper.writeValueAsString", e);
             throw new APIException("cannot insert release", e);
         }

@@ -23,8 +23,8 @@ public class AssigneeUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(AssigneeUtility.class);
     private static final String PLUS = "+";
     private static AssigneeUtility INSTANCE = new AssigneeUtility();
-    private static GadgetCacheMap<Set<String>> cycleNameCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24)*60, "CycleCacheCleaner");
-    private static GadgetCacheMap<Set<AssigneeVO>> assigneesCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24)*60, "AssigneeCacheCleaner");
+    private static GadgetCacheMap<Set<String>> cycleNameCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24) * 60, "CycleCacheCleaner");
+    private static GadgetCacheMap<Set<AssigneeVO>> assigneesCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24) * 60, "AssigneeCacheCleaner");
 
     private AssigneeUtility() {
     }
@@ -75,18 +75,18 @@ public class AssigneeUtility {
         Set<AssigneeVO> returnData = new HashSet<>();
         DataCacheVO<Set<AssigneeVO>> dataCache = assigneesCache.get(cacheKey);
         boolean found = false;
-        if(dataCache != null){
+        if (dataCache != null) {
             long begin = System.currentTimeMillis();
             int timeout = PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT);
 
-            while (!State.SUCCESS.equals(dataCache.getState())){
-                if(begin + timeout < System.currentTimeMillis()){
+            while (!State.SUCCESS.equals(dataCache.getState())) {
+                if (begin + timeout < System.currentTimeMillis()) {
                     logger.fastDebug("timeout when waiting cache");
                     return returnData;
                 }
-                try{
+                try {
                     Thread.sleep(800);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     logger.fastDebug("Thread interrupted", e, new Object());
                 }
             }
@@ -94,12 +94,12 @@ public class AssigneeUtility {
             found = true;
         }
 
-        if(!found){
+        if (!found) {
             DataCacheVO<Set<AssigneeVO>> value = new DataCacheVO<Set<AssigneeVO>>();
             assigneesCache.put(cacheKey, value);
-            try{
+            try {
                 ExecutionsVO executions = findAllExecutionIsueeInProject(projectName, release, sessionInfo.getCookies());
-                if(executions != null && executions.getExecutions() != null){
+                if (executions != null && executions.getExecutions() != null) {
                     List<ExecutionIssueVO> excutions = executions.getExecutions();
                     Stream<ExecutionIssueVO> excutionsStream = excutions.stream();
                     returnData = excutionsStream.filter(e -> (e.getAssigneeUserName() != null && !e.getAssigneeUserName().isEmpty()))
@@ -111,7 +111,7 @@ public class AssigneeUtility {
                                 }
                             }).collect(Collectors.toSet());
                 }
-            } finally{
+            } finally {
                 value.setData(returnData);
                 value.setState(State.SUCCESS);
             }
@@ -177,58 +177,58 @@ public class AssigneeUtility {
         Set<String> returnData = new HashSet<>();
         StringBuffer provisional = new StringBuffer();
         provisional.append(provisional);
-        if(release != null){
+        if (release != null) {
             provisional.append(PLUS + release);
         }
-        if(products != null && !products.isEmpty()){
+        if (products != null && !products.isEmpty()) {
             provisional.append(PLUS + products);
         }
         String keyProvisional = provisional.toString() + Constant.DELIMITER + sessionInfo.getUsername();
         DataCacheVO<Set<String>> dataCache = cycleNameCache.get(keyProvisional);
         boolean found = false;
 
-        if(dataCache != null){
+        if (dataCache != null) {
             long begin = System.currentTimeMillis();
             int timeout = PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT);
-            
-            while (!State.SUCCESS.equals(dataCache.getState())){
-                if(begin + timeout < System.currentTimeMillis()){
+
+            while (!State.SUCCESS.equals(dataCache.getState())) {
+                if (begin + timeout < System.currentTimeMillis()) {
                     logger.fastDebug("timeout when waiting cache");
                     return returnData;
                 }
-                try{
+                try {
                     Thread.sleep(800);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     logger.fastDebug("Thread interrupted", e, new Object());
                 }
             }
             returnData = dataCache.getData();
-            found =true;
+            found = true;
         }
-        if(!found){
+        if (!found) {
             DataCacheVO<Set<String>> dataCacheVO = new DataCacheVO<Set<String>>();
             cycleNameCache.put(keyProvisional, dataCacheVO);
-            try{
+            try {
                 List<JQLIssueVO> issues = findAllIssueInProject(projectName, release, products, sessionInfo.getCookies());
                 List<ExecutionIssueVO> executions = new ArrayList<>();
-                if(issues != null){
+                if (issues != null) {
                     List<TestExecutionCallable> tasks = new ArrayList<>();
                     issues.forEach(i -> tasks.add(
                             new TestExecutionCallable(i, JQLIssuetypeVO.Type.fromString(i.getFields().getIssuetype().getName()), sessionInfo.getCookies())));
 
                     List<ExecutionIssueResultWapper> taskResult = ExecutorManagement.getInstance().invokeAndGet(tasks);
-                    for (ExecutionIssueResultWapper wapper : taskResult){
+                    for (ExecutionIssueResultWapper wapper : taskResult) {
                         List<ExecutionIssueVO> executionVO = wapper.getExecutionsVO();
-                        if(executionVO != null){
+                        if (executionVO != null) {
                             executions.addAll(executionVO);
                         }
                     }
                     Set<String> cycleNames = executions.stream().map(i -> i.getCycleName()).collect(Collectors.toSet());
-                    if(cycleNames != null && !cycleNames.isEmpty()){
+                    if (cycleNames != null && !cycleNames.isEmpty()) {
                         returnData.addAll(cycleNames);
                     }
                 }
-            } finally{
+            } finally {
                 dataCacheVO.setData(returnData);
                 dataCacheVO.setState(State.SUCCESS);
             }
@@ -289,6 +289,7 @@ public class AssigneeUtility {
 
     public void clearCache() {
         cycleNameCache.cleanAll();
-        assigneesCache.cleanAll();;
+        assigneesCache.cleanAll();
+        ;
     }
 }

@@ -76,8 +76,8 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
                 showError(result.data);
             }
         }
-        var callBackRelease = function(result){
-        	if (result.type == SUCCESS) {
+        var callBackRelease = function (result) {
+            if (result.type == SUCCESS) {
                 $scope.greenHopperRelease = result.data;
                 $scope.$apply();
             } else {
@@ -92,7 +92,7 @@ app.controller('EpicSettingController', function ($scope, $rootScope, $window, $
 
         if (item != null) {
             if (item.type == "EPIC_US_TEST_EXECUTION") {
-            	$scope.gadgetId = item.id;
+                $scope.gadgetId = item.id;
                 $scope.selectedProject = item.projectName;
                 $scope.selectedRelease = item.release;
                 $scope.selectedProduct = item.products[0];

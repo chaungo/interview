@@ -16,7 +16,7 @@
                 <tr>
                     <td class="col-md-6"><label>Project</label></td>
                     <td class="col-md-6"><select class="form-control" id="cycleProject" data-ng-model="selectedProject"
-                                                 
+
                                                  data-ng-options="selectedItem as selectedItem for selectedItem in greenHopperProjectList track by selectedItem">
                         <option value="" selected disabled>-Select Project-</option>
                     </select></td>
@@ -26,7 +26,8 @@
                     <td class="col-md-6"><label>Release</label></td>
 
                     <td class="col-md-6"><select class="form-control" ng-model="selectedRelease"
-                                                  id="cycleRelease"  data-ng-options="selectedItem as selectedItem for selectedItem in greenHopperRelease track by selectedItem">
+                                                 id="cycleRelease"
+                                                 data-ng-options="selectedItem as selectedItem for selectedItem in greenHopperRelease track by selectedItem">
                         <option value="" selected disabled>-Select Version-</option>
                     </select></td>
                 </tr>
@@ -38,7 +39,7 @@
                         <div class="col-md-9">
                             <select id="cycleProduct" data-ng-model="selectedProduct"
                                     data-ng-options="item as item for item in greenHopperProduct track by item"
-                                     class="form-control">
+                                    class="form-control">
                                 <option value="" selected disabled>-Select Product-</option>
                             </select>
                         </div>

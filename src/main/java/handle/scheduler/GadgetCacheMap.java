@@ -33,13 +33,13 @@ public class GadgetCacheMap<T> {
     // GET method
 
     public DataCacheVO<T> get(String key) {
-        if(key == null){
+        if (key == null) {
             return null;
         }
         DataCacheVO<T> c = cacheMap.get(key);
-        if(c == null)
+        if (c == null)
             return null;
-        else{
+        else {
             // c.lastAccessed = System.currentTimeMillis();
             return c;
         }

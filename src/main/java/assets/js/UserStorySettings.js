@@ -19,10 +19,10 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
     $scope.productPage = "configuration";
 
     $scope.onProjectReleaseProductChanged = function () {
-    	if($scope.checkSettings()){
-    		$scope.getEpicsAngular(null);
-    	}
-        
+        if ($scope.checkSettings()) {
+            $scope.getEpicsAngular(null);
+        }
+
     }
 
     $scope.onAddEpic = function () {
@@ -110,7 +110,7 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
 
     $scope.reloadStoryList = function (callback) {
         if ($scope.usEpicOptions == undefined || $scope.usEpicOptions == null || $scope.usEpicOptions.length == 0) {
-        	return;   
+            return;
         }
         else {
             $.ajax({
@@ -153,51 +153,51 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
             });
         }
     }
-    
-    $scope.checkSettings = function(){
-    	if ($scope.usProject != null && $scope.usRelease != null && $scope.usProduct != null){
-    		if($scope.usProject != "" && $scope.usRelease != "" && $scope.usProduct != ""){
-    			return true;
-    		}
-    	}
-    	return false;
+
+    $scope.checkSettings = function () {
+        if ($scope.usProject != null && $scope.usRelease != null && $scope.usProduct != null) {
+            if ($scope.usProject != "" && $scope.usRelease != "" && $scope.usProduct != "") {
+                return true;
+            }
+        }
+        return false;
     }
 
-	    $scope.getEpicsAngular = function(callback) {
-		$.ajax({
-			url : GET_EPIC_URI,
-			data : {
-				project : $scope.usProject,
-				release : $scope.usRelease,
-				product : $scope.usProduct
-			},
-			beforeSend : function() {
-				$scope.showEpicLoader = true;
-			},
-			error : function(res) {
-				$mdToast.show($mdToast.simple().textContent('Server error')
-						.hideDelay(5000));
-				$scope.showEpicLoader = false;
-				$scope.$apply();
-			},
-			success : function(res) {
-				if ($rootScope.debugAjaxAngular(res)) {
-					return;
-				}
+    $scope.getEpicsAngular = function (callback) {
+        $.ajax({
+            url: GET_EPIC_URI,
+            data: {
+                project: $scope.usProject,
+                release: $scope.usRelease,
+                product: $scope.usProduct
+            },
+            beforeSend: function () {
+                $scope.showEpicLoader = true;
+            },
+            error: function (res) {
+                $mdToast.show($mdToast.simple().textContent('Server error')
+                    .hideDelay(5000));
+                $scope.showEpicLoader = false;
+                $scope.$apply();
+            },
+            success: function (res) {
+                if ($rootScope.debugAjaxAngular(res)) {
+                    return;
+                }
 
-				else {
-					console.log(res);
-					$scope.usEpicAvailableOptions = res;
-					$scope.usEpicOptions.length = 0;
-				}
-				$scope.showEpicLoader = false;
-				if (callback != null) {
-					callback();
-				}
-				$scope.$apply();
-			}
-		});
-	}
+                else {
+                    console.log(res);
+                    $scope.usEpicAvailableOptions = res;
+                    $scope.usEpicOptions.length = 0;
+                }
+                $scope.showEpicLoader = false;
+                if (callback != null) {
+                    callback();
+                }
+                $scope.$apply();
+            }
+        });
+    }
 
     $scope.init = function () {
         $scope.getProjects();
@@ -216,8 +216,8 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
                         $scope.usEpicAvailableOptions.splice(index, 1);
                     }
                 });
-                if(!item.selectAllEpic){
-                	$scope.usEpicOptions = item.epic;
+                if (!item.selectAllEpic) {
+                    $scope.usEpicOptions = item.epic;
                 }
                 $scope.reloadStoryList(reloadStoryHandler);
             }
@@ -259,9 +259,9 @@ app.controller('UserStorySettingsController', function ($scope, $rootScope, $win
             );
         });
     }
-    
-    $scope.getRelease = function(){
-    	$.ajax({
+
+    $scope.getRelease = function () {
+        $.ajax({
             url: GET_RELEASE_URI,
             beforeSend: function () {
 

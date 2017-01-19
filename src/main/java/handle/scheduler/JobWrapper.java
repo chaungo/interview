@@ -12,7 +12,7 @@ public class JobWrapper implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
         apiJob = (APICacheJob) dataMap.get(SchedulerManagement.API_KEY);
-        if(apiJob != null){
+        if (apiJob != null) {
             apiJob.execute();
         }
     }

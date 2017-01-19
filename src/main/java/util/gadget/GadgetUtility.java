@@ -1,57 +1,38 @@
 package util.gadget;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
-
 import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
-import models.APIIssueVO;
-import models.ExecutionIssueVO;
-import models.JQLIssueVO;
-import models.ProjectVO;
-import models.SessionInfo;
+import models.*;
 import models.exception.APIErrorCode;
 import models.exception.APIException;
-import models.gadget.AssigneeVsTestExecution;
-import models.gadget.CycleVsTestExecution;
-import models.gadget.EpicVsTestExecution;
-import models.gadget.Gadget;
+import models.gadget.*;
 import models.gadget.Gadget.Type;
-import models.gadget.OverdueReviewsGadget;
-import models.gadget.SonarStatisticsGadget;
-import models.gadget.StoryVsTestExecution;
 import models.main.DataCacheVO;
 import models.main.DataCacheVO.State;
 import models.main.GadgetData;
 import models.main.JQLSearchResult;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import service.DatabaseUtility;
 import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
 
+import java.io.IOException;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 public class GadgetUtility extends DatabaseUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(GadgetUtility.class);
     private static final String TYPE = "type";
-    private static GadgetCacheMap<List<String>> projectsCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24)*60, "ProjectCacheCleaner");
+    private static GadgetCacheMap<List<String>> projectsCache = new GadgetCacheMap<>(PropertiesUtil.getInt(Constant.CLEAN_CACHE_TIME, 24) * 60, "ProjectCacheCleaner");
     private static GadgetUtility INSTANCE = new GadgetUtility();
 
     protected MongoCollection<Document> collection;
@@ -369,28 +350,28 @@ public class GadgetUtility extends DatabaseUtility {
         String cacheId = sessionInfo.getUsername();
         DataCacheVO<List<String>> dataCache = projectsCache.get(cacheId);
         boolean found = false;
-        if(dataCache != null){
+        if (dataCache != null) {
             long begin = System.currentTimeMillis();
             int timeout = PropertiesUtil.getInt(Constant.PARAMERTER_TIMEOUT);
-            while (!State.SUCCESS.equals(dataCache.getState())){
-                if(begin + timeout < System.currentTimeMillis()){
+            while (!State.SUCCESS.equals(dataCache.getState())) {
+                if (begin + timeout < System.currentTimeMillis()) {
                     logger.fastDebug("timeout when waiting cache");
                     return returnData;
                 }
-                try{
+                try {
                     Thread.sleep(800);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     logger.fastDebug("Thread interrupted", e, new Object());
                 }
             }
             returnData = dataCache.getData();
-            found =true;
+            found = true;
         }
-        
-        if(!found){
+
+        if (!found) {
             DataCacheVO<List<String>> value = new DataCacheVO<List<String>>();
             projectsCache.put(cacheId, value);
-            try{
+            try {
                 String data = HTTPClientUtil.getInstance().getLegacyData(PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROJECT_PATH),
                         new HashMap<String, String>(), sessionInfo.getCookies());
                 List<ProjectVO> projects = JSONUtil.getInstance().convertJSONtoListObject(data, ProjectVO.class);
@@ -399,16 +380,16 @@ public class GadgetUtility extends DatabaseUtility {
                 returnData = projectsList.stream().sorted(new Comparator<String>() {
                     @Override
                     public int compare(String p1, String p2) {
-                        if(Constant.MAIN_PROJECT.equals(p1)){
+                        if (Constant.MAIN_PROJECT.equals(p1)) {
                             return -1;
                         }
-                        if(Constant.MAIN_PROJECT.equals(p2)){
+                        if (Constant.MAIN_PROJECT.equals(p2)) {
                             return 1;
                         }
                         return p1.compareToIgnoreCase(p2);
                     }
                 }).collect(Collectors.toList());
-            } finally{
+            } finally {
                 value.setData(returnData);
                 value.setState(State.SUCCESS);
             }

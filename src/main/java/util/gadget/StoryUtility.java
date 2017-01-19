@@ -1,34 +1,23 @@
 package util.gadget;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.Future;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import handle.executors.ExecutorManagement;
 import handle.executors.FindIssueCallable;
 import handle.executors.FindIssueInEpicCallable;
 import handle.executors.TestExecutionCallable;
 import manament.log.LoggerWapper;
-import models.APIIssueVO;
-import models.ExecutionIssueResultWapper;
-import models.ExecutionIssueVO;
-import models.JQLIssueLinkVO;
-import models.JQLIssueVO;
-import models.JQLIssueWapper;
-import models.JQLIssuetypeVO;
+import models.*;
 import models.JQLIssuetypeVO.Type;
 import models.exception.APIException;
 import models.gadget.StoryVsTestExecution;
 import models.main.GadgetData;
 import models.main.GadgetDataWrapper;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Future;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class StoryUtility {
     private static final LoggerWapper logger = LoggerWapper.getLogger(StoryUtility.class);

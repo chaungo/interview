@@ -58,8 +58,8 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
             }
 
         }
-        var callBackRelease = function(result){
-        	if (result.type == SUCCESS) {
+        var callBackRelease = function (result) {
+            if (result.type == SUCCESS) {
                 $scope.greenHopperRelease = result.data;
                 $scope.$apply();
             } else {
@@ -67,11 +67,11 @@ app.controller('CycleSettingController', function ($scope, $rootScope, $window, 
                 showError(result.data);
             }
         }
-        
+
         getGreenHopperProjectList(callBack);
         getGreenHopperRelease(callBackRelease);
         getGreenHopperProduct(callBackProduct);
-        
+
         item = $rootScope.gadgetToEdit;
         if (item != null) {
             if (item.type == "TEST_CYCLE_TEST_EXECUTION") {
