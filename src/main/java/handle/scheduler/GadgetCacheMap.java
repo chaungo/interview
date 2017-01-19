@@ -80,4 +80,20 @@ public class GadgetCacheMap<T> {
     public void cleanAll() {
         cacheMap.clear();
     }
+    
+    public void cleanUserCache(String username) {
+        Iterator<String> itr = cacheMap.keySet().iterator();
+        ArrayList<String> deleteKey = new ArrayList<String>();
+        while (itr.hasNext()){
+            String key = itr.next();
+            if(key.contains(username)){
+                deleteKey.add(key);
+            }
+        }
+        
+        for (String key : deleteKey) {
+            remove(key);
+            Thread.yield();
+        }
+    }
 }
