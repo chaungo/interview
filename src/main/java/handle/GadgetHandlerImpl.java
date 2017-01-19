@@ -320,8 +320,8 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
     @Override
     public Result cleanAllCache(SessionInfo sessionInfo) {
-        dataGadgetCache.cleanAll();
-        gadgetService.clearCache();
+        dataGadgetCache.cleanUserCache(sessionInfo.getUsername());;
+        gadgetService.clearUserCache(sessionInfo.getUsername());
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, "");
     }
 

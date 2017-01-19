@@ -176,8 +176,8 @@ public class AssigneeUtility {
     public Set<String> getListCycleName(String projectName, String release, Set<String> products, SessionInfo sessionInfo) throws APIException {
         Set<String> returnData = new HashSet<>();
         StringBuffer provisional = new StringBuffer();
-        provisional.append(provisional);
-        if (release != null) {
+        provisional.append(projectName);
+        if(release != null){
             provisional.append(PLUS + release);
         }
         if (products != null && !products.isEmpty()) {
