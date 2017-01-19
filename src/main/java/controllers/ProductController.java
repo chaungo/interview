@@ -46,7 +46,7 @@ public class ProductController {
     public Result clearCache(@Param("release") String release, Context context) {
         String user = (String) context.getSession().get(Constant.USERNAME);
         logger.fastDebug("User: %s perform clearCache", user);
-        GadgetUtility.getInstance().clearCache();
+        GadgetUtility.getInstance().clearUserCache(user);
         return ResultsUtil.convertToResult(ResultCode.SUCCESS, "");
     }
 

@@ -168,4 +168,13 @@ public class StoryUtility {
     public void clearCache() {
         storyInEpic.clear();
     }
+
+    public void cleanUserCache(String username) {
+        Set<String> keys = storyInEpic.keySet();
+        for(String key : keys){
+            if(key.contains(username)){
+                storyInEpic.remove(key);
+            }
+        }
+    }
 }

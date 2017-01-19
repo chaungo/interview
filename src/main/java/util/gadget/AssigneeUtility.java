@@ -292,4 +292,9 @@ public class AssigneeUtility {
         assigneesCache.cleanAll();
         ;
     }
+
+    public void cleanUserCache(String username) {
+        cycleNameCache.cleanUserCache(username);
+        assigneesCache.cleanUserCache(username);
+    }
 }
