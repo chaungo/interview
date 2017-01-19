@@ -357,14 +357,14 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
     };
 
     $scope.editSonarGagdget = function (item) {
+        $rootScope.editSonarGagdget = item;
         //console.log("Edit " + item.id);
+        //todo
         $rootScope.gadgetId = item.id;
 
-        for (var i = 0; i < $rootScope.sonarStList.length; i++) {
-            if ($rootScope.sonarStList[i].id == item.id) {
-                $rootScope.sonarGadgettoEdit = $rootScope.sonarStList[i];
-            }
-        }
+
+        $rootScope.sonarGadgettoEdit = item;
+
 
         $mdDialog.show({
             templateUrl: "assets/html/addNewSonarGadget.html",
@@ -489,10 +489,17 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
+
+
     $rootScope.getReleaseRs.query().$promise.then(function (data) {
         $scope.ReleaseList = data;
         //console.log(data);
-        $scope.releaseName = $scope.ReleaseList[0].name;
+        if ($rootScope.gadgetId != "") {
+            $scope.releaseName = $rootScope.sonarGadgettoEdit.release;
+        }else {
+            $scope.releaseName = $scope.ReleaseList[0].name;
+        }
+
     }, function (error) {
         //console.log(error);
         $mdToast.show(
@@ -528,7 +535,16 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             for (var i = 0; i < respone.length; i++) {
                 $scope.IAItemNames.push(respone[i].name);
             }
-            $scope.selectedIA.push(respone[0].name);
+
+            if ($rootScope.gadgetId != "") {
+                for (var i = 0; i < $rootScope.sonarGadgettoEdit.RsIAArray.length; i++) {
+                    $scope.selectedIA.push($rootScope.sonarGadgettoEdit.RsIAArray[i].name);
+                }
+            }else {
+                $scope.selectedIA.push(respone[0].name);
+            }
+
+
             $scope.choseReleasePage = false;
             $scope.choseIAPage = true;
             $scope.IALoading = false;
@@ -605,7 +621,18 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         for (var i = 0; i < data.length; i++) {
             $scope.itemsNameMetric.push(data[i].name);
         }
-        $scope.selectedMetric.push($scope.MetricItems[0].name);
+
+
+        if ($rootScope.gadgetId != "") {
+            for (var i = 0; i < $rootScope.sonarGadgettoEdit.metricList.length; i++) {
+                $scope.selectedMetric.push($rootScope.sonarGadgettoEdit.metricList[i].name);
+            }
+        }else {
+            $scope.selectedMetric.push($scope.MetricItems[0].name);
+        }
+
+
+
     }, function (error) {
         //console.log(error);
         $mdToast.show(
@@ -769,15 +796,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
     }
 
 
-    if ($rootScope.gadgetId != "") {
-        $scope.releaseName = $rootScope.sonarGadgettoEdit.release;
-        for (var i = 0; i < $rootScope.sonarGadgettoEdit.RsIAArray.length; i++) {
-            $scope.selectedIA.push($rootScope.sonarGadgettoEdit.RsIAArray[i].name);
-        }
-        for (var i = 0; i < $rootScope.sonarGadgettoEdit.metricList.length; i++) {
-            $scope.selectedMetric.push($rootScope.sonarGadgettoEdit.metricList[i].name);
-        }
-    }
+
 
 
 });
