@@ -17,7 +17,10 @@ import util.PropertiesUtil;
 import java.io.BufferedReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import static util.Constant.*;
@@ -91,23 +94,17 @@ public class OverdueReviewReportController {
         MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
+        long upateTime;
         if (isCacheExpired(document, 3)) {
             JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
             result.put("ReviewDataArray", ReviewDataArray);
-
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, new GregorianCalendar(Locale.getDefault()).getTimeInMillis())));
+            upateTime = new GregorianCalendar(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, upateTime)));
         } else {
             result = new JSONObject(document.getString("cache"));
-        }
-
-
-        long upateTime;
-
-        try {
             upateTime = document.getLong(Constant.UPDATE_DATE);
-        } catch (Exception e) {
-            upateTime = 0;
         }
+
 
         result.put("id", GadgetId);
         result.put("project", data.getString("Project"));

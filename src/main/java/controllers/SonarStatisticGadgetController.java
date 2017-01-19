@@ -48,7 +48,7 @@ public class SonarStatisticGadgetController {
             MetricCollection.updateMany(new org.bson.Document(new org.bson.Document("code", "new_coverage")), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("period", period)));
         }
 
-
+        long upateTime;
         if (isCacheExpired(document, 2)) {
             JSONArray metricList = new JSONArray();
             JSONArray metricsFromDB = getMetricsFromDB();
@@ -95,21 +95,13 @@ public class SonarStatisticGadgetController {
 
             result.put("RsIAArray", RsIAArray);
 
-            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, new GregorianCalendar(TimeZone.getTimeZone("UTC")).getTimeInMillis())));
+            upateTime = new GregorianCalendar(TimeZone.getTimeZone("UTC")).getTimeInMillis();
+            collection.updateMany(new org.bson.Document("data", data.toString()), new org.bson.Document(Constant.MONGODB_SET, new org.bson.Document("cache", result.toString()).append(Constant.UPDATE_DATE, upateTime)));
 
         } else {
             result = new JSONObject(document.getString("cache"));
-        }
-
-
-        long upateTime;
-
-        try {
             upateTime = document.getLong(Constant.UPDATE_DATE);
-        } catch (Exception e) {
-            upateTime = 0;
         }
-
 
         result.put("id", GadgetId);
         result.put("release", data.getString("Release"));

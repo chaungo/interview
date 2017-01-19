@@ -93,6 +93,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
     $scope.gadgetHover = function (item) {
         item.lastUpateTime = Math.round(((Date.now() - item.upateTime) / 1000) / 60);
+        //console.log(item.lastUpateTime);
     };
 
 
@@ -134,7 +135,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $cookies.put("userInfo", JSON.stringify(data));
             $rootScope.userfullname = $rootScope.userInfo.displayName;
             $rootScope.name = $rootScope.userInfo.name;
-            console.log(data);
+            //console.log(data);
             $rootScope.getDashboardList();
             $rootScope.getting = false;
         }, function (error) {
