@@ -1,23 +1,38 @@
 package util.gadget;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import handle.executors.ExecutorManagement;
 import handle.executors.TestExecutionCallable;
 import handle.scheduler.GadgetCacheMap;
 import manament.log.LoggerWapper;
-import models.*;
+import models.APIIssueVO;
+import models.AssigneeVO;
+import models.ExecutionIssueResultWapper;
+import models.ExecutionIssueVO;
+import models.JQLIssueVO;
+import models.JQLIssuetypeVO;
+import models.SessionInfo;
 import models.exception.APIException;
 import models.gadget.AssigneeVsTestExecution;
-import models.main.*;
+import models.main.DataCacheVO;
 import models.main.DataCacheVO.State;
+import models.main.ExecutionsVO;
+import models.main.GadgetData;
+import models.main.GadgetDataWrapper;
+import models.main.JQLSearchResult;
 import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
 import util.PropertiesUtil;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AssigneeUtility {
     final static LoggerWapper logger = LoggerWapper.getLogger(AssigneeUtility.class);
