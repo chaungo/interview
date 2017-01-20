@@ -65,7 +65,7 @@ public class GadgetCacheMap<T> {
         while (itr.hasNext()) {
             Entry<String, DataCacheVO<T>> key = itr.next();
             c = key.getValue();
-            if (c != null && (now > (timeToLive + c.lastAccessed))) {
+            if (c != null && (now > (timeToLive + c.getLastAccessed()))) {
 
                 deleteKey.add(key.getKey());
             }

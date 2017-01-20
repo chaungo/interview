@@ -21,6 +21,7 @@ import util.JSONUtil;
 import util.PropertiesUtil;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -153,7 +154,11 @@ public class GadgetHandlerImpl extends GadgetHandler {
 
             if (DataCacheVO.State.SUCCESS.equals(gadgetsDataCache.getState())) {
                 gadgetsData = gadgetsDataCache.getData();
-
+                Iterator<Entry<String, GadgetDataWrapper>> itr = gadgetsData.entrySet().iterator();
+                while(itr.hasNext()){
+                    Entry<String, GadgetDataWrapper> entryDataWrapper = itr.next();
+                    entryDataWrapper.getValue().setLastUpdate(System.currentTimeMillis() - gadgetsDataCache.getLastAccessed());
+                }
                 found = true;
             }
         }

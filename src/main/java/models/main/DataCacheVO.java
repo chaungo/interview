@@ -1,7 +1,7 @@
 package models.main;
 
 public class DataCacheVO<T> {
-    public long lastAccessed = System.currentTimeMillis();
+    private long lastAccessed = System.currentTimeMillis();
     private T data;
     private State state = State.LOADING;
 

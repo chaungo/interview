@@ -5,6 +5,15 @@ import java.util.List;
 public class GadgetDataWrapper {
     private List<GadgetData> issueData;
     private String summary;
+    private long lastUpdate = 0;
+    
+    public long getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(long lastTimeUpdate) {
+        this.lastUpdate = lastTimeUpdate;
+    }
 
     public List<GadgetData> getIssueData() {
         return issueData;
