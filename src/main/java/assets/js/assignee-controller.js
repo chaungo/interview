@@ -3,7 +3,7 @@
  */
 
 
-function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback) {
+function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback) {
     var columnList = getColumnArray(gadget.metrics, true);
     var jsonObjectForAssigneeTable;
 
@@ -44,6 +44,7 @@ function drawAssigneeTable(dataTable, gadget, callback, titleHandler, dataTableC
                         .each(
                             jsonObjectForAssigneeTable["data"],
                             function (cycleKey, assigneeArray) {
+                            	updateTimeCallback(assigneeArray["lastUpdate"]);
                                 if (assigneeArray["issueData"].length != 0) {
                                     var tempTitle = [];
                                     var customTableId = "assignee-table-" + index;

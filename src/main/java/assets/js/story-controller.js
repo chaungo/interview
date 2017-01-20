@@ -23,7 +23,7 @@
  * #us-table-loader
  * 
  */
-function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback) {
+function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback) {
     var columnList = getColumnArray(gadget.metrics, false);
     var jsonObjectForUsTable;
     if (!dataTable.loading) {
@@ -61,6 +61,7 @@ function drawUsTable(dataTable, gadget, callback, titleHandler, dataTableCallbac
                 jsonObjectForUsTable = responseData;
                 $.each(jsonObjectForUsTable["data"], function (epicKey,
                                                                storyArray) {
+                	updateTimeCallback(storyArray["lastUpdate"]);
                     if (storyArray["issueData"].length != 0) {
                         var customTableId = "us-table-" + index;
                         var usTableDataSet = [];

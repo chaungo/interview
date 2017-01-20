@@ -228,19 +228,18 @@
                     </md-card>
                 </div>
 
-
                 <div id="greenhopperGadgetContainer" layout-align="start center" style="width: 100%">
 
                     <div id="{{item.id}}" data-ng-repeat="item in greenHopperGadgets"
-                         class="col-md-12" style="min-height: 20px;">
+                         class="col-md-12" style="min-height: 20px;" >
                         <hr>
                         <md-card class="gadget" md-whiteframe="8"> <!-- Epic gadget html -->
 
                             <div data-ng-init="init(item)"
                                  data-ng-if="item.type === 'EPIC_US_TEST_EXECUTION'"
-                                 data-ng-controller="EpicController">
+                                 data-ng-controller="EpicController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Epic Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</h4>
+                                    <h4>Epic Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
                                     <div data-ng-if="currentDashboard.owner == name">
 
@@ -319,9 +318,9 @@
                             <!-- User story gadget html -->
                             <div data-ng-init="init(item)"
                                  data-ng-if="item.type === 'STORY_TEST_EXECUTION'"
-                                 data-ng-controller="StoryController">
+                                 data-ng-controller="StoryController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>User Story Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</h4>
+                                    <h4>User Story Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">
@@ -374,9 +373,9 @@
                             <!-- Cycle gadget html -->
                             <div data-ng-init="init(item)"
                                  data-ng-if="item.type === 'TEST_CYCLE_TEST_EXECUTION'"
-                                 data-ng-controller="CycleController">
+                                 data-ng-controller="CycleController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Cycle Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</h4>
+                                    <h4>Cycle Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">
@@ -451,9 +450,9 @@
                             <!-- Assignee story gadget html -->
                             <div data-ng-init="init(item)"
                                  data-ng-if="item.type === 'ASSIGNEE_TEST_EXECUTION'"
-                                 data-ng-controller="AssigneeController">
+                                 data-ng-controller="AssigneeController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Assignee Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}}</h4>
+                                    <h4>Assignee Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name">

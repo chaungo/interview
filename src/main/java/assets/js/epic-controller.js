@@ -1,4 +1,4 @@
-function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback) {
+function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback) {
     var columnList = getColumnArray(gadget.metrics, false);
     resetTableColumns(dataTable, false);
     if (dataTable != null) {
@@ -7,13 +7,11 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
             if (!dataTable.data().count()) {
                 $("#" + gadget.id).find('#epic-table-loader').fadeOut();
                 $("#" + gadget.id).find('#epic-table-container').hide();
-                clearCacheCallback();
             }
             else {
                 showEpicTable(gadget);
-                clearCacheCallback();
             }
-
+            clearCacheCallback();
         });
         dataTable.columns(columnList).visible(true);
         dataTableCallback(dataTable);
@@ -44,6 +42,8 @@ function drawEpicTable(dataTable, gadget, callback, titleHandler, dataTableCallb
                     }
 
                     $.each(responseJson["data"], function (k1, v1) {
+                    	updateTimeCallback(v1["lastUpdate"]);
+                    	
                         $.each(v1["issueData"], function (k2, v2) {
                             tempArray.push(v2);
                         });

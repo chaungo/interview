@@ -117,12 +117,12 @@ function resetTableColumns(table, isCycleOrAssignee) {
 
 function debugAjaxResponse(data) {
     if (data == null) {
+    	console.log(data);
         return true;
     } else if (data["type"] == "error") {
+    	console.log(data);
         return true;
     }
-    console.log(data);
-
     return false;
 }
 
