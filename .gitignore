@@ -4,7 +4,8 @@
 .project
 .settings/
 *.log 
-.idea/workspace.xml
+*.log.gz
+/.idea/
 dependency-reduced-pom.xml
 gadget.2017-01-12.0.log.gz
 gadget.2017-01-13.0.log.gz

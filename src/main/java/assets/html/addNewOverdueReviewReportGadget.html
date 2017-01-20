@@ -69,35 +69,35 @@
             </div>
 
 
-            <div ng-hide="!choseUserPage">
-                <md-card-title>
-                    <md-card-title-text>
-                        <span class="md-headline">Choose Implementation Authority</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <div style="margin: 20px">
-                        <md-checkbox aria-label="Select All"
-                                     ng-checked="isIAChecked()"
-                                     md-indeterminate="isIAIndeterminate()"
-                                     ng-click="toggleAllIA()">
-                            <span ng-if="isIAChecked()">Un-</span>Select All
-                        </md-checkbox>
-                        <md-content style="height: 450px"
-                        ">
-                        <div style="padding-left: 10px" ng-repeat="item in IAItemNames">
-                            <md-checkbox ng-checked="existsIA(item)" ng-click="toggleIA(item)">
-                                {{ item }}
-                            </md-checkbox>
-                        </div>
-                        </md-content>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button ng-click="choseIABack()" class="md-raised">Back</md-button>
-                            <md-button ng-click="choseIANext()" class="md-raised md-primary">Next</md-button>
-                        </md-card-actions>
-                    </div>
-                </md-card-content>
-            </div>
+            <!--<div ng-hide="!choseUserPage">-->
+                <!--<md-card-title>-->
+                    <!--<md-card-title-text>-->
+                        <!--<span class="md-headline">Choose Implementation Authority</span>-->
+                    <!--</md-card-title-text>-->
+                <!--</md-card-title>-->
+                <!--<md-card-content>-->
+                    <!--<div style="margin: 20px">-->
+                        <!--<md-checkbox aria-label="Select All"-->
+                                     <!--ng-checked="isIAChecked()"-->
+                                     <!--md-indeterminate="isIAIndeterminate()"-->
+                                     <!--ng-click="toggleAllIA()">-->
+                            <!--<span ng-if="isIAChecked()">Un-</span>Select All-->
+                        <!--</md-checkbox>-->
+                        <!--<md-content style="height: 450px"-->
+                        <!--">-->
+                        <!--<div style="padding-left: 10px" ng-repeat="item in IAItemNames">-->
+                            <!--<md-checkbox ng-checked="existsIA(item)" ng-click="toggleIA(item)">-->
+                                <!--{{ item }}-->
+                            <!--</md-checkbox>-->
+                        <!--</div>-->
+                        <!--</md-content>-->
+                        <!--<md-card-actions layout="row" layout-align="end center">-->
+                            <!--<md-button ng-click="choseIABack()" class="md-raised">Back</md-button>-->
+                            <!--<md-button ng-click="choseIANext()" class="md-raised md-primary">Next</md-button>-->
+                        <!--</md-card-actions>-->
+                    <!--</div>-->
+                <!--</md-card-content>-->
+            <!--</div>-->
         </div>
     </div>
     <md-progress-linear ng-hide="!Loading"></md-progress-linear>

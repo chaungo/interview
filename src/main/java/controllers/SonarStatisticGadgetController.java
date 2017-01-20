@@ -245,10 +245,6 @@ public class SonarStatisticGadgetController {
 
     }
 
-    @FilterWith(SecureFilter.class)
-    public Result addNewSonarWidget() {
-        return Results.html();
-    }
 
     @FilterWith(SecureFilter.class)
     public Result getIAComponents(Session session, @Param("data") String data) {

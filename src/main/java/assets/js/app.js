@@ -3,7 +3,7 @@ var app = angular.module('App', ['ngAnimate', 'ngMaterial', 'ngResource', 'ngMes
 
 app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     /////////////////////////////////////////////////////////////
-    //console.log($location.absUrl());
+    console.log($location.absUrl());
 
     if ($location.absUrl().indexOf("configuration") > -1) {
         $rootScope.configPage = true;
@@ -93,7 +93,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
     $scope.gadgetHover = function (item) {
         item.lastUpateTime = Math.round(((Date.now() - item.upateTime) / 1000) / 60);
-        //console.log(item.lastUpateTime);
+        console.log(item.lastUpateTime);
     };
 
 
@@ -114,7 +114,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.dashboardNameList = respone;
             $rootScope.currentDashboard = respone[0];
             $rootScope.getting = false;
-            //console.log(respone);
+            console.log(respone);
             if ($rootScope.dashboardNameList.length == 0) {
                 $rootScope.pageName = "Home";
             }
@@ -124,7 +124,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     .textContent('Server error')
                     .hideDelay(5000)
             );
-            //console.log(error);
+            console.log(error);
         });
     };
 
@@ -135,13 +135,13 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $cookies.put("userInfo", JSON.stringify(data));
             $rootScope.userfullname = $rootScope.userInfo.displayName;
             $rootScope.name = $rootScope.userInfo.name;
-            //console.log(data);
+            console.log(data);
             $rootScope.getDashboardList();
             $rootScope.getting = false;
         }, function (error) {
             $rootScope.getting = false;
             $rootScope.err = true;
-            //console.log(error);
+            console.log(error);
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Unable to connect to Jira server. Please check connection!')
@@ -169,7 +169,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         $resource('/getDashboardInfo', {
             id: $rootScope.currentDashboard.id
         }).save().$promise.then(function (respone) {
-            //console.log(respone);
+            console.log(respone);
             $rootScope.dashboardGadgetInfo = respone;
             if (respone.Gadget > 0) {
                 $rootScope.getting = true;
@@ -179,7 +179,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
-                        //console.log(respone.Err);
+                        console.log(respone.Err);
                         if (typeof respone.Err != 'undefined') {
                             $resource('/clearSession').save().$promise.then(function () {
                                 window.location = "/login#cookiesexpired";
@@ -192,7 +192,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                         }
                         $rootScope.getting = false;
                     }, function (error) {
-                        //console.log(error);
+                        console.log(error);
                         $rootScope.hasInfo = false;
                         $rootScope.getting = false;
                         $mdToast.show(
@@ -206,7 +206,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             }
 
         }, function (error) {
-            //console.log(error);
+            console.log(error);
         });
     };
 
@@ -277,14 +277,14 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             }
         }).query().$promise.then(function (respone) {
             $scope.gadgetList = respone;
-            //console.log(respone);
+            console.log(respone);
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Server error')
                     .hideDelay(5000)
             );
-            //console.log(error);
+            console.log(error);
         });
 
 
@@ -292,7 +292,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $mdDialog.cancel();
             //clear cache
             $rootScope.gadgetToEdit = null;
-            //console.log(item.name);
+            console.log(item.name);
             $rootScope.gadgetType = item.type;
 
             $mdDialog.show({
@@ -323,16 +323,16 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         $resource('/clearCacheGadget', {
             GadgetId: item.id
         }).save().$promise.then(function (respone) {
-            //console.log(respone);
+            console.log(respone);
             $rootScope.showGadget();
             $rootScope.getting = false;
         }, function (error) {
-            //console.log(error);
+            console.log(error);
             $rootScope.getting = false;
         });
 
 
-        //console.log("clearCacheGadget " + item.id);
+        console.log("clearCacheGadget " + item.id);
     };
 
 
@@ -344,30 +344,37 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         $resource('/deleteGadget', {
             GadgetId: item.id
         }).save().$promise.then(function (respone) {
-            //console.log(respone);
+            console.log(respone);
             $rootScope.showGadget();
             $rootScope.getting = false;
         }, function (error) {
-            //console.log(error);
+            console.log(error);
             $rootScope.getting = false;
         });
 
 
-        //console.log("Delete " + item.id);
+        console.log("Delete " + item.id);
     };
 
-    $scope.editSonarGagdget = function (item) {
-        $rootScope.editSonarGagdget = item;
-        //console.log("Edit " + item.id);
+    $scope.editSonarGagdget = function (item, event) {
         //todo
         $rootScope.gadgetId = item.id;
-
-
         $rootScope.sonarGadgettoEdit = item;
-
-
         $mdDialog.show({
             templateUrl: "assets/html/addNewSonarGadget.html",
+            parent: angular.element(document.getElementById('html')),
+            targetEvent: event,
+            clickOutsideToClose: false
+        });
+    };
+
+
+    $scope.editReviewGagdget = function (item, event) {
+        $rootScope.reviewGadgettoEdit = item;
+        $rootScope.gadgetId = item.id;
+        console.log(item);
+        $mdDialog.show({
+            templateUrl: "assets/html/addNewOverdueReviewReportGadget.html",
             parent: angular.element(document.getElementById('html')),
             targetEvent: event,
             clickOutsideToClose: false
@@ -493,15 +500,15 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
     $rootScope.getReleaseRs.query().$promise.then(function (data) {
         $scope.ReleaseList = data;
-        //console.log(data);
+        console.log(data);
         if ($rootScope.gadgetId != "") {
             $scope.releaseName = $rootScope.sonarGadgettoEdit.release;
-        }else {
+        } else {
             $scope.releaseName = $scope.ReleaseList[0].name;
         }
 
     }, function (error) {
-        //console.log(error);
+        console.log(error);
         $mdToast.show(
             $mdToast.simple()
                 .textContent('Error! Can not get Release List. Please check connection!')
@@ -530,7 +537,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 isArray: true
             }
         }).query().$promise.then(function (respone) {
-            //console.log(respone);
+            console.log(respone);
             $scope.IAItems = respone;
             for (var i = 0; i < respone.length; i++) {
                 $scope.IAItemNames.push(respone[i].name);
@@ -540,7 +547,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                 for (var i = 0; i < $rootScope.sonarGadgettoEdit.RsIAArray.length; i++) {
                     $scope.selectedIA.push($rootScope.sonarGadgettoEdit.RsIAArray[i].name);
                 }
-            }else {
+            } else {
                 $scope.selectedIA.push(respone[0].name);
             }
 
@@ -549,7 +556,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             $scope.choseIAPage = true;
             $scope.IALoading = false;
         }, function (error) {
-            //console.log(error);
+            console.log(error);
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Error! Can not get IA Component. Please check connection!')
@@ -568,7 +575,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             $scope.selectedIA.push(item);
         }
 
-        //console.log($scope.selectedIA);
+        console.log($scope.selectedIA);
     };
 
     $scope.existsIA = function (item) {
@@ -599,7 +606,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
         $scope.choseMetricPage = true;
         $scope.choseIAPage = false;
 
-        //console.log($scope.selectedIA);
+        console.log($scope.selectedIA);
 
 
     };
@@ -616,7 +623,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
     $scope.itemsNameMetric = [];
     $scope.MetricItems = [];
     $rootScope.getMetricRs.query().$promise.then(function (data) {
-        //console.log(data);
+        console.log(data);
         $scope.MetricItems = data;
         for (var i = 0; i < data.length; i++) {
             $scope.itemsNameMetric.push(data[i].name);
@@ -627,14 +634,13 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             for (var i = 0; i < $rootScope.sonarGadgettoEdit.metricList.length; i++) {
                 $scope.selectedMetric.push($rootScope.sonarGadgettoEdit.metricList[i].name);
             }
-        }else {
+        } else {
             $scope.selectedMetric.push($scope.MetricItems[0].name);
         }
 
 
-
     }, function (error) {
-        //console.log(error);
+        console.log(error);
         $mdToast.show(
             $mdToast.simple()
                 .textContent('Error! Can not get Metric List. Please check connection!')
@@ -683,7 +689,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
 
     $scope.choseMetricNext = function () {
-        //console.log("choseMetricNext");
+        console.log("choseMetricNext");
         if ($scope.selectedMetric.length == 0) {
             $scope.selectedMetric.push($scope.MetricItems[0].name);
         }
@@ -736,7 +742,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             };
 
 
-            //console.log(data);
+            console.log(data);
             $resource('/updateGadget', {
                 data: data
             }, {
@@ -745,11 +751,11 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                     isArray: false
                 }
             }).query().$promise.then(function (data) {
-                //console.log(data);
+                console.log(data);
                 $mdDialog.cancel();
                 $rootScope.showGadget();
             }, function (error) {
-                //console.log(error);
+                console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('Error! Can not update gadget. ')
@@ -769,7 +775,7 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
             };
 
 
-            //console.log(data);
+            console.log(data);
             $resource('/addNewGadget', {
                 data: data
             }, {
@@ -778,11 +784,11 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
                     isArray: false
                 }
             }).query().$promise.then(function (data) {
-                //console.log(data);
+                console.log(data);
                 $mdDialog.cancel();
                 $rootScope.showGadget();
             }, function (error) {
-                //console.log(error);
+                console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
                         .textContent('Error! Can not get add new gadget')
@@ -792,11 +798,9 @@ app.controller('AddNewSonarGadgetCtrl', function ($scope, $rootScope, $window, $
 
         }
 
+        $rootScope.gadgetId = "";
 
     }
-
-
-
 
 
 });
@@ -822,7 +826,7 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
         $scope.periodList = respone.PeriodArray;
         $scope.period = respone.CurrentPeriod;
     }, function (error) {
-        //console.log(error);
+        console.log(error);
         $mdToast.show(
             $mdToast.simple()
                 .textContent('Error! Can not get Period List. Please check connection!')
@@ -1039,6 +1043,8 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
     $scope.loginForm = false;
 
 
+    //todo
+
     $scope.loginCru = function (cruusername, crupassword) {
         $scope.Loading = true;
         $resource('/loginCru', {
@@ -1074,12 +1080,17 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
                 isArray: true
             }
         }).query().$promise.then(function (respone) {
-            //console.log(respone);
+            console.log(respone);
             $scope.CruProjectList = respone;
+
+
             if ($scope.CruProjectList.length == 0) {
-                // $window.location.href = '/logout';
                 $scope.loginForm = true;
             }
+            if ($rootScope.gadgetId != "") {
+                projectId = $rootScope.reviewGadgettoEdit.project;
+            }
+
 
             $scope.Loading = false;
         }, function (error) {
@@ -1103,33 +1114,73 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
                     .hideDelay(5000)
             );
         } else {
-            var data = {
-                DashboardId: $rootScope.currentDashboard.id,
-                GadgetType: $rootScope.gadgetType,
-                Data: {
-                    Project: projectId
-                }
-            };
-            $resource('/addNewGadget', {
-                data: data
-            }, {
-                query: {
-                    method: 'post',
-                    isArray: false
-                }
-            }).query().$promise.then(function (data) {
-                //console.log(data);
-                $mdDialog.cancel();
-                $rootScope.showGadget();
-            }, function (error) {
-                //console.log(error);
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent('Error! Can not get add new gadget.')
-                        .hideDelay(5000)
-                );
-            });
+
+
+            if ($rootScope.gadgetId != "") {
+                var data = {
+                    DashboardId: $rootScope.currentDashboard.id,
+                    DashboardGadgetId: $rootScope.gadgetId,
+                    Data: {
+                        Project: projectId
+                    }
+                };
+
+
+
+                $resource('/updateGadget', {
+                    data: data
+                }, {
+                    query: {
+                        method: 'post',
+                        isArray: false
+                    }
+                }).query().$promise.then(function (data) {
+                    console.log(data);
+                    $mdDialog.cancel();
+                    $rootScope.showGadget();
+                }, function (error) {
+                    console.log(error);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Error! Can not update gadget. ')
+                            .hideDelay(10000)
+                    );
+                });
+
+            } else {
+                var data = {
+                    DashboardId: $rootScope.currentDashboard.id,
+                    GadgetType: $rootScope.gadgetType,
+                    Data: {
+                        Project: projectId
+                    }
+                };
+
+
+                $resource('/addNewGadget', {
+                    data: data
+                }, {
+                    query: {
+                        method: 'post',
+                        isArray: false
+                    }
+                }).query().$promise.then(function (data) {
+                    console.log(data);
+                    $mdDialog.cancel();
+                    $rootScope.showGadget();
+                }, function (error) {
+                    console.log(error);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Error! Can not get add new gadget.')
+                            .hideDelay(5000)
+                    );
+                });
+            }
         }
+
+
+        $rootScope.gadgetId = "";
 
     };
 
@@ -1155,8 +1206,9 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         }
     }).query().$promise.then(function (data) {
         $scope.projects = data;
+        console.log(data);
     }, function (error) {
-        //console.log(error);
+        console.log(error);
         $mdToast.show(
             $mdToast.simple()
                 .textContent('Error! Can not get project list. Please check connection!')
@@ -1181,7 +1233,7 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         if ($scope.share.indexOf(groupItem) < 0) {
             $scope.share.push(groupItem);
         }
-        //console.log($scope.share);
+        console.log($scope.share);
 
     };
 
@@ -1198,31 +1250,31 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         if ($scope.share.indexOf(projectItem) < 0) {
             $scope.share.push(projectItem);
         }
-        //console.log($scope.share);
+        console.log($scope.share);
     };
 
     $scope.everyoneClicked = function () {
         $scope.share = [];
         $scope.share.push("Everyone");
-        //console.log($scope.share);
+        console.log($scope.share);
     };
 
 
     $scope.privateClicked = function () {
         $scope.share = [];
         $scope.share.push("Ony me");
-        //console.log($scope.share);
+        console.log($scope.share);
     };
 
     $scope.allGroupClicked = function () {
         $scope.share = [];
         $scope.share = $scope.groups;
-        //console.log($scope.share);
+        console.log($scope.share);
     };
     $scope.allProjectClicked = function () {
         $scope.share = [];
         $scope.share = $scope.projects;
-        //console.log($scope.share);
+        console.log($scope.share);
     };
 
 
@@ -1252,10 +1304,10 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
             }
         }).save().$promise.then(function (data) {
             $rootScope.getDashboardList();
-            //console.log(data);
+            console.log(data);
             $scope.cancel();
         }, function (error) {
-            //console.log(error);
+            console.log(error);
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Error! Can not update dashboard option')
@@ -1271,14 +1323,14 @@ app.controller('dasboardOptionCtrl', function ($rootScope, $scope, $mdDialog, $m
         }).save().$promise.then(function (respone) {
             $rootScope.getDashboardList();
             $scope.cancel();
-            //console.log(respone);
+            console.log(respone);
         }, function (error) {
             $mdToast.show(
                 $mdToast.simple()
                     .textContent('Server error')
                     .hideDelay(5000)
             );
-            //console.log(error);
+            console.log(error);
         });
     }
 

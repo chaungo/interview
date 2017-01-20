@@ -62,31 +62,6 @@ public class OverdueReviewReportController {
         return projectDataArray;
     }
 
-    public static JSONArray getCruUserfromServer(Session session) throws Exception {
-
-        JSONArray userArray = new JSONArray();
-
-
-        String rs = "";
-        BufferedReader br = getHttpURLConnection(LINK_GET_CRU_USERS, session);
-        String inputLine;
-        while ((inputLine = br.readLine()) != null) {
-            rs = rs + inputLine;
-        }
-        br.close();
-        JSONArray dataArray = new JSONArray(rs);
-        if (dataArray.length() != 0) {
-            for (int i = 0; i < dataArray.length(); i++) {
-                JSONObject user = dataArray.getJSONObject(i);
-                JSONObject userInfo = new JSONObject();
-                userInfo.put("id", user.getString("id"));
-                userInfo.put(Constant.NAME, user.getString("displayPrimary"));
-                userArray.put(userInfo);
-            }
-        }
-
-        return userArray;
-    }
 
     public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
         JSONObject result = new JSONObject();
@@ -95,6 +70,7 @@ public class OverdueReviewReportController {
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
         long upateTime;
+
         if (isCacheExpired(document, 3)) {
             JSONArray ReviewDataArray = getReviewfromServer(session, data.getString("Project"));
             result.put("ReviewDataArray", ReviewDataArray);
@@ -181,16 +157,6 @@ public class OverdueReviewReportController {
     public Result getCruProjectList(Session session) {
         try {
             return Results.text().render(getCruProjectfromServer(session));
-        } catch (Exception e) {
-            logger.error(e);
-            return Results.internalServerError();
-        }
-    }
-
-    @FilterWith(SecureFilter.class)
-    public Result getCruUserList(Session session) {
-        try {
-            return Results.text().render(getCruUserfromServer(session));
         } catch (Exception e) {
             logger.error(e);
             return Results.internalServerError();

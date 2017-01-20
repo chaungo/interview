@@ -75,7 +75,7 @@
                             <div flex></div>
                             <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
                                        style="color: yellow;"
-                                       ng-click="editSonarGagdget(item)">
+                                       ng-click="editSonarGagdget(item,$event)">
                                 <md-icon class="material-icons">edit</md-icon>
 
                                 <md-tooltip md-direction="bottom">
@@ -176,9 +176,17 @@
                                        style="color: orange; margin-right: 10px"
                                        ng-click="deleteGagdget(re)">
                                 <md-icon class="material-icons">delete</md-icon>
-
                                 <md-tooltip md-direction="bottom">
                                     Delete
+                                </md-tooltip>
+                            </md-button>
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                       style="color: yellow;"
+                                       ng-click="editReviewGagdget(re,$event)">
+                                <md-icon class="material-icons">edit</md-icon>
+
+                                <md-tooltip md-direction="bottom">
+                                    Edit
                                 </md-tooltip>
                             </md-button>
                             <md-button class="md-icon-button"
