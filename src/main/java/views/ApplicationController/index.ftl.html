@@ -10,7 +10,7 @@
                     <div ng-init="dashboards" layout="column"
                          layout-align="start stretch">
 
-                        <md-button ng-if="currentDashboard.owner == name && !configPage"
+                        <md-button ng-if="currentDashboard.owner == name || isAdmin && !configPage"
                                    class="md-primary md-raised"
                                    ng-click="showAddWidgetDialog($event)">
                             Add new gadget
@@ -37,7 +37,7 @@
                                     <p>{{item.owner}}</p>
                                 </div>
 
-                                <md-button ng-if="item.owner == name"
+                                <md-button ng-if="item.owner == name || isAdmin"
                                            ng-click="dashboardOptionClicked(item,$event)"
                                            class="md-icon-button">
                                     <md-icon style="color: grey;"
@@ -73,7 +73,7 @@
                             <div ng-if="item.lastUpateTime == 0">(just update)</div>
 
                             <div flex></div>
-                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin "
                                        style="color: yellow;"
                                        ng-click="editSonarGagdget(item,$event)">
                                 <md-icon class="material-icons">edit</md-icon>
@@ -82,7 +82,7 @@
                                     Edit
                                 </md-tooltip>
                             </md-button>
-                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                        style="color: orange; margin-right: 10px"
                                        ng-click="deleteGagdget(item)">
                                 <md-icon class="material-icons">delete</md-icon>
@@ -172,7 +172,7 @@
                             <div ng-if="re.lastUpateTime == 1">(update {{re.lastUpateTime}} min ago)</div>
                             <div ng-if="re.lastUpateTime == 0">(just update)</div>
                             <div flex></div>
-                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                        style="color: orange; margin-right: 10px"
                                        ng-click="deleteGagdget(re)">
                                 <md-icon class="material-icons">delete</md-icon>
@@ -180,7 +180,7 @@
                                     Delete
                                 </md-tooltip>
                             </md-button>
-                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                            <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                        style="color: yellow;"
                                        ng-click="editReviewGagdget(re,$event)">
                                 <md-icon class="material-icons">edit</md-icon>
@@ -241,9 +241,9 @@
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
                                     <h4>Epic Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
-                                    <div data-ng-if="currentDashboard.owner == name">
+                                    <div data-ng-if="currentDashboard.owner == name || isAdmin">
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
 
@@ -323,9 +323,9 @@
                                     <h4>User Story Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
-                                    <div data-ng-if="currentDashboard.owner == name">
+                                    <div data-ng-if="currentDashboard.owner == name || isAdmin">
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
 
@@ -334,7 +334,7 @@
                                             </md-tooltip>
                                         </md-button>
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    style="color: orange; margin-right: 10px"
                                                    ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
@@ -378,9 +378,9 @@
                                     <h4>Cycle Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
-                                    <div data-ng-if="currentDashboard.owner == name">
+                                    <div data-ng-if="currentDashboard.owner == name || isAdmin">
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
 
@@ -389,7 +389,7 @@
                                             </md-tooltip>
                                         </md-button>
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    style="color: orange; margin-right: 10px"
                                                    ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>
@@ -455,9 +455,9 @@
                                     <h4>Assignee Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
-                                    <div data-ng-if="currentDashboard.owner == name">
+                                    <div data-ng-if="currentDashboard.owner == name || isAdmin">
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    ng-click="editGreenhopperGadget(item, $event)">
                                             <md-icon class="material-icons">edit</md-icon>
 
@@ -466,7 +466,7 @@
                                             </md-tooltip>
                                         </md-button>
 
-                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name"
+                                        <md-button class="md-icon-button" ng-if="currentDashboard.owner == name || isAdmin"
                                                    style="color: orange; margin-right: 10px"
                                                    ng-click="deleteGreenhopperGadget(item)">
                                             <md-icon class="material-icons">delete</md-icon>

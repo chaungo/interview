@@ -81,7 +81,7 @@ public class ApplicationController {
             JSONObject userInfo = new JSONObject();
             userInfo.put(DISPLAY_NAME, info.getString(Constant.ALIAS));
             userInfo.put(Constant.GROUPS, new JSONArray(info.getString(USER_GROUPS)));
-            userInfo.put(ADMIN, info.getString(ADMIN));
+            userInfo.put(ADMIN, info.getBoolean(ADMIN));
             userInfo.put(Constant.NAME, session.get(USERNAME));
             userInfo.put(USER_PROJECTS, getJiraProjectofUserfromServer(session));
             return Results.text().render(userInfo);

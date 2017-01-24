@@ -140,7 +140,6 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
             $rootScope.name = $rootScope.userInfo.name;
             //todo
 
-
             $rootScope.isAdmin = $rootScope.userInfo.admin;
 
 
@@ -160,6 +159,7 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
         $rootScope.userInfo = $cookies.getObject("userInfo");
         $rootScope.userfullname = $rootScope.userInfo.displayName;
         $rootScope.name = $rootScope.userInfo.name;
+        $rootScope.isAdmin = $rootScope.userInfo.admin;
         $rootScope.getDashboardList();
     }
 
