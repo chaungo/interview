@@ -78,7 +78,7 @@ public class DashboardController {
     @FilterWith(SecureFilter.class)
     public Result getDashboardList(@Param("groups") String groups, @Param("projects") String projects, Session session) {
         try {
-
+            boolean isAdmin = Boolean.valueOf(session.get(ADMIN));
             JSONArray userGroup = new JSONArray(groups);
             JSONArray userProject = new JSONArray(projects);
 
@@ -112,13 +112,23 @@ public class DashboardController {
                             logger.warn(e);
                         }
 
-                        if (contain || owner.equals(session.get(USERNAME)) || privacy.getString(PRIVACY_STATUS).equals(PRIVACY_STATUS_PUBLIC)) {
+                        if (!isAdmin) {
+                            if (contain || owner.equals(session.get(USERNAME)) || privacy.getString(PRIVACY_STATUS).equals(PRIVACY_STATUS_PUBLIC)) {
+                                dashboard.put("id", document.getObjectId(Constant.MONGODB_ID).toHexString());
+                                dashboard.put(Constant.OWNER, owner);
+                                dashboard.put(NAME, document.get(DASHBOARD_NAME_COL));
+                                dashboard.put(Constant.PRIVACY, privacy);
+                                dashboardList.put(dashboard);
+                            }
+                        } else {
                             dashboard.put("id", document.getObjectId(Constant.MONGODB_ID).toHexString());
                             dashboard.put(Constant.OWNER, owner);
                             dashboard.put(NAME, document.get(DASHBOARD_NAME_COL));
                             dashboard.put(Constant.PRIVACY, privacy);
                             dashboardList.put(dashboard);
                         }
+
+
                     } catch (Exception exception) {
                         logger.error(exception);
                     }

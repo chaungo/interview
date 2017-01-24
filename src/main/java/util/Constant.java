@@ -71,7 +71,7 @@ public class Constant {
     public static final String API_SESSION_INFO_INTERNAL = "APICookiesInternal";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
-    public static final String ROLE = "role";
+    public static final String ADMIN = "admin";
     public static final String GROUPS = "groups";
     public static final String NAME = "name";
     public static final String CLEAN_DATA_CACHE_TIME = "internal.conf.cleardatacache.time";

@@ -14,7 +14,6 @@ import org.json.XML;
 import util.Constant;
 import util.PropertiesUtil;
 
-import java.io.BufferedReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,15 +38,8 @@ public class OverdueReviewReportController {
 
         JSONArray projectDataArray = new JSONArray();
 
-        String rs = "";
-        BufferedReader br = getHttpURLConnection(LINK_GET_CRU_PROJECTS, session);
-        String inputLine;
+        String rs = getConnectionRespondBody(LINK_GET_CRU_PROJECTS, session);
 
-        while ((inputLine = br.readLine()) != null) {
-            rs = rs + inputLine;
-        }
-
-        br.close();
         JSONArray dataArray = new JSONArray(rs);
 
         for (int i = 0; i < dataArray.length(); i++) {
@@ -92,7 +84,7 @@ public class OverdueReviewReportController {
 
     public static JSONArray getReviewfromServer(Session session, String project) throws Exception {
         JSONArray reviewDataArray = new JSONArray();
-        String rs = getJsoupConnectionRespondBody(String.format(LINK_GET_ODREVIEW_REPORTS, project), session);
+        String rs = getConnectionRespondBody(String.format(LINK_GET_ODREVIEW_REPORTS, project), session);
         JSONArray array = XML.toJSONObject(rs).getJSONObject("detailedReviews").getJSONArray("detailedReviewData");
 
         ArrayList<String> nameList = new ArrayList<>();

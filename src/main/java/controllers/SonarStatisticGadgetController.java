@@ -23,6 +23,7 @@ import java.util.*;
 
 import static controllers.ConfigurationController.getPeriod;
 import static util.Constant.*;
+import static util.MyUtill.getConnectionRespondBody;
 import static util.MyUtill.getHttpURLConnection;
 import static util.MyUtill.isCacheExpired;
 
@@ -165,14 +166,7 @@ public class SonarStatisticGadgetController {
 
     public static JSONArray getSonarStatisticRespond(Session session, String metric, String sonarKey) {
         try {
-            BufferedReader br = getHttpURLConnection(String.format(LINK_GET_SONAR_STATISTIC, metric, sonarKey), session);
-            String inputLine;
-            String rs = "";
-            while ((inputLine = br.readLine()) != null) {
-                rs = rs + inputLine;
-            }
-
-            br.close();
+            String rs = getConnectionRespondBody(String.format(LINK_GET_SONAR_STATISTIC, metric, sonarKey), session);
             return new JSONArray(rs);
         } catch (Exception e) {
             e.printStackTrace();

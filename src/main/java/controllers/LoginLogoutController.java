@@ -48,8 +48,8 @@ public class LoginLogoutController {
                 return false;
             }
 
-            //login to greenhopper
-
+//        //login to greenhopper
+//
             Map<String, String> cookiesMap = HTTPClientUtil.getInstance().loginGreenhopper(username, password, true);
             if (cookiesMap != null && !cookiesMap.isEmpty()) {
                 SessionInfo sessionInfo = new SessionInfo();
@@ -76,18 +76,39 @@ public class LoginLogoutController {
 
     }
 
-    static boolean loginCrucible(String username, String password, Session session) throws Exception {
+    static boolean loginCrucible(String username, String password, Session session) {
+        try {
+            Proxy proxy = HTTPClientUtil.getInstance().getProxy();
+            Connection.Response cruRespond;
 
-        Connection.Response cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
-                .data("rememberme", "yes").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
-        session.put("crucookies", cruRespond.cookies().toString());
+            if (proxy == null) {
+                cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
+                        .data("rememberme", "yes").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
 
-        if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+            } else {
+                cruRespond = Jsoup.connect(LINK_CRUCIBLE + "/login").data(Constant.USERNAME, username).data(Constant.PASSWORD, password)
+                        .data("rememberme", "yes").method(Connection.Method.POST).proxy(proxy).timeout(CONNECTION_TIMEOUT).execute();
+
+            }
+
+            session.put("crucookies", cruRespond.cookies().toString());
+
+
+            if (cruRespond.header("X-AUSERNAME").equals(LOGININFO_INVALID)) {
+                return false;
+            } else {
+                if (cruRespond.header("X-AUSERNAME").equals(username)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            logger.error("loginCrucible", e);
             return false;
         }
 
 
-        return true;
     }
 
     public Result login(Session session) {

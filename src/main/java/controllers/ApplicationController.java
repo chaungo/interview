@@ -15,10 +15,10 @@ import service.HTTPClientUtil;
 import util.Constant;
 import util.MyUtill;
 
-import java.io.BufferedReader;
 import java.net.Proxy;
 
 import static util.Constant.*;
+import static util.MyUtill.getConnectionRespondBody;
 
 
 public class ApplicationController {
@@ -44,12 +44,12 @@ public class ApplicationController {
         JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GROUP_ITEMS);
 
         JSONArray groupNames = new JSONArray();
-        userInfoRS.put(ROLE, "");
+        userInfoRS.put(ADMIN, "");
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
             if (group.getString(Constant.NAME).contains(ADMIN_ROLE)) {
-                session.put(ROLE, ADMIN_ROLE);
-                userInfoRS.put(ROLE, ADMIN_ROLE);
+                session.put(ADMIN, "true");
+                userInfoRS.put(ADMIN, true);
             }
 
             groupNames.put(group.getString(Constant.NAME));
@@ -61,13 +61,8 @@ public class ApplicationController {
 
     public static JSONArray getJiraProjectofUserfromServer(Session session) throws Exception {
         JSONArray projectDataArray = new JSONArray();
-        String rs = "";
-        BufferedReader br = MyUtill.getHttpURLConnection(Constant.LINK_GET_JIRA_PROJECTS, session);
-        String inputLine;
-        while ((inputLine = br.readLine()) != null) {
-            rs = rs + inputLine;
-        }
-        br.close();
+
+        String rs = getConnectionRespondBody(Constant.LINK_GET_JIRA_PROJECTS, session);
 
         JSONArray dataArray = new JSONArray(rs);
 
@@ -86,7 +81,7 @@ public class ApplicationController {
             JSONObject userInfo = new JSONObject();
             userInfo.put(DISPLAY_NAME, info.getString(Constant.ALIAS));
             userInfo.put(Constant.GROUPS, new JSONArray(info.getString(USER_GROUPS)));
-            userInfo.put(ROLE, info.getString(ROLE));
+            userInfo.put(ADMIN, info.getString(ADMIN));
             userInfo.put(Constant.NAME, session.get(USERNAME));
             userInfo.put(USER_PROJECTS, getJiraProjectofUserfromServer(session));
             return Results.text().render(userInfo);

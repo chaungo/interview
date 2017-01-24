@@ -5,6 +5,8 @@ app.run(function ($rootScope, $resource, $location, $cookies, $mdToast) {
     /////////////////////////////////////////////////////////////
     //console.log($location.absUrl());
 
+    $rootScope.isAdmin = false;
+
     if ($location.absUrl().indexOf("configuration") > -1) {
         $rootScope.configPage = true;
     } else {
@@ -131,11 +133,17 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
 
     if (typeof $cookies.getObject("userInfo") == 'undefined') {
         $resource('/getUserInfo').save().$promise.then(function (data) {
+            //console.log(data);
             $rootScope.userInfo = data;
             $cookies.put("userInfo", JSON.stringify(data));
             $rootScope.userfullname = $rootScope.userInfo.displayName;
             $rootScope.name = $rootScope.userInfo.name;
-            //console.log(data);
+            //todo
+
+
+            $rootScope.isAdmin = $rootScope.userInfo.admin;
+
+
             $rootScope.getDashboardList();
             $rootScope.getting = false;
         }, function (error) {
@@ -179,9 +187,10 @@ app.controller('HomePageCtrl', function ($rootScope, $scope, $resource, $mdDialo
                     $resource('/showGadgets', {
                         id: $rootScope.currentDashboard.id
                     }).save().$promise.then(function (respone) {
-                        //console.log(respone.Err);
+                        //console.log(respone);
                         if (typeof respone.Err != 'undefined') {
-                            $resource('/clearSession').save().$promise.then(function () {
+                            $resource('/clearSession').save().$promise.then(function (respone) {
+                                //console.log(respone);
                                 window.location = "/login#cookiesexpired";
                             });
                         } else {
@@ -1126,7 +1135,6 @@ app.controller('AddNewOverdueReviewReportGadgetCtrl', function ($scope, $rootSco
                 };
 
 
-
                 $resource('/updateGadget', {
                     data: data
                 }, {
@@ -1359,9 +1367,9 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
         var clearCacheCallback = function () {
             $scope.isClearingCache = false;
         }
-        var updateTimeCallback = function(time){
-        	$scope.gadgetAge = Date.now();
-        	$scope.updateTime = time;
+        var updateTimeCallback = function (time) {
+            $scope.gadgetAge = Date.now();
+            $scope.updateTime = time;
         }
         drawEpicTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback);
     }
@@ -1389,32 +1397,32 @@ app.controller('EpicController', function ($scope, $rootScope, $window, $mdDialo
             });
         }
     }
-    
-    $scope.hoverOn = function () {
-    	if($scope.updateTime === null || $scope.updateTime === NaN){
-    		return;
-    	}
-    	else{
-    		var passedTime = Date.now() - $scope.gadgetAge;
-        	var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
 
-            if(temp === 0){
-            	$scope.updateInfo = "(updated just now)";
+    $scope.hoverOn = function () {
+        if ($scope.updateTime === null || $scope.updateTime === NaN) {
+            return;
+        }
+        else {
+            var passedTime = Date.now() - $scope.gadgetAge;
+            var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
+
+            if (temp === 0) {
+                $scope.updateInfo = "(updated just now)";
             }
-            else if(temp >= 120){
-            	temp = Math.round(temp / 60);
-            	$scope.updateInfo = "(updated " + temp + " hours ago)";
-            }else{
-            	if(temp === 1){
-            		$scope.updateInfo = "(updated " + temp + " minute ago)";
-            	}
-            	else{
-            		$scope.updateInfo = "(updated " + temp + " minutes ago)";
-            	}
-            	
+            else if (temp >= 120) {
+                temp = Math.round(temp / 60);
+                $scope.updateInfo = "(updated " + temp + " hours ago)";
+            } else {
+                if (temp === 1) {
+                    $scope.updateInfo = "(updated " + temp + " minute ago)";
+                }
+                else {
+                    $scope.updateInfo = "(updated " + temp + " minutes ago)";
+                }
+
             }
-    	}
-    	
+        }
+
     }
 
 });
@@ -1443,9 +1451,9 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
         var clearCacheCallback = function () {
             $scope.isClearingCache = false;
         }
-        var updateTimeCallback = function(time){
-        	$scope.gadgetAge = Date.now();
-        	$scope.updateTime = time;
+        var updateTimeCallback = function (time) {
+            $scope.gadgetAge = Date.now();
+            $scope.updateTime = time;
         }
         drawUsTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback);
     }
@@ -1476,32 +1484,32 @@ app.controller('StoryController', function ($scope, $rootScope, $window, $mdDial
             });
         }
     }
-    
-    $scope.hoverOn = function () {
-    	if($scope.updateTime === null || $scope.updateTime === NaN){
-    		return;
-    	}
-    	else{
-    		var passedTime = Date.now() - $scope.gadgetAge;
-        	var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
 
-            if(temp === 0){
-            	$scope.updateInfo = "(updated just now)";
+    $scope.hoverOn = function () {
+        if ($scope.updateTime === null || $scope.updateTime === NaN) {
+            return;
+        }
+        else {
+            var passedTime = Date.now() - $scope.gadgetAge;
+            var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
+
+            if (temp === 0) {
+                $scope.updateInfo = "(updated just now)";
             }
-            else if(temp >= 120){
-            	temp = Math.round(temp / 60);
-            	$scope.updateInfo = "(updated " + temp + " hours ago)";
-            }else{
-            	if(temp === 1){
-            		$scope.updateInfo = "(updated " + temp + " minute ago)";
-            	}
-            	else{
-            		$scope.updateInfo = "(updated " + temp + " minutes ago)";
-            	}
-            	
+            else if (temp >= 120) {
+                temp = Math.round(temp / 60);
+                $scope.updateInfo = "(updated " + temp + " hours ago)";
+            } else {
+                if (temp === 1) {
+                    $scope.updateInfo = "(updated " + temp + " minute ago)";
+                }
+                else {
+                    $scope.updateInfo = "(updated " + temp + " minutes ago)";
+                }
+
             }
-    	}
-    	
+        }
+
     }
 
 });
@@ -1525,9 +1533,9 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
         var clearCacheCallback = function () {
             $scope.isClearingCache = false;
         }
-        var updateTimeCallback = function(time){
-        	$scope.gadgetAge = Date.now();
-        	$scope.updateTime = time;
+        var updateTimeCallback = function (time) {
+            $scope.gadgetAge = Date.now();
+            $scope.updateTime = time;
         }
         drawCycleTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback);
     }
@@ -1558,32 +1566,32 @@ app.controller('CycleController', function ($scope, $rootScope, $window, $mdDial
             });
         }
     }
-    
-    $scope.hoverOn = function () {
-    	if($scope.updateTime === null || $scope.updateTime === NaN){
-    		return;
-    	}
-    	else{
-    		var passedTime = Date.now() - $scope.gadgetAge;
-        	var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
 
-            if(temp === 0){
-            	$scope.updateInfo = "(updated just now)";
+    $scope.hoverOn = function () {
+        if ($scope.updateTime === null || $scope.updateTime === NaN) {
+            return;
+        }
+        else {
+            var passedTime = Date.now() - $scope.gadgetAge;
+            var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
+
+            if (temp === 0) {
+                $scope.updateInfo = "(updated just now)";
             }
-            else if(temp >= 120){
-            	temp = Math.round(temp / 60);
-            	$scope.updateInfo = "(updated " + temp + " hours ago)";
-            }else{
-            	if(temp === 1){
-            		$scope.updateInfo = "(updated " + temp + " minute ago)";
-            	}
-            	else{
-            		$scope.updateInfo = "(updated " + temp + " minutes ago)";
-            	}
-            	
+            else if (temp >= 120) {
+                temp = Math.round(temp / 60);
+                $scope.updateInfo = "(updated " + temp + " hours ago)";
+            } else {
+                if (temp === 1) {
+                    $scope.updateInfo = "(updated " + temp + " minute ago)";
+                }
+                else {
+                    $scope.updateInfo = "(updated " + temp + " minutes ago)";
+                }
+
             }
-    	}
-    	
+        }
+
     }
 
 });
@@ -1611,9 +1619,9 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
         var clearCacheCallback = function () {
             $scope.isClearingCache = false;
         }
-        var updateTimeCallback = function(time){
-        	$scope.gadgetAge = Date.now();
-        	$scope.updateTime = time;
+        var updateTimeCallback = function (time) {
+            $scope.gadgetAge = Date.now();
+            $scope.updateTime = time;
         }
         drawAssigneeTable($scope.dataTable, item, $rootScope.tableErrorHandling, titleHandler, dataTableCallback, clearCacheCallback, updateTimeCallback);
     }
@@ -1645,32 +1653,32 @@ app.controller('AssigneeController', function ($scope, $rootScope, $window, $mdD
             });
         }
     }
-    
-    $scope.hoverOn = function () {
-    	if($scope.updateTime === null || $scope.updateTime === NaN){
-    		return;
-    	}
-    	else{
-    		var passedTime = Date.now() - $scope.gadgetAge;
-        	var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
 
-            if(temp === 0){
-            	$scope.updateInfo = "(updated just now)";
+    $scope.hoverOn = function () {
+        if ($scope.updateTime === null || $scope.updateTime === NaN) {
+            return;
+        }
+        else {
+            var passedTime = Date.now() - $scope.gadgetAge;
+            var temp = Math.round((passedTime + $scope.updateTime) / 1000 / 60);
+
+            if (temp === 0) {
+                $scope.updateInfo = "(updated just now)";
             }
-            else if(temp >= 120){
-            	temp = Math.round(temp / 60);
-            	$scope.updateInfo = "(updated " + temp + " hours ago)";
-            }else{
-            	if(temp === 1){
-            		$scope.updateInfo = "(updated " + temp + " minute ago)";
-            	}
-            	else{
-            		$scope.updateInfo = "(updated " + temp + " minutes ago)";
-            	}
-            	
+            else if (temp >= 120) {
+                temp = Math.round(temp / 60);
+                $scope.updateInfo = "(updated " + temp + " hours ago)";
+            } else {
+                if (temp === 1) {
+                    $scope.updateInfo = "(updated " + temp + " minute ago)";
+                }
+                else {
+                    $scope.updateInfo = "(updated " + temp + " minutes ago)";
+                }
+
             }
-    	}
-    	
+        }
+
     }
 
 });
