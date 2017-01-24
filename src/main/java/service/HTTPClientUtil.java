@@ -223,7 +223,7 @@ public class HTTPClientUtil {
     public Proxy getProxy() {
         String proxyIP = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROXY_IP);
         String proxyPortStr = PropertiesUtil.getString(Constant.RESOURCE_BUNLE_PROXY_PORT);
-        int proxyPort = 0;
+        int proxyPort;
         if (proxyIP == null || proxyPortStr == null) {
             return null;
         }

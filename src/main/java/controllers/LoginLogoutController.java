@@ -13,6 +13,7 @@ import service.HTTPClientUtil;
 import util.Constant;
 import util.JSONUtil;
 
+import java.net.Proxy;
 import java.util.Map;
 
 import static controllers.ApplicationController.getUserInformation;
@@ -26,8 +27,17 @@ public class LoginLogoutController {
 
 
     public static boolean doLogin(String username, String password, Session session) throws Exception {
-        Connection.Response respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
-                .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
+
+        Proxy proxy = HTTPClientUtil.getInstance().getProxy();
+        Connection.Response respond;
+
+        if (proxy == null) {
+            respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
+                    .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).timeout(CONNECTION_TIMEOUT).execute();
+        } else {
+            respond = Jsoup.connect(LOGIN_LINK).data(USERNAME_LOGIN_KEY, username).data(PASSWORD_LOGIN_KEY, password)
+                    .data(REMEMBER_LOGIN_KEY, "true").method(Connection.Method.POST).proxy(HTTPClientUtil.getInstance().getProxy()).timeout(CONNECTION_TIMEOUT).execute();
+        }
 
         if (respond.header("X-AUSERNAME").equals(username)) {
             session.put("cookies", respond.cookies().toString());

@@ -1,6 +1,8 @@
 package util;
 
 import ninja.session.Session;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import service.HTTPClientUtil;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.*;
 
+import static util.Constant.CONNECTION_TIMEOUT;
 import static util.Constant.LINK_CRUCIBLE;
 
 
@@ -45,21 +48,46 @@ public class MyUtill {
         URL url2 = new URL(url);
         HttpURLConnection myURLConnection;
 
-        if (proxy != null) {
-            myURLConnection = (HttpURLConnection) url2.openConnection(proxy);
-        } else {
+        if (proxy == null) {
             myURLConnection = (HttpURLConnection) url2.openConnection();
-        }
-
-
-        if (url.contains(LINK_CRUCIBLE)) {
-            myURLConnection.setRequestProperty("Cookie", getCruCookies(session).toString());
         } else {
-            myURLConnection.setRequestProperty("Cookie", getCookies(session).toString());
+            myURLConnection = (HttpURLConnection) url2.openConnection(proxy);
         }
+
+        Map<String, String> cookies;
+        if (url.contains(LINK_CRUCIBLE)) {
+            cookies = getCruCookies(session);
+        } else {
+            cookies = getCookies(session);
+        }
+
+        myURLConnection.setRequestProperty("Cookie", cookies.toString());
 
         myURLConnection.setRequestMethod("GET");
         return new BufferedReader(new InputStreamReader(myURLConnection.getInputStream()));
+    }
+
+
+    public static String getJsoupConnectionRespondBody(String link, Session session) throws Exception {
+
+        String respond;
+        Proxy proxy = HTTPClientUtil.getInstance().getProxy();
+        Map<String, String> cookies;
+
+        if (link.contains(LINK_CRUCIBLE)) {
+            cookies = getCruCookies(session);
+        } else {
+            cookies = getCookies(session);
+        }
+
+        if (proxy == null) {
+            respond = Jsoup.connect(link).cookies(cookies).timeout(CONNECTION_TIMEOUT).ignoreHttpErrors(true).method(Connection.Method.GET).execute().body();
+        } else {
+            respond = Jsoup.connect(link).proxy(proxy).cookies(cookies).timeout(CONNECTION_TIMEOUT).ignoreHttpErrors(true).method(Connection.Method.GET).execute().body();
+        }
+
+        return respond;
+
     }
 
 

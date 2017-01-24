@@ -23,9 +23,9 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import static util.Constant.*;
-import static util.MyUtill.getHttpURLConnection;
-import static util.MyUtill.isCacheExpired;
+import static util.Constant.LINK_GET_CRU_PROJECTS;
+import static util.Constant.LINK_GET_ODREVIEW_REPORTS;
+import static util.MyUtill.*;
 
 
 /**
@@ -92,17 +92,8 @@ public class OverdueReviewReportController {
 
     public static JSONArray getReviewfromServer(Session session, String project) throws Exception {
         JSONArray reviewDataArray = new JSONArray();
-        String rs = "";
-        BufferedReader br = getHttpURLConnection(String.format(LINK_GET_ODREVIEW_REPORTS, project), session);
-        String inputLine;
-        while ((inputLine = br.readLine()) != null) {
-            rs = rs + inputLine;
-        }
-        br.close();
-
-
+        String rs = getJsoupConnectionRespondBody(String.format(LINK_GET_ODREVIEW_REPORTS, project), session);
         JSONArray array = XML.toJSONObject(rs).getJSONObject("detailedReviews").getJSONArray("detailedReviewData");
-
 
         ArrayList<String> nameList = new ArrayList<>();
 
