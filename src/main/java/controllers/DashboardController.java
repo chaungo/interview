@@ -130,7 +130,7 @@ public class DashboardController {
 
 
                     } catch (Exception exception) {
-                        logger.error(exception);
+                        logger.error("error when getDashboardList()", exception);
                     }
 
                 }
