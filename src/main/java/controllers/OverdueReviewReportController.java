@@ -58,7 +58,7 @@ public class OverdueReviewReportController {
     public static JSONObject getReview(Session session, JSONObject data, String GadgetId) throws Exception {
         JSONObject result = new JSONObject();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOARD_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
         long upateTime;

@@ -1030,6 +1030,24 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
         }
     };
 
+    $scope.confirm = false;
+    $scope.deleteAllDashboard = function (ev) {
+        $resource('/deleteAllDashboard').save().$promise.then(function (data) {
+            //console.log(data)
+            $scope.confirm = false;
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .title('Done!')
+                    .ok('Got it!')
+                    .targetEvent(ev)
+            ).then(function () {
+                $scope.getReleaseList();
+            });
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
 
 });
 

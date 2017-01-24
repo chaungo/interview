@@ -48,7 +48,7 @@ public class ApplicationController {
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
             if (group.getString(Constant.NAME).contains(ADMIN_ROLE)) {
-                session.put(ADMIN, "true");
+                session.put("role", "admin");
                 userInfoRS.put(ADMIN, true);
             }
 

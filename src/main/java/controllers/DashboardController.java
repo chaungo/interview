@@ -5,6 +5,7 @@ import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import filter.AdminSecureFilter;
 import filter.SecureFilter;
 import models.gadget.Gadget;
 import models.gadget.Gadget.Type;
@@ -15,6 +16,7 @@ import ninja.params.Param;
 import ninja.params.SessionParam;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -175,8 +177,29 @@ public class DashboardController {
                 collection.deleteOne(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(dashboardId)));
 
 
-                mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOAR_GADGET_COLECCTION).deleteMany(new org.bson.Document(Constant.DASHBOAR_ID, dashboardId));
+                mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_GADGET_COLECCTION).deleteMany(new org.bson.Document(Constant.DASHBOARD_ID, dashboardId));
             }
+
+            mongoClient.close();
+
+            return Results.ok();
+        } catch (Exception e) {
+            logger.error(e);
+            return Results.internalServerError();
+        }
+    }
+
+    @FilterWith(SecureFilter.class)
+    public Result deleteAllDashboard() {
+        System.out.println("deleteAllDashboard");
+        try {
+            MongoClient mongoClient = new MongoClient();
+
+            MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_TABLE);
+            collection.drop();
+
+            MongoCollection<org.bson.Document> gadgetCollection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_GADGET_COLECCTION);
+            gadgetCollection.drop();
 
             mongoClient.close();
 

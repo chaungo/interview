@@ -47,6 +47,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/getDashboardInfo").with(DashboardController.class, "getDashboardInfo");
         router.POST().route("/getDashboardList").with(DashboardController.class, "getDashboardList");
         router.POST().route("/updateDashboardOption").with(DashboardController.class, "updateDashboardOption");
+        router.POST().route("/deleteAllDashboard").with(DashboardController.class, "deleteAllDashboard");
 
         router.GET().route("/assets/webjars/{fileName: .*}").with(AssetsController.class, "serveWebJars");
         router.GET().route("/assets/{fileName: .*}").with(AssetsController.class, "serveStatic");

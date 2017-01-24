@@ -37,7 +37,7 @@ public class SonarStatisticGadgetController {
 
         JSONObject result = new JSONObject();
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOAR_GADGET_COLECCTION);
+        MongoCollection<Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document("data", data.toString())).first();
 
         //todo

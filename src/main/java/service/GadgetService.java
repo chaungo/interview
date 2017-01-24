@@ -48,7 +48,7 @@ public class GadgetService {
 
     public static void clearCacheGadgetfromDB(String gadgetId) {
         MongoClient mongoClient = new MongoClient();
-        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
+        MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(Constant.DASHBOARD_GADGET_COLECCTION);
         org.bson.Document document = collection.find(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(gadgetId))).first();
 
         org.bson.Document doc = new org.bson.Document("cache", "").append(Constant.UPDATE_DATE, 0);

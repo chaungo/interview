@@ -3,6 +3,7 @@
     <div style="height: 100%; width: 100%;padding-top: 40px;" id="configurationMain" ng-controller="ConfigCtrl"
          layout-padding ng-app="App" layout-xs="column">
         <#if (session.role)??>
+
             <div layout="row">
                 <div style="padding: 5px" flex>
                     <span class="md-headline">Release</span>
@@ -60,17 +61,32 @@
                         </table>
                     </div>
                 </div>
-                <div style="padding: 5px">
+
+
+            </div>
+            <div layout="row" layout-align="space-around center">
+                <div style="padding: 5px" layout="column">
                     <span class="md-headline">Period</span>
                     <md-radio-group style="padding: 5px;" layout="column" ng-model="period">
                         <md-radio-button ng-repeat="item in periodList" value="{{item.key}}">
                             {{item.value}}
                         </md-radio-button>
                     </md-radio-group>
+
+                </div>
+                <div layout="column">
+                    <md-button class="md-primary md-raised" ng-click="confirm = !confirm" layout="row"
+                               layout-align="center center">
+                        <div ng-if="confirm">No! I don't want to&nbsp</div>
+                        <div>Delete all dashboard</div>
+                    </md-button>
+                    <md-button ng-if="confirm" class="md-raised md-warn" ng-click="deleteAllDashboard($event)">
+                        Click here to delete all dashboard
+                    </md-button>
                 </div>
             </div>
         </#if>
-        <div layout-padding >
+        <div layout-padding>
             <div style="padding: 5px">
                 <span class="md-headline">Greenhoper</span>
             </div>

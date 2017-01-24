@@ -10,7 +10,7 @@
                     <div ng-init="dashboards" layout="column"
                          layout-align="start stretch">
 
-                        <md-button ng-if="currentDashboard.owner == name || isAdmin && !configPage"
+                        <md-button ng-if="currentDashboard.owner == name && !configPage"
                                    class="md-primary md-raised"
                                    ng-click="showAddWidgetDialog($event)">
                             Add new gadget

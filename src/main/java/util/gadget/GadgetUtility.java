@@ -39,7 +39,7 @@ public class GadgetUtility extends DatabaseUtility {
 
     private GadgetUtility() {
         super();
-        collection = db.getCollection(Constant.DASHBOAR_GADGET_COLECCTION);
+        collection = db.getCollection(Constant.DASHBOARD_GADGET_COLECCTION);
     }
 
     public static GadgetUtility getInstance() {
@@ -174,7 +174,7 @@ public class GadgetUtility extends DatabaseUtility {
     }
 
     public List<Gadget> findByDashboardId(String id) throws APIException {
-        org.bson.Document searchQuery = new org.bson.Document(Constant.DASHBOAR_ID, id);
+        org.bson.Document searchQuery = new org.bson.Document(Constant.DASHBOARD_ID, id);
         FindIterable<org.bson.Document> Iterable = collection.find(searchQuery);
         return parse(Iterable);
     }
