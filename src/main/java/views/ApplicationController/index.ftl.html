@@ -239,7 +239,7 @@
                                  data-ng-if="item.type === 'EPIC_US_TEST_EXECUTION'"
                                  data-ng-controller="EpicController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Epic Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
+                                    <h4>Epic Test Execution Gadget | {{item.projectName}} {{item.products[0]}} {{item.release}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
                                     <div data-ng-if="currentDashboard.owner == name || isAdmin">
 
@@ -274,6 +274,7 @@
                                             Toggle View
                                         </md-tooltip>
                                     </md-button>
+                                    
                                 </div>
                                 <div data-ng-show="showView" id="epic-table-container"
                                      class="col-md-12" align="center" style="display: none">
@@ -320,7 +321,7 @@
                                  data-ng-if="item.type === 'STORY_TEST_EXECUTION'"
                                  data-ng-controller="StoryController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>User Story Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
+                                    <h4>User Story Test Execution Gadget | {{item.projectName}} {{item.products[0]}} {{item.release}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name || isAdmin">
@@ -343,7 +344,7 @@
                                                 Delete
                                             </md-tooltip>
                                         </md-button>
-
+											
                                     </div>
                                     <md-button class="md-icon-button"
                                                ng-click="clearCacheGreenhopperGagdget(item)">
@@ -375,7 +376,7 @@
                                  data-ng-if="item.type === 'TEST_CYCLE_TEST_EXECUTION'"
                                  data-ng-controller="CycleController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Cycle Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
+                                    <h4>Cycle Test Execution Gadget | {{item.projectName}} {{item.products[0]}} {{item.release}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name || isAdmin">
@@ -452,7 +453,7 @@
                                  data-ng-if="item.type === 'ASSIGNEE_TEST_EXECUTION'"
                                  data-ng-controller="AssigneeController" data-ng-mouseover="hoverOn()">
                                 <div class="gadgetHeader" layout="row" layout-align="start center">
-                                    <h4>Assignee Test Execution Gadget {{item.projectName}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
+                                    <h4>Assignee Test Execution Gadget | {{item.projectName}} {{item.products[0]}} {{item.release}} {{titleAdditionalInfo}} {{updateInfo}}</h4>
                                     <div flex></div>
 
                                     <div data-ng-if="currentDashboard.owner == name || isAdmin">
