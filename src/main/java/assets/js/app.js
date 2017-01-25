@@ -1044,7 +1044,7 @@ app.controller('ConfigCtrl', function ($rootScope, $scope, $mdDialog, $mdToast, 
                 $scope.getReleaseList();
             });
         }, function (error) {
-            console.log(error);
+            //console.log(error);
         });
     }
 

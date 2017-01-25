@@ -167,7 +167,7 @@
                 <div id="{{re.id}}" ng-init="hide=flase" ng-repeat="re in reviewList" style="width: 100%">
                     <md-card class="gadget" md-whiteframe="8">
                         <div class="gadgetHeader" layout="row" layout-align="start center">
-                            <h4>AMS Overdue Reviews Report Gadget{{re.release}}</h4>
+                            <h4>AMS Overdue Reviews Report {{re.project}}</h4>
                             <div ng-if="re.lastUpateTime > 1">(update {{re.lastUpateTime}} mins ago)</div>
                             <div ng-if="re.lastUpateTime == 1">(update {{re.lastUpateTime}} min ago)</div>
                             <div ng-if="re.lastUpateTime == 0">(just update)</div>
