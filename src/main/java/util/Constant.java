@@ -4,7 +4,7 @@ public class Constant {
 
 
 
-    public static final int CONNECTION_TIMEOUT = 30 * 1000;
+    public static final int CONNECTION_TIMEOUT = 5 * 60 * 1000;
 
     public static final Long EXPIRE_TIME_30DAYS = 30 * 24 * 60 * 60 * 1000L;
 
