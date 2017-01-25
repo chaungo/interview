@@ -16,8 +16,8 @@ import util.JSONUtil;
 import java.net.Proxy;
 import java.util.Map;
 
-import static controllers.ApplicationController.getUserInformation;
 import static ninja.Results.redirect;
+import static service.UserService.getUserInformation;
 import static util.Constant.*;
 
 @Singleton

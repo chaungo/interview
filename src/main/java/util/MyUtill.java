@@ -43,7 +43,7 @@ public class MyUtill {
     }
 
 
-    public static String getConnectionRespondBody(String url, Session session) throws Exception{
+    public static String getConnectionRespondBody(String url, Session session) throws Exception {
 
         String rs = "";
 
@@ -121,6 +121,17 @@ public class MyUtill {
         } catch (Exception e) {
             return true;
         }
+    }
+
+
+    public static boolean isAdmin(Session session) {
+        boolean isAdmin;
+        try {
+            isAdmin = session.get(ROLE).equals(ADMIN);
+        } catch (Exception e) {
+            isAdmin = false;
+        }
+        return isAdmin;
     }
 
 

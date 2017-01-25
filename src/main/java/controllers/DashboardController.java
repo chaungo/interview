@@ -16,7 +16,6 @@ import ninja.params.Param;
 import ninja.params.SessionParam;
 import ninja.session.Session;
 import org.apache.log4j.Logger;
-import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -28,6 +27,7 @@ import java.util.List;
 
 import static service.GadgetService.getDashboardGadgetbyDashboardId;
 import static util.Constant.*;
+import static util.MyUtill.isAdmin;
 
 @Singleton
 public class DashboardController {
@@ -80,7 +80,6 @@ public class DashboardController {
     @FilterWith(SecureFilter.class)
     public Result getDashboardList(@Param("groups") String groups, @Param("projects") String projects, Session session) {
         try {
-            boolean isAdmin = Boolean.valueOf(session.get(ADMIN));
             JSONArray userGroup = new JSONArray(groups);
             JSONArray userProject = new JSONArray(projects);
 
@@ -114,7 +113,7 @@ public class DashboardController {
                             logger.warn(e);
                         }
 
-                        if (!isAdmin) {
+                        if (!isAdmin(session)) {
                             if (contain || owner.equals(session.get(USERNAME)) || privacy.getString(PRIVACY_STATUS).equals(PRIVACY_STATUS_PUBLIC)) {
                                 dashboard.put("id", document.getObjectId(Constant.MONGODB_ID).toHexString());
                                 dashboard.put(Constant.OWNER, owner);
@@ -173,11 +172,14 @@ public class DashboardController {
             MongoCollection<org.bson.Document> collection = mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_TABLE);
             Document document = collection.find(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(dashboardId))).first();
 
-            if (document.getString(Constant.OWNER).equals(session.get(USERNAME))) {
+            if (isAdmin(session)) {
                 collection.deleteOne(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(dashboardId)));
-
-
                 mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_GADGET_COLECCTION).deleteMany(new org.bson.Document(Constant.DASHBOARD_ID, dashboardId));
+            } else {
+                if (document.getString(Constant.OWNER).equals(session.get(USERNAME))) {
+                    collection.deleteOne(new org.bson.Document(Constant.MONGODB_ID, new ObjectId(dashboardId)));
+                    mongoClient.getDatabase(PropertiesUtil.getString(Constant.DATABASE_SCHEMA)).getCollection(DASHBOARD_GADGET_COLECCTION).deleteMany(new org.bson.Document(Constant.DASHBOARD_ID, dashboardId));
+                }
             }
 
             mongoClient.close();
@@ -189,9 +191,8 @@ public class DashboardController {
         }
     }
 
-    @FilterWith(SecureFilter.class)
+    @FilterWith(AdminSecureFilter.class)
     public Result deleteAllDashboard() {
-        System.out.println("deleteAllDashboard");
         try {
             MongoClient mongoClient = new MongoClient();
 

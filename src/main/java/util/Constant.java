@@ -2,22 +2,16 @@ package util;
 
 public class Constant {
 
-    public static final long EXPIRE_TIME = 24 * 60 * 60 * 1000L;
 
 
     public static final int CONNECTION_TIMEOUT = 30 * 1000;
-    public static final int CONNECTION_TIMEOUT_FOR_GET_STATISTIC = 10 * 60 * 1000;
+
     public static final Long EXPIRE_TIME_30DAYS = 30 * 24 * 60 * 60 * 1000L;
-    //public static final int MAX_AGE = 30 * 24 * 60 * 60 * 1000;
-    //public static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    //public static final String DB_URL = "jdbc:mysql://localhost/newdashboard?useSSL=false";
 
     public static final String USERNAME_LOGIN_KEY = "os_username";
     public static final String PASSWORD_LOGIN_KEY = "os_password";
     public static final String REMEMBER_LOGIN_KEY = "os_cookie";
     public static final String LOGININFO_INVALID = "anonymous";
-
-    public static final int TIMEOUT = 60 * 1000;
 
     //
     public static final String LOGIN_LINK = "http://tiger.in.alcatel-lucent.com:8091/login.jsp";
@@ -71,7 +65,9 @@ public class Constant {
     public static final String API_SESSION_INFO_INTERNAL = "APICookiesInternal";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String ROLE = "role";
     public static final String ADMIN = "admin";
+    public static final String USER = "user";
     public static final String GROUPS = "groups";
     public static final String NAME = "name";
     public static final String CLEAN_DATA_CACHE_TIME = "internal.conf.cleardatacache.time";
@@ -84,7 +80,7 @@ public class Constant {
     public static final String GREENHOPPER_GADGET_KEY = "GreenHopperGadget";
     public static String DISPLAY_NAME = "displayName";
     public static String ALIAS = "ALIAS";
-    public static String ADMIN_ROLE = "jira-administrators";
+    public static String ADMIN_GROUP = "jira-administrators";
     public static String LOADING = "LOADING";
     public static String GADGET = "Gadget";
     public static String SONAR_GADGET = "SonarGadget";

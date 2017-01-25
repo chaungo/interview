@@ -18,9 +18,9 @@ import util.JSONUtil;
 
 import java.util.List;
 
-import static controllers.OverdueReviewReportController.getReview;
-import static controllers.SonarStatisticGadgetController.getSonarStatistic;
 import static service.GadgetService.*;
+import static service.OverdueReviewReportService.getReview;
+import static service.SonarStatisticGadgetServive.getSonarStatistic;
 import static util.Constant.*;
 
 
