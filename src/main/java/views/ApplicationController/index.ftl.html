@@ -137,14 +137,7 @@
                                     ng-style="y.metricVal.critical_violations > 0 && {'color':'red'}">{{
                                     y.metricVal.critical_violations }}
                                 </td>
-                                <td ng-if="y.metricVal.new_coverage"
-                                    ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
-                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/new_coverage/list?id={{y.componentKey}}"
-                                       target="_blank">
-                                        {{y.metricVal.new_coverage}} <span
-                                            ng-if="check(y.metricVal.new_coverage)">%</span>
-                                    </a>
-                                </td>
+
                                 <td ng-if="y.metricVal.test_errors"
                                     ng-style="y.metricVal.test_errors > 0 && {'color':'red'}">{{
                                     y.metricVal.test_errors}}
@@ -156,6 +149,15 @@
                                 <td ng-if="y.metricVal.test_execution_time">{{
                                     y.metricVal.test_execution_time}} <span
                                             ng-if="check(y.metricVal.test_execution_time)"> s</span>
+                                </td>
+
+                                <td ng-if="y.metricVal.new_coverage"
+                                    ng-style="y.metricVal.new_coverage < {{limit}} && {'color':'red'}">
+                                    <a ng-href="http://bamboo.in.alcatel-lucent.com:8085/component_measures/metric/new_coverage/list?id={{y.componentKey}}"
+                                       target="_blank">
+                                        {{y.metricVal.new_coverage}} <span
+                                            ng-if="check(y.metricVal.new_coverage)">%</span>
+                                    </a>
                                 </td>
                             </tr>
                             </tbody>
