@@ -40,6 +40,7 @@ public class SonarStatisticGadgetServive {
         }
 
         long upateTime;
+
         if (isCacheExpired(document, 2)) {
             JSONArray metricList = new JSONArray();
             JSONArray metricsFromDB = getMetricsFromDB();

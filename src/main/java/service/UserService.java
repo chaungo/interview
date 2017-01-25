@@ -39,7 +39,6 @@ public class UserService {
 
         JSONArray groupNames = new JSONArray();
         userInfoRS.put(ADMIN, false);
-        session.put(ROLE, USER);
 
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);

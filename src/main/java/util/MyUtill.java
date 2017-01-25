@@ -127,6 +127,9 @@ public class MyUtill {
     public static boolean isAdmin(Session session) {
         boolean isAdmin;
         try {
+            if (session.get(ROLE) == null) {
+                return false;
+            }
             isAdmin = session.get(ROLE).equals(ADMIN);
         } catch (Exception e) {
             isAdmin = false;
