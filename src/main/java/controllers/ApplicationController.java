@@ -44,7 +44,8 @@ public class ApplicationController {
         JSONArray groups = userInfo.getJSONObject(Constant.GROUPS).getJSONArray(Constant.GROUP_ITEMS);
 
         JSONArray groupNames = new JSONArray();
-        userInfoRS.put(ADMIN, "");
+        userInfoRS.put(ADMIN, false);
+
         for (int i = 0; i < groups.length(); i++) {
             JSONObject group = groups.getJSONObject(i);
             if (group.getString(Constant.NAME).contains(ADMIN_ROLE)) {
